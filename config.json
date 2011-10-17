@@ -1,0 +1,32 @@
+{
+"rules": [
+
+{ 
+ "channel":"latinoware-en", 
+ "timer": "12000",
+ "function":"reloadRSS",
+ "url":"http://www.latinoware.org/en/rss.xml"
+}
+
+,
+
+{ 
+ "channel":"social", 
+ "timer": "30000",
+ "function":"reloadRSS",
+ "url":"http://search.twitter.com/search.rss?q=%23latinoware"
+}
+,
+
+{ 
+ "channel":"noticias", 
+ "timer": "30000",
+ "function":"reloadRSS",
+ "url":"http://homologacao.pti.org.br/feed"
+}
+
+
+]
+
+}
+

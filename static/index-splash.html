@@ -1,0 +1,109 @@
+<html>
+<head>
+    <meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <meta http-equiv="refresh" content="900;url=index2.html?mode=tv" /> 
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link media="screen, projection" type="text/css" href="ifsc.css" rel="stylesheet">
+    <link media="screen, projection" type="text/css" href="lib/hdgrid.css" rel="stylesheet">
+
+<script src="vendor/jquery-min.js"></script>
+<script src="const.js"></script>
+<script src="map-grade.js"></script>
+<script src="lib/tagvisor.js"></script>
+<script src="lib/choreographer.js"></script>
+<script>
+        var c=1;
+	var r=0;
+	var tt=0;
+
+</script>
+
+<style>
+/*
+	-moz-transform:scale(.67);
+*/
+    #viewport { 
+	-moz-transform:scale(.711);
+	-moz-transform-origin:0 0;
+	overflow:hidden;
+	width:1080px;
+	height:1920px;
+	background-color:white;
+    } 
+ 
+    #pagetranslate { 
+	width:10080px; 
+	height:5200px; 
+    } 
+
+    html, body {
+        margin:0; padding:0; 
+	background-color:black;
+    } 
+	
+    #debug { 
+		display:none;
+		background:white;	
+	} 
+    #animation { 
+		display:none;
+  	} 
+	
+</style>
+</head>
+
+<body onload="s1()" id="main">
+
+<div id="debug" >
+</div>
+
+<ul id='animation'>
+ <li data-scope='abas-meio' data-target='panel_acontece' data-time="25s" data-effect="move" data-duration="4s" />
+ <li data-scope='abas-meio' data-target='panel_midia' data-time="45s" data-effect="move" data-duration="4s"  />
+
+ <li data-target='panel_logo' data-time="5s" data-effect="scalefit" data-duration="4s"  />
+ <li data-target='viewport' data-time="20s" data-effect="scalefit" data-duration="4s"  />
+
+</ul>
+
+<div id='viewport' class='viewport' >
+<div id='pagetranslate' >
+<div id='pagescale'>
+
+<div  class='gh1080 slide' data-time="2s" data-effect="move" data-duration="3s"  >
+
+<div id="top" >
+
+<iframe src='index-top.html?mode=tv' class='gh1080 gv2' style='overflow:hidden;border:0;background-color:blue' ></iframe>
+
+</div>
+
+<div id="topmiddle" class="gv3" style='background-color:;' >
+
+</div>
+
+<!-- central area --> 
+<div id="middle" class='gv26' >
+</div>
+
+</div>
+
+<div class='gh1080' id='' style='background: '>
+
+<img src="brand/logo.png" id='panel_logo' style='position:relative;margin-left:0px;margin-top:200px;border:0px;overflow:hidden;width:500px;background:none;'>
+</img>
+
+</div>
+
+<div class='gh1080' style='background: url("brand/bg-orange.png");' >
+
+</div>
+
+
+
+</div>
+</div>
+</div>
+
+</body>
+</html>

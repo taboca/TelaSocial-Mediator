@@ -1,0 +1,37 @@
+
+Requirements
+
+* npm install forever
+* npm install walk 
+
+Working Agents as Separated Process 
+
+The idea is to use forever programatically to create connection with external sources. 
+We do this via calling a separated nodeJs app, action agents in our architecture. So,
+for example, the app that does the job of fetching remote RSS. 
+
+This would return values in the disk = status — not yet implemented. So if there is a
+failure, let's say dns fail ( = use case ), then an execution error code is kicked 
+, the node app dies, and the main app is still fine. As we evolve things, we may want 
+to keep log of these errors, so that is where Forever is good, we can track some of the 
+execution status from our main app. 
+
+Some other topics
+
+Activity Streams
+
+http://activitystrea.ms/
+
+PubSubHubBub
+
+http://code.google.com/p/pubsubhubbub/
+
+Influenced by this because we want to get rid of the repeated 'lame' polling. 
+
+Architecture
+
+We keep the basics up and running with Forever
+
+https://github.com/indexzero/forever
+
+
