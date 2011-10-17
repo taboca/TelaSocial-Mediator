@@ -44,7 +44,7 @@ var http = require("http"),
     realtime = require('./3rdparty/realtime/realtime'),
     store = require('./3rdparty/realtime/load_channel_store'),
     forever = require('forever'),
-    static = require('./3rdparty/node-static/lib/node-static');
+    static = require('./3rdparty/server-static/lib/node-static');
 
 
 var urlMap = {
