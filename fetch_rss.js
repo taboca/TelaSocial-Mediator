@@ -2,14 +2,15 @@ var sys = require("sys"),
     path = require("path"),
     fs = require("fs")
     url = require("url"),
+    http = require("http"),
     qs = require("querystring"),
     rss = require('./3rdparty/node-rss/node-rss');
  
-function ruleLoadSaveRSS(name, url) {
+function ruleLoadSaveRSS(name, href) {
 
 	var buffer = "";
 	var host = url.parse(href).host;
-	var path = url.parse(href).path;
+	var path = url.parse(href).pathname;
         var options = {
             host: host,
             port: 80,
