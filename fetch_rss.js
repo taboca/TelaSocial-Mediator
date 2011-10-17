@@ -16,16 +16,26 @@ function ruleLoadSaveRSS(name, href) {
             port: 80,
             path: path
         };
-        var request = http.get(options);
+
+
+   var request = http.get(options);
+
+        var strOut = "";
 
         request.on('response', function (res) {
-            res.on('data', function (buffer) {
-       	       fs.writeFile('channel/'+name+'.xml', buffer, 'utf8', function(err){
-       	        if (err) throw err
-       	        console.log('File saved.')
-               });
+           var strOut = "";
+           res.on('data', function (buffer) {
+                strOut += buffer;
            });
+           res.on('end', function () {
+               fs.writeFile('channel/'+name+'.xml', strOut, 'utf8', function(err){
+                if (err) throw err
+                console.log('file saved');
+               });
+           }
         })
+
+
 
 }
 
