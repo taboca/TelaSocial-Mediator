@@ -32,7 +32,7 @@ function ruleLoadSaveRSS(name, href) {
                 if (err) throw err
                 console.log('file saved');
                });
-           }
+           });
         })
 
 
