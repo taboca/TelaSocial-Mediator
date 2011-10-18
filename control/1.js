@@ -1,1 +1,1 @@
-controlLastUpdate = 1;
+controlLastUpdate++;
