@@ -53,6 +53,11 @@ var urlMap = {
 		proxyNodeStatic(req,res);
 		//proxyStatic(req,res);
   		}, 
+	
+        'control': function (req, res) { 
+		proxyNodeStaticForControl(req,res);
+		//proxyStatic(req,res);
+  		}, 
 
         'channel': function (req, res) { 
 		proxyNodeStatic(req,res);
@@ -145,6 +150,22 @@ var file = new(static.Server)('.', { cache: 7200, headers: {'X-TelaSocial':'hi'}
 function proxyNodeStatic(request, response, dir) { 
     request.addListener('end', function () {
         file.serve(request, response, function (err, res) {
+            if (err) { // An error as occured
+                sys.error("> Error serving " + request.url + " - " + err.message);
+                response.writeHead(err.status, err.headers);
+                response.end();
+            } else { // The file was served successfully
+                sys.puts("> " + request.url + " - " + res.message);
+            }
+        });
+    });
+} 
+
+var fileControlServer = new(static.Server)('.', { cache: 7200, headers: {'X-TelaSocial':'control'} });
+
+function proxyNodeStaticForControl(request, response, dir) { 
+    request.addListener('end', function () {
+        fileControlServer.serve(request, response, function (err, res) {
             if (err) { // An error as occured
                 sys.error("> Error serving " + request.url + " - " + err.message);
                 response.writeHead(err.status, err.headers);
