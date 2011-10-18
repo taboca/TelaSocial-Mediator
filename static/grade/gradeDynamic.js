@@ -82,7 +82,9 @@ var grade =  {
 
 	updateFeed : function() {
 		var self =this;
-                this.feed.ajax( { dataType: 'json', cache: false, type:"GET", url: this.feedURL, success: function (json) {  self.__feedUpdated(json) }, error: function (a,status) { alert("from grade" + a + " status " + status) }  });
+                this.feed.ajax( { dataType: 'json', cache: false, type:"GET", url: this.feedURL, success: function (json) {  self.__feedUpdated(json) }, error: function (a,status) {
+		//	 alert("from grade" + a + " status " + status) 
+			}  });
 		setTimeout( function(){self.updateFeed()},10000);
 	},
 
