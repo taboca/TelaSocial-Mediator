@@ -16,15 +16,6 @@ function startEngine() {
 
 } 
 
-function cicleMidia() { 
-   setTimeout( function () { 
-	var doc = $("#main #middle #abas").get();
-	doc = document.getElementById("abas-meio").contentDocument;
-	cc.send( doc.getElementById("midia").contentDocument, "container", "rotate");
-	cicleMidia();
-   }, TEMPO_REFRESH_MIDIA);
-} 
-
 function s1() { 
 	if(document.location.toString().indexOf("mode")>-1) { 
 		var param = document.location.toString().split("mode=");

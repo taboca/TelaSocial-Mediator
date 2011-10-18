@@ -31,7 +31,6 @@ function cicleMidia() {
    setTimeout( function () { 
 	var doc = $("#main #middle #abas").get();
 	doc = document.getElementById("abas-meio").contentDocument;
-alert(doc);
 	cc.send( doc.getElementById("midia").contentDocument, "container", "rotate");
 	cicleMidia();
    }, TEMPO_REFRESH_MIDIA);
