@@ -51,7 +51,15 @@ var grade =  {
 		strBuffer += '</div><div class="grade">'; 
 		var rows = 0;
 		for ( horario in horarios ) { 
-			strBuffer +="<div class='drow'>";
+
+			var nowDate = new Date();
+			var horarioAgora = nowDate.getHours();
+			var classStr = '';	
+			if(parseInt(horarios[horario])<=horarioAgora-2) { 
+				classStr="style='display:none'";
+			} 
+			strBuffer +="<div class='drow'" + classStr +" >";
+			//strBuffer +="<div class='drow' >";
 			var cols=0;
 			for ( local in espacos ) { 
 				if(cols==0) { 
