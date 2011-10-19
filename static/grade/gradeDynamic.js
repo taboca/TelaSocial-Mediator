@@ -178,6 +178,7 @@ var grade =  {
 	init : function () { 
 	} ,
 
+/*
 eventos : [ 
 
 { 
@@ -212,7 +213,7 @@ eventos : [
 
 ] 
 
+*/
 
 } // end of grade 
-
 
