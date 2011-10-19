@@ -4,10 +4,11 @@ var typing =  {
 	feed    : null, 
 	start : function() {
 		this.elementTable = document.createElement("div");
-		this.elementTable.innerHTML="<table border='0'><tr><td align='center' valign='middle' width='110'><div id='icon' style='' ></div></td><td><table ><tr><td height='175' valign='middle'><div class='typingPanel' id='typingcontainer'></div></td></tr><tr><td></td></tr></table></td></tr></table>";
+		this.elementTable.innerHTML="<table border='0' cellpadding='0' cellspacing='0' ><tr><td align='center' valign='middle' width='110' id='icon' ></div></td><td><table ><tr><td height='175' valign='middle'><div class='typingPanel' id='typingcontainer'></div></td></tr><tr><td></td></tr></table></td></tr></table>";
 
 		document.getElementById("main").appendChild(this.elementTable);
-		document.getElementById("icon").innerHTML= '<img src="../vendor/latino.png" style="margin:10px; " align="left" />';
+		//document.getElementById("icon").innerHTML= '<img src="../vendor/latino.png" style="margin:10px; " align="left" />';
+		document.getElementById("icon").innerHTML= '';
 		this.tweetQueue = new Array();
 
 		var first = document.createElement("div");
@@ -104,7 +105,8 @@ var typing =  {
 		this.feed(xml).find('item').each(function(){
                         var title = self.feed(this).find('title').text();
                         //var description = self.feed(this).find('description').text();
-                        self.tweetQueue.push( { title: title });
+			var mTitle = title.split("telatinoware: ")[1];
+                        self.tweetQueue.push( { title: mTitle });
                 });
 		/*
                 $(xml.xmlDocument).find('item').each(function(){

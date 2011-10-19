@@ -22,7 +22,7 @@
  "channel":"noticias", 
  "timer": "30000",
  "function":"reloadRSS",
- "url":"http://homologacao.pti.org.br/feed"
+ "url":"http://twitter.com/statuses/user_timeline/394023468.rss"
 }
 
 
