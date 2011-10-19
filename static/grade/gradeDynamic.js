@@ -136,6 +136,8 @@ var grade =  {
 				locati.innerHTML=eventItem.descricao;
 			} catch (i) { 
 
+				console.log(i);
+
 			} 
 		}
 	}, 
