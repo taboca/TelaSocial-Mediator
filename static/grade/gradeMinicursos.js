@@ -5,11 +5,11 @@
 
 */
 var dias = [10,11,12];
-var espacos = ['brasil','paraguai','uruguai','equador'];
-var titleEspacos = ['Espaço Brasil','Espaco Paraguai','Espaço Uruguai','Espaço Bolívia'];
+var espacos = ['lab1','lab2','lab3','lab4'];
+var titleEspacos = ['Lab 1','Lab 2','Lab 3','Lab 4'];
 
-var horarios = [10,11,12,13,14,15,16,17];
-var titleHorarios = ['10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00'];
+var horarios = [10,11,12,13,14,15,16,17,18,19];
+var titleHorarios = ['10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00'];
 
 var titleLegenda = ['PSPBR','Keynote','COLAPHP','KDE','Geo','Gnome','IWEEE','Mobile','DrupalCamp','LibreOffice','Infraestrutura e Segurança','Computação em Nuvem/Virtualização','Banco de Dados','Debian','Ubuntu','OpenSuse','Python','Distros','Engenharia de Software/Métodos Ágeis','Linguagens/Frameworks','Cases e Modelos de Negócios','Gráficos e Multimídia','Cultura e Sociedade','Educação','Acessibilidade','Robótica','Gestão de Conteúdo/Web','Aplicações Corporativas'];
 
@@ -28,7 +28,7 @@ var grade =  {
 	local : new Array(),
 	start : function () { 
 		this.feed = $;
-		this.feedURL = URL_GRADE;
+		this.feedURL = URL_MINICURSOS;
 		this.element = document.createElement('div');
 		this.element.setAttribute("class","gradeContainer");
 		document.getElementById('container').appendChild(this.element);
@@ -58,11 +58,7 @@ var grade =  {
 				    strBuffer+="<div id='' class='dh cellLeftRow' ><div class='cellLeftRowInner'> <div class='cellLeftRowInnerTextOnly'> "+titleHorarios[rows]+"</div></div></div>";
 				} 
 				var currentItemId="local_"+espacos[local]+"_horario_"+horarios[horario];
-				if(rows == 1 && cols == 1) { 
-					strBuffer+="<div class='dh cellEvent' style='overflow:visible;position:relative' ><div class='cellDouble' style='position:absolute;'>  <div class='cellInner' > <div class='cellInnerText' id='"+currentItemId+"'>&nbsp;</div></div> </div></div>";
-				} else {  
-					strBuffer+="<div class='dh cellEvent'> <div class='cellInner' > <div class='cellInnerText' id='"+currentItemId+"'>&nbsp;</div></div></div>";
-				} 
+				strBuffer+="<div class='dh cellEvent' style='overflow:visible;position:relative'><div id='cellToChange_"+currentItemId+"' class='cellInner'  ><div class='cellInnerText' id='"+currentItemId+"'>&nbsp;</div></div></div>";
 			
 				cols++;
 			} 
@@ -83,7 +79,7 @@ var grade =  {
 	updateFeed : function() {
 		var self =this;
                 this.feed.ajax( { dataType: 'json', cache: false, type:"GET", url: this.feedURL, success: function (json) {  self.__feedUpdated(json) }, error: function (a,status) {
-		//	 alert("from grade" + a + " status " + status) 
+			 //alert("from grade" + a + " status " + status) 
 			}  });
 		setTimeout( function(){self.updateFeed()},10000);
 	},
@@ -123,16 +119,24 @@ var grade =  {
 		var eventItem;
 		while (eventItem = this.eventos.pop()) { 
 			var hours = 0;
-			var mins  = 0;
+			var fim  = 0;
 			hours = parseInt(eventItem.inicio.split(":")[0]);
 			local = eventItem.local;
 			descricao = eventItem.descricao;
-			mins  = parseInt(eventItem.fim.split(":")[1]);
+			fim  = parseInt(eventItem.fim.split(":")[0]);
 
+			var delta = parseInt(fim)-parseInt(hours);
 			try  { 
 				var strId = "local_"+ local +"_horario_"+hours;
 				var locati = document.getElementById(strId);
-				$("#"+strId).addClass("cellActive");
+
+				$("#"+strId).addClass("cellActive")
+
+//				$("#cellToChange_"+strId).attr("style","background-color:yellow;height:300px;position:absolute;z-index:1000");
+
+				$("#cellToChange_"+strId).addClass("delta"+delta);
+		
+				
 				locati.innerHTML=eventItem.descricao;
 			} catch (i) { 
 
@@ -178,7 +182,9 @@ var grade =  {
 	init : function () { 
 	} ,
 
-eventos : [ 
+eventos : new Array(), 
+
+/*
 
 { 
   date: '19/10/2011',
@@ -212,6 +218,7 @@ eventos : [
 
 ] 
 
+*/
 
 } // end of grade 
 
