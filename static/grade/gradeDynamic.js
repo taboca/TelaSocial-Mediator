@@ -58,11 +58,15 @@ var grade =  {
 				    strBuffer+="<div id='' class='dh cellLeftRow' ><div class='cellLeftRowInner'> <div class='cellLeftRowInnerTextOnly'> "+titleHorarios[rows]+"</div></div></div>";
 				} 
 				var currentItemId="local_"+espacos[local]+"_horario_"+horarios[horario];
+/*
 				if(rows == 1 && cols == 1) { 
 					strBuffer+="<div class='dh cellEvent' style='overflow:visible;position:relative' ><div class='cellDouble' style='position:absolute;'>  <div class='cellInner' > <div class='cellInnerText' id='"+currentItemId+"'>&nbsp;</div></div> </div></div>";
 				} else {  
-					strBuffer+="<div class='dh cellEvent'> <div class='cellInner' > <div class='cellInnerText' id='"+currentItemId+"'>&nbsp;</div></div></div>";
+*/
+				strBuffer+="<div class='dh cellEvent'> <div class='cellInner' > <div class='cellInnerText' id='"+currentItemId+"'>&nbsp;</div></div></div>";
+/*
 				} 
+*/
 			
 				cols++;
 			} 
