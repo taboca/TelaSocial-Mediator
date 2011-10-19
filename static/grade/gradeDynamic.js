@@ -178,6 +178,7 @@ var grade =  {
 	init : function () { 
 	} ,
 
+	eventos : new Array(),
 /*
 eventos : [ 
 
