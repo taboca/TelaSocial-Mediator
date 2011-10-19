@@ -145,7 +145,7 @@ function notFound(req, res) {
 
 //var file = new(static.Server)('.', { cache: 7200, headers: {'X-Hello':'World!'} });
 
-var file = new(static.Server)('.', { cache: 7200, headers: {'X-TelaSocial':'hi'} });
+var file = new(static.Server)('.', { cache: 00, headers: {'X-TelaSocial':'hi'} });
 
 function proxyNodeStatic(request, response, dir) { 
     request.addListener('end', function () {
