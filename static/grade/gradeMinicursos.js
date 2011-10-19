@@ -56,7 +56,7 @@ var grade =  {
 			var nowDate = new Date();
 			var horarioAgora = nowDate.getHours();
 			var classStr = '';	
-			if(parseInt(horarios[horario])<=horarioAgora-2) { 
+			if(parseInt(horarios[horario])<=horarioAgora-1) { 
 				classStr="style='display:none'";
 			} 
 			strBuffer +="<div class='drow'" + classStr +" >";
