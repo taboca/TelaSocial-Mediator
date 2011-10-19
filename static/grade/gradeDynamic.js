@@ -8,8 +8,8 @@ var dias = [10,11,12];
 var espacos = ['brasil','paraguai','uruguai','bolivia','chile','peru','equador'];
 var titleEspacos = ['Espaço Brasil','Espaco Paraguai','Espaço Uruguai','Espaço Bolívia','Espaço Chile','Espaço Peru','Espaço Equador'];
 
-var horarios = [10,11,12,13,14,15,16,17];
-var titleHorarios = ['10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00'];
+var horarios = [10,11,12,13,14,15,16,18,17,19,20];
+var titleHorarios = ['10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00'];
 
 var titleLegenda = ['PSPBR','Keynote','COLAPHP','KDE','Geo','Gnome','IWEEE','Mobile','DrupalCamp','LibreOffice','Infraestrutura e Segurança','Computação em Nuvem/Virtualização','Banco de Dados','Debian','Ubuntu','OpenSuse','Python','Distros','Engenharia de Software/Métodos Ágeis','Linguagens/Frameworks','Cases e Modelos de Negócios','Gráficos e Multimídia','Cultura e Sociedade','Educação','Acessibilidade','Robótica','Gestão de Conteúdo/Web','Aplicações Corporativas'];
 
