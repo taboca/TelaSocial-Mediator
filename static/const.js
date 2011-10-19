@@ -3,6 +3,7 @@ URL_DESTAQUES = "/channel/latinoware-en.xml";
 ACONTECE_URL = "/channel/latinoware-en.xml";
 URL_TYPING = "/channel/noticias.xml";
 URL_GRADE ="/channel-store/grade";
+URL_MINICURSOS ="/channel-store/minicursos";
 
 /*
 URL_DESTAQUES = "http://200.134.24.25/channel/latinoware-en.xml";

@@ -86,6 +86,11 @@ var urlMap = {
 			//realtime.feed.appendMessage( json );
 			res.simpleJSON(200, {});
 		},
+	'send_feed_item_minicursos' : function (req, res, json) {
+			realtime.feed.appendInStore( "minicursos", json );
+			//realtime.feed.appendMessage( json );
+			res.simpleJSON(200, {});
+		},
 	'send_store_item' : function (req, res, json) {
 			realtime.feed.appendInStore( "grade", json );
 			//realtime.feed.appendMessage( json );
