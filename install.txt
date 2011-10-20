@@ -2,7 +2,20 @@
 Requirements
 
 * npm install forever
-* npm install walk 
+
+To Run 
+
+forever start mediator
+
+To Stop 
+
+forever stop mediator 
+
+Channels 
+
+./channel is a directory for cached files based in system events. We maintain a few files in there ( relative to the config.json file events and also the data store ). 
+
+Original Design 
 
 Working Agents as Separated Process 
 
