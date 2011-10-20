@@ -41,7 +41,8 @@ var relogio =  {
 		} 
 
 		//text = text.replace(/:..( [AP]M)$/, '$1');
-		this.elementClock.innerHTML = hour+":"+prefixmin+min+":"+prefix+secs;
+		//this.elementClock.innerHTML = hour+":"+prefixmin+min+":"+prefix+secs;
+		this.elementClock.innerHTML = hour+":"+prefixmin+min;
 		var scopedThis = this;
 		setTimeout( function () { scopedThis.tick() }, 1000);
 

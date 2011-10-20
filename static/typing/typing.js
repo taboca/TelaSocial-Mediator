@@ -4,7 +4,7 @@ var typing =  {
 	feed    : null, 
 	start : function() {
 		this.elementTable = document.createElement("div");
-		this.elementTable.innerHTML="<table border='0' cellpadding='0' cellspacing='0' ><tr><td align='center' valign='middle' width='110' id='icon' ></div></td><td><table ><tr><td height='175' valign='middle'><div class='typingPanel' id='typingcontainer'></div></td></tr><tr><td></td></tr></table></td></tr></table>";
+		this.elementTable.innerHTML="<table border='0' cellpadding='0' cellspacing='0' ><tr><td align='center' valign='middle' width='110' id='icon' ></div></td><td><table ><tr><td height='215' valign='middle'><div class='typingPanel' id='typingcontainer'></div></td></tr><tr><td></td></tr></table></td></tr></table>";
 
 		document.getElementById("main").appendChild(this.elementTable);
 		//document.getElementById("icon").innerHTML= '<img src="../vendor/latino.png" style="margin:10px; " align="left" />';
