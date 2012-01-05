@@ -10,14 +10,14 @@ The application can serve, via http ( get post ) a representation of the remote 
 
 The rule that loads the remote feed is defined in the config file: 
 
-   {
-     "channel":"noticias",
-     "timer": "30000",
-     "function":"reloadRSS",
-     "url":"http://twitter.com/statuses/user_timeline/394023468.rss"
-   }
+    {
+      "channel":"noticias",
+      "timer": "30000",
+      "function":"reloadRSS",
+      "url":"http://twitter.com/statuses/user_timeline/394023468.rss"
+    }
 
-   Config file https://github.com/taboca/TelaSocial-Mediator/blob/master/config.json
+    Config file https://github.com/taboca/TelaSocial-Mediator/blob/master/config.json
 
 ## Scenario 1: Repurposing a feed ( Cached and Resized Images ) 
 
@@ -25,12 +25,12 @@ This use case refers to a client ( web social kiosk ) that wants to display a nu
 
 The proposed architecture is a means to repurpose feeds in the mediator. In this case, a configuration rule script should define associated operation to the feed: 
 
-   {
-     "channel":"flickrresized",
-     "timer": "30000",
-     "function":"cacheandresize",
-     "url":"http://api.flickr.com/services/feeds/photos_public.gne?tags=flower&lang=pt-br&format="
-   }
+    {
+      "channel":"flickrresized",
+      "timer": "30000",
+      "function":"cacheandresize",
+      "url":"http://api.flickr.com/services/feeds/photos_public.gne?tags=flower&lang=pt-br&format="
+    }
 
 So when the feed is loaded, all images are to be fetched, resized, and stored in the disk. What is new is that we will need to serve a new feed file to the actual client because now the images are in the disk. 
 
