@@ -35,8 +35,6 @@ function ruleLoadSaveRSS(name, href) {
            });
         })
 
-
-
 }
 
 sys.puts("trying to open "+ process.argv[3]);
