@@ -17,7 +17,6 @@ function ruleLoadSaveRSS(name, href) {
             path: path
         };
 
-
    var request = http.get(options);
 
         var strOut = "";
