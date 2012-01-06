@@ -8,7 +8,6 @@
 
 var sys = require("sys"),
     path = require("path"),
-    Buffer = require('buffer').Buffer,
     fs = require("fs")
     url = require("url"),
     http = require("http");
@@ -23,16 +22,15 @@ function test_getAndSaveImage(name, href) {
             path: path
         };
         var request = http.get(options);
-        var strOut = "";
 
         request.on('response', function (res) {
-           var strOut = "";
+           var bufferedData = "";
            res.setEncoding('binary');
            res.on('data', function (dataBuffer) {
-		strOut+=dataBuffer;	
+		bufferedData+=dataBuffer;	
                });
            res.on('end', function () {
-                fs.writeFile('channel/'+name+'', strOut, 'binary', function(err){
+                fs.writeFile('channel/'+name+'', bufferedData, 'binary', function(err){
                   if (err) throw err;
                   console.log('file saved');
                 });
