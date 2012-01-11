@@ -34,6 +34,13 @@ The proposed architecture is a means to repurpose feeds in the mediator. In this
 
 So when the feed is loaded, all images are to be fetched, resized, and stored in the disk. What is new is that we will need to serve a new feed file to the actual client because now the images are in the disk. 
 
+## Requirements
+
+ * NodeJS
+ * npm
+ * Forever
+ * ImageMagick ( for the media transcoding converter channel = 0.2 ) 
+ 
 ## LICENSE
 
 All files that are part of this project are covered by the following
