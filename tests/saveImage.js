@@ -38,8 +38,12 @@ function test_getAndSaveImage(name, href) {
        });
 }
 
-sys.puts("Trying to open http://www.taboca.com/output/vendor-taboca/logomini.png");
+sys.puts("This expects a local directory, created, named ./channel ");
+sys.puts("Pass HTTP URL to image ( http://site.com/image.png ) and image file name ");
+sys.puts("Trying to open "+ process.argv[2] + " and to save to " + process.argv[3] );
 
-test_getAndSaveImage("marcio.png", "http://www.taboca.com/output/vendor-taboca/logomini.png");
+test_getAndSaveImage(process.argv[3], process.argv[2]);
+
+
 
 
