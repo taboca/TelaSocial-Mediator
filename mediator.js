@@ -316,7 +316,7 @@ function executeProcessRule(strKey) {
 
 	if(curr.function == "saveRSS") { 
 	    //https://github.com/indexzero/forever#readme
-	    script = path.join(__dirname, 'action_rss.js');
+	    script = path.join(__dirname, 'action_loadRSS.js');
             // Note that forever monitor should be used for NodeJS scripts only 
             var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.channel,  curr.url  ]  });
             child1.start();
