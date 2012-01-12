@@ -315,7 +315,7 @@ function processRuleCallback(strKey) {
 	sys.puts("Rule processing..." + strKey);
 	if(curr.function == "reloadRSS") { 
 	    //https://github.com/indexzero/forever#readme
-	    script = path.join(__dirname, 'fetch_rss.js');
+	    script = path.join(__dirname, 'action_rss.js');
             var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.channel,  curr.url  ]  });
             child1.start();
             sys.puts('Forever process spawn');
