@@ -313,12 +313,17 @@ function processRuleCallback(strKey) {
 	var curr = localRules[strKey];
 	curr.executionContext = 0;
 	sys.puts("Rule processing..." + strKey);
+
 	if(curr.function == "saveRSS") { 
 	    //https://github.com/indexzero/forever#readme
 	    script = path.join(__dirname, 'action_rss.js');
             // Note that forever monitor should be used for NodeJS scripts only 
             var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.channel,  curr.url  ]  });
             child1.start();
+
+            // events...https://github.com/nodejitsu/forever
+	    child1.on('exit', function () { } );
+	    child1.on('stdout', function (data) { sys.puts('...from saveRSS = { ' + data + ' } ' )});
             sys.puts('Forever process spawn');
 //		ruleLoadSaveRSS(curr.channel, curr.url);
 	} 
@@ -333,7 +338,7 @@ function processRuleCallback(strKey) {
 		the local feed with the new images Paths ( to this localhost 
 		to the appropriate channel ). 
         */
-	if(curr.function == 'ImageFetchAndResizeImagesFromRSS') { 
+	if (curr.function == 'ImageFetchAndResizeImagesFromRSS') { 
 
 	} 
 } 
@@ -404,6 +409,14 @@ function configLoad() {
 	    var listJSONRules = data.rules;
  	    for(k in listJSONRules) { 
 		var currentRule = listJSONRules[k];
+		// This can be tricky. In our model we have a strict set of 
+		// rules, so it's not a per uniqueID set of rules. We may, 
+		// in the future, consider to have rules to work more like 		
+		// messages as well. So, then, when the config script is read
+		// we populate the rules message queue. And if there is a new
+		// cycling rule ( from time to time ) we simply add again and 
+		// again to this queue based in the execution state. So a real
+		// linear model. Right now it's like our rules are global objects
 		currentRule.executionContext = 0;
 		localRules[currentRule.channel] = currentRule;
 	        sys.puts('Loading rule..' + currentRule.channel);
