@@ -316,10 +316,25 @@ function processRuleCallback(strKey) {
 	if(curr.function == "saveRSS") { 
 	    //https://github.com/indexzero/forever#readme
 	    script = path.join(__dirname, 'action_rss.js');
+            // Note that forever monitor should be used for NodeJS scripts only 
             var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.channel,  curr.url  ]  });
             child1.start();
             sys.puts('Forever process spawn');
 //		ruleLoadSaveRSS(curr.channel, curr.url);
+	} 
+
+	/* 
+		This ImageFetchAndResize is a chained event. So it first will 
+ 		go after the flickr RSS Feed to fetch the data, similarly to the above
+		the saveRSS. Then, and only then, when the data arrives, it will 
+		initiate fetching all the images, so it's an async process going 
+		on here. Then, and only then, when the images are loaded, it will 
+		resize all them and then it will properly be able to serve 
+		the local feed with the new images Paths ( to this localhost 
+		to the appropriate channel ). 
+        */
+	if(curr.function == 'ImageFetchAndResizeImagesFromRSS') { 
+
 	} 
 } 
 
