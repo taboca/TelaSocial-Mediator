@@ -3,19 +3,11 @@
 
 { 
  "channel":"latinoware-en", 
- "timer": "12000",
+ "timer": "2000",
  "function":"saveRSS",
  "url":"http://www.latinoware.org/en/rss.xml"
 }
 
-,
-
-{ 
- "channel":"social", 
- "timer": "30000",
- "function":"saveRSS",
- "url":"http://search.twitter.com/search.rss?q=%23latinoware"
-}
 ,
 
 { 

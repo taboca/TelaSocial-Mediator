@@ -296,7 +296,7 @@ function run() {
 		var kk = k;
 		currentRule.executionContext = 1;
 		sys.puts("  -> Setting timer : " + currentRule.timer + " for " + kk);
-		setTimeout(processRuleCallback, parseInt(currentRule.timer), kk );
+		setTimeout(executeProcessRule, parseInt(currentRule.timer), kk );
 	} 
     } 
     setTimeout(function () { 
@@ -309,7 +309,7 @@ function run() {
    https://github.com/indexzero/forever
 */
 
-function processRuleCallback(strKey) { 
+function executeProcessRule(strKey) { 
 	var curr = localRules[strKey];
 	curr.executionContext = 0;
 	sys.puts("Rule processing..." + strKey);
@@ -323,7 +323,10 @@ function processRuleCallback(strKey) {
 
             // events...https://github.com/nodejitsu/forever
 	    child1.on('exit', function () { } );
-	    child1.on('stdout', function (data) { sys.puts('...from saveRSS = { ' + data + ' } ' )});
+	    child1.on('stdout', function (data) { 
+                sys.puts('...from saveRSS = { ' + data + ' } ' )
+		executeProcessCallback(data.toString());	
+            });
             sys.puts('Forever process spawn');
 //		ruleLoadSaveRSS(curr.channel, curr.url);
 	} 
@@ -341,6 +344,24 @@ function processRuleCallback(strKey) {
 	if (curr.function == 'ImageFetchAndResizeImagesFromRSS') { 
 
 	} 
+} 
+
+/* This function will parse the stdout of separated process 
+   and will check if there is a follow up operation to do. 
+   It turns out we have cases where the above function processRules
+
+*/
+function executeProcessCallback(strData) { 
+
+	var probe = strData.split("==");
+	if(probe.length>1) { 
+	
+            data = JSON.parse(probe[1]);
+
+	    sys.puts("Testing output of stdout callback = " + data.result);
+	
+	} 
+
 } 
 
 // if the channel is not available we need to make a decision
