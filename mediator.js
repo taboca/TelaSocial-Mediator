@@ -313,7 +313,7 @@ function processRuleCallback(strKey) {
 	var curr = localRules[strKey];
 	curr.executionContext = 0;
 	sys.puts("Rule processing..." + strKey);
-	if(curr.function == "reloadRSS") { 
+	if(curr.function == "saveRSS") { 
 	    //https://github.com/indexzero/forever#readme
 	    script = path.join(__dirname, 'action_rss.js');
             var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.channel,  curr.url  ]  });
