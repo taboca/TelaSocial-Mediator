@@ -28,7 +28,7 @@
 			$('.button').click(function(){
 				json = eval('('+$('#'+$(this).attr('rel')).val()+')');
 				$.post(
-					'/send_feed_item',
+					'/send_store_item',
 					json,
 					function(){
 						// Done!

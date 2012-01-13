@@ -47,6 +47,8 @@ var sys = require("sys"),
 
 this.proxyStoreResponseHolder = null; 
 
+// this is so far global...
+
 this.proxyStore = function (req, res) { 
   var firstArgument = req.url.split('/')[2];
   var param = firstArgument;
@@ -97,4 +99,20 @@ this.proxyStore = function (req, res) {
     } 	
   });
 } 
+
+this.appendInStore = function (store,json) {
+    script = path.join(__dirname, 'save_channel_store.js');
+    sys.puts("Will exec "+ script + " with arguments " + store + " and " + replacestr(json) );
+    // http://www.sitepoint.com/whats-the-best-date-format/
+    var filenameStamp = JSON.stringify({ date: new Date() });
+    sys.puts("fileName to write :" + filenameStamp); 
+    var child1 = new (forever.Monitor)(script,  { max: 1, options: [ store, replacestr(json) , filenameStamp ]  });
+    child1.start();
+}
+
+function replacestr(cmd) {
+  return cmd;
+  return '"'+cmd.replace(/(["\s'$`\\])/g,'\\$1')+'"';
+  //return Buffer(cmd).toString('base64')
+};
 
