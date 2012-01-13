@@ -34,6 +34,8 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+/* Mediator 0.1 */
+
 var http = require("http"),
     sys = require("sys"),
     path = require("path"),
