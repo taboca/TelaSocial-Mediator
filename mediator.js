@@ -42,7 +42,7 @@ var http = require("http"),
     qs = require("querystring"),
     rss = require('./3rdparty/node-rss/node-rss'),
     realtime = require('./3rdparty/realtime/realtime'),
-    store = require('./3rdparty/realtime/load_channel_store'),
+    blendstore = require('./3rdparty/blend-store/blend-store'),
     forever = require('forever'),
     static = require('./3rdparty/server-static/lib/node-static');
 
@@ -68,7 +68,7 @@ var urlMap = {
   		}, 
 
         'channel-store': function (req, res) { 
-		proxyStore(req,res);
+		blendstore.proxyStore(req,res);
   		}, 
 
         'proxy': function (req, res) { 
@@ -103,6 +103,11 @@ var urlMap = {
 
 }
 
+/* This is the main Web server broker handler 
+   We check data that is sent against the urlMap and 
+   then we go for possible actions.. 
+*/
+
 http.createServer(function (req, res) {
 	// Try to find the handler or trigger a 404
         sys.puts("argument from ajax " + req.url);
@@ -125,6 +130,9 @@ http.createServer(function (req, res) {
 			handler(req, res, json);
 		});
 	}else{
+		// Here is where we use the results of urlMap as being 
+  		// actions handlers...
+
 		handler(req, res);
 	}
 	res.simpleJSON = function (code, obj) {
@@ -149,11 +157,14 @@ function notFound(req, res) {
   res.end();
 }
 
-// Using CloudHead node static 
-// https://github.com/cloudhead/node-static
+/* Multi purpose static local web server 
+   -- 
+   This serves local pages 
 
-//var file = new(static.Server)('.', { cache: 7200, headers: {'X-Hello':'World!'} });
-
+  // Using CloudHead node static 
+  // https://github.com/cloudhead/node-static
+  //var file = new(static.Server)('.', { cache: 7200, headers: {'X-Hello':'World!'} });
+*/
 var file = new(static.Server)('.', { cache: 00, headers: {'X-TelaSocial':'hi'} });
 
 function proxyNodeStatic(request, response, dir) { 
@@ -184,59 +195,6 @@ function proxyNodeStaticForControl(request, response, dir) {
             }
         });
     });
-} 
-
-var proxyStoreResponseHolder = null; 
-
-function proxyStore(req, res) { 
-  var firstArgument = req.url.split('/')[2];
-  var param = firstArgument;
-  if(firstArgument.indexOf("?")>-1) { 
-    param = firstArgument.split('?')[0];
-  } 
-  var strBuffer ="";
-  store.mergeAndSave(param, function (files) { 
-    //res.writeHead(200, {'Content-Type': 'text/json'});
-    for(k in files) { 
-      sys.puts("List item:" + files[k]);
-      var buffer = '{"data":[';
-      var missing = files.length;
-      var file = null;
-      while(file = files.pop()) { 
-	sys.puts("file tryin to open " + 'channel/store/'+param+'/'+file); 
-	fs.readFile('channel/store/'+param+'/'+file, "UTF-8", function(err, filecontent) {  
-          if(err) {  
-              sys.puts('Error:configLoad:' + err);
-            return;  
-          }  
-          missing--;
-	  var sep = '';
-          if(missing>0) { 
-            sep = ',';	
-	  } 
-          buffer += filecontent + sep;
-	  sys.puts("Serving file: " + missing);
-          if(missing==0) { 
-	    buffer += ']}';
-            
-            var obj = JSON.parse(buffer);
-            var body = JSON.stringify(obj);
-	    sys.puts("222222222222" + body);
-	    //var body = buffer;
-            // res.setEncoding('utf8'); 
-            // "Content-Length": body.length // trouble with utf-8
-            res.writeHead(200, {
-                  "Content-Type": "text/json"
-            });
-            res.end(body);
-            //res.end(buffer);
-            //res.write(buffer);
-            //res.end();
-          } 
-	});
-      } 
-    } 	
-  });
 } 
 
 function proxyDynamic(req,res) { 
