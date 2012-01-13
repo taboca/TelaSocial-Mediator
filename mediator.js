@@ -34,7 +34,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-/* Mediator 0.1 */
+/* Mediator 0.2 - work in progress */
 
 var http = require("http"),
     sys = require("sys"),
