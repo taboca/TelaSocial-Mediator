@@ -47,6 +47,10 @@ var http = require("http"),
     static = require('./3rdparty/server-static/lib/node-static');
 
 
+var localRules = new Array(); // Old model we had local rules and these were not 
+                              // an event in the system. These were more like 
+                              // globals. This is 0.1 
+
 var urlMap = {
 	
         'static': function (req, res) { 
@@ -101,7 +105,7 @@ var urlMap = {
 
 http.createServer(function (req, res) {
 	// Try to find the handler or trigger a 404
-sys.puts("argument from ajax " + req.url);
+        sys.puts("argument from ajax " + req.url);
 	var firstArgument = req.url.split('/')[1];
 	var param = firstArgument;
 	if(firstArgument.indexOf("?")>-1) { 
@@ -288,6 +292,13 @@ function setupApp()  {
 	run(); 
 } 
 
+/* Run engine 0.1
+ 
+   The version 0.1 Run Engine is basically a loop, every 5 seconds, through all 
+   the items in the localRules. We check their execution state, so if a rule is 
+   not being executed, then we kick the executio of that rule. 
+
+*/
 function run() { 
     for(k in localRules) { 
 	var currentRule = localRules[k];
@@ -417,7 +428,20 @@ function ruleLoadSaveRSS(name, href) {
 
 } 
 
-var localRules = new Array();
+
+/* 
+
+ This is a bit of spec towards 0.2 Mediator 
+ eventRule { 
+    uniqueID 
+    function 
+    executionContext
+    generatorCallback { 
+      success:  
+      failure:
+    }  
+ } 
+*/
 
 function configLoad() { 
 	var filename = 'config.json';
