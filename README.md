@@ -2,6 +2,14 @@
 
 The mediator application is a NodeJS-based app that acts as a middleware agent between a web client ( our use case is a web kiosk ) and the web ( think feeds .) It uses a configuration file [1] to fetch remote feeds and it keeps it in the disk so it can be served when the client application requests it. In a way it's a subscription as it uses rules from this config file to load the associated feed and save it in the disk from time to time. 
 
+# Launching version 0.1 
+
+sudo node mediator 
+
+Point your browser to: 
+
+    http://localhost/static/index.html
+
 ## The concept of channel 
 
 The application can serve, via http ( get post ) a representation of the remote feed. Version 0.1 simply returns the raw data for a given registered feed. The data is kept in the disk and can be retrieved using the "/channel/" parameter: 
