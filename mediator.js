@@ -80,13 +80,11 @@ var urlMap = {
         'proxysave': function (req, res) { 
 		proxySave(req,res);
   		}, 
+
+        /* We will need to work out this "grade" here so these 
+           stores can be arguments.. */
 	'send_feed_item' : function (req, res, json) {
 			realtime.feed.appendInStore( "grade", json );
-			//realtime.feed.appendMessage( json );
-			res.simpleJSON(200, {});
-		},
-	'send_feed_item_minicursos' : function (req, res, json) {
-			realtime.feed.appendInStore( "minicursos", json );
 			//realtime.feed.appendMessage( json );
 			res.simpleJSON(200, {});
 		},
