@@ -43,7 +43,6 @@ var http = require("http"),
     url = require("url"),
     qs = require("querystring"),
     rss = require('./3rdparty/node-rss/node-rss'),
-    realtime = require('./3rdparty/realtime/realtime'),
     blendstore = require('./3rdparty/blend-store/blend-store'),
     forever = require('forever'),
     static = require('./3rdparty/server-static/lib/node-static');
@@ -85,7 +84,6 @@ var urlMap = {
            stores can be arguments.. */
 	'send_store_item' : function (req, res, json) {
 		blendstore.appendInStore( "grade", json );
-		//realtime.feed.appendMessage( json );
 		res.simpleJSON(200, {});
 	}
 

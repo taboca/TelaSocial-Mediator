@@ -35,8 +35,7 @@
  * ***** END LICENSE BLOCK ***** */
 
 var sys = require("sys"),
-    fs = require("fs")
-    store = require('../realtime/load_channel_store');
+    fs = require("fs");
 
 
 /* The proxy store is our collection of items that 
@@ -56,7 +55,7 @@ this.proxyStore = function (req, res) {
     param = firstArgument.split('?')[0];
   } 
   var strBuffer ="";
-  store.mergeAndSave(param, function (files) { 
+  mergeAndSave(param, function (files) { 
     //res.writeHead(200, {'Content-Type': 'text/json'});
     for(k in files) { 
       sys.puts("List item:" + files[k]);
@@ -115,4 +114,13 @@ function replacestr(cmd) {
   return '"'+cmd.replace(/(["\s'$`\\])/g,'\\$1')+'"';
   //return Buffer(cmd).toString('base64')
 };
+ 
+var files   = [];
+
+function mergeAndSave(storeDir, callBack) { 
+    walker = fs.readdir('./channel/store/' + storeDir, function (err, files) { 
+	callBack(files,err);
+    });
+}
+
 
