@@ -1,0 +1,58 @@
+We need a solution for tests and also this solution should be the same
+that represents our statistics view. 
+
+Case
+
+Right now it's complicated to debug as we grow new functional aspects in the system. 
+It's hard to understand the hierarchical ( think pipeline, chained vents, and more.) 
+
+In addition, we need a means to visualize all that is going on in a big picture 
+way, so something that is a log and also that aggregates ( stats .). 
+
+A lot that is going on here depends on network data that can be available but
+sometimes data is not there, or network is not there, plus data won't arrive, and 
+so on. As an example, when the data is not there it turns out we may have config
+scripts ( rules ) that will bring local data instead ( fallback rules ). 
+
+So we need a means to start logging everything and in a way we can query things, 
+plus we could construct some indexes to keep this visualization something useful. 
+
+Event Logger — the Graph
+
+ { UUID, function, success, error } 
+
+Perhaps, since we have these chained events, we could log everything in a flat format
+and yep keep the connections, so it's a graph, like an RDF. 
+
+Example
+
+UUID:001 { 
+   name, date, 
+   function 
+} 
+
+Event:002 { 
+    object:UUI001
+    subject:Event:003
+    predicate: loadRSS:success
+} 
+
+Attempt to map this as a graph or triples
+
+rss_flick_images 01 > imageloaded > load_image:01 
+rss_flick_images 01 > imageloaded > load_image:02 
+rss_flick_images 01 > imageloaded > load_image:03 
+
+load_image:01 > image_resized > stored_image:01
+load_image:02 > image_resized > stored_image:02
+load_image:03 > image_resized > stored_image:03
+
+
+
+
+
+
+    
+
+
+
