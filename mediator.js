@@ -45,12 +45,16 @@ var http = require("http"),
     rss = require('./3rdparty/node-rss/node-rss'),
     blendstore = require('./3rdparty/blend-store/blend-store'),
     forever = require('forever'),
+    xml2js = require('xml2js'),
     static = require('./3rdparty/server-static/lib/node-static');
 
 
 var localRules = new Array(); // Old model we had local rules and these were not 
                               // an event in the system. These were more like 
                               // globals. This is 0.1 
+
+var eventQueue = new Array(); // This is 0.2 approach. We can also queue 
+				// events. Each event has a rule for processing etc
 
 var urlMap = {
 	
@@ -183,53 +187,6 @@ function proxyNodeStaticForControl(request, response, dir) {
     });
 } 
 
-function proxyDynamic(req,res) { 
-	var feed_url = 'http://rss.terra.com.br/0,,EI12940,00.xml';
-
-	var buffer = "";
-	var response = rss.parseURL(feed_url, function(itemArticle) {
-	    sys.puts(itemArticle.length);
-	    for(i=0; i<itemArticle.length; i++) {
-	   
-	        buffer+="Article: "+i+", "+
-	                 itemArticle[i].title+"\n"+
-	                 itemArticle[i].link+"\n"+
-	                 itemArticle[i].description+"\n"+
-	                 itemArticle[i].content;
-	                
-	    }
-	  res.writeHead(200, {'Content-Type': 'text/plain'});
-	  res.write("1"+buffer);
-	  res.end();
-	});
-}
-
-function proxySave(req,res) { 
-	options = {
-	    host: 'www.google.com'
-	  , port: 80
-	  , path: '/images/logos/ps_logo2.png'
-	}
-	var feed_url = 'http://www.latinoware.org/en/rss.xml';
-	var buffer = "";
-	var response = rss.parseURL(feed_url, function(itemArticle) {
-	    sys.puts(itemArticle.length);
-	    for(i=0; i<itemArticle.length; i++) {
-	        buffer+="Article: "+i+", "+
-	                 itemArticle[i].title+"\n"+
-	                 itemArticle[i].link+"\n"+
-	                 itemArticle[i].description+"\n"+
-	                 itemArticle[i].content;
-	    }
-        fs.writeFile('channel/terra.xml', buffer, 'binary', function(err){
-            if (err) throw err
-            console.log('File saved.')
-        })
-	});
-	res.writeHead(200, {'Content-Type': 'text/plain'});
-	res.write('saved');
-	res.end();
-} 
 
 function setupApp()  { 
 	configLoad();
@@ -242,7 +199,41 @@ function setupApp()  {
    the items in the localRules. We check their execution state, so if a rule is 
    not being executed, then we kick the executio of that rule. 
 
+   0.2 Architecture is a queue ( perhaps of stacks ) 
+   
+    + each event in the queue { 
+
+	+ uuid
+  	+ script function 
+ 	+ arguments 
+	+ success
+	+ error 
+
+  Example of chained events
+
+  LoadRSS 
+	url 
+	ok:channel,timerCicle
+	err:loadRSSAlt, timerCicle
+
+   timerCicle 
+ 	30s
+	ok: loadRSS
+
+   fetchFlickr 
+	url
+	ok:fetchImages
+	err: timerCicleflickr 
+
+   fetchImages 
+ 	channel.fetchFLickr.url	
+	channel.store.flickr
+	ok: resizeImage
+	err: pass
+	
 */
+
+
 function run() { 
     for(k in localRules) { 
 	var currentRule = localRules[k];
@@ -297,8 +288,42 @@ function executeProcessRule(strKey) {
 		to the appropriate channel ). 
         */
 	if (curr.function == 'ImageFetchAndResizeImagesFromRSS') { 
-
+	    script = path.join(__dirname, 'action_loadRSS.js');
+            var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.channel,  curr.url  ]  });
+            child1.start();
+	    child1.on('exit', function () { sys.puts('....exited...')} );
+	    child1.on('stdout', function (data) { 
+		var data = commonJSfromStdOut(data.toString());
+		try { 
+			if(data.result=="ok") { 
+				flickrParseAllImages(curr.channel);
+			} 
+		} catch(i) { 
+			sys.puts('not processed'); 
+		}
+            });
 	} 
+} 
+
+function commonJSfromStdOut(strData) { 
+   var probe = strData.split("==");
+   if(probe.length>1) {
+      var data = JSON.parse(probe[1]);
+      return data; 
+   }
+}
+
+function flickrParseAllImages(channelName) { 
+	sys.puts("Parsing the RSS??? for channel " + channelName);	
+	var parser = new xml2js.Parser({'mergeAttrs':true});
+	parser.addListener('end', function(result) {
+          // Use this to inspect everything JSON from this XML 
+          //console.log(sys.inspect(result, false, null))
+          var linkImage = result.entry[0].link[1].href;
+	});
+	fs.readFile('./channel/'+channelName+'.xml', function(err, data) {
+		parser.parseString(data);
+	});
 } 
 
 /* This function will parse the stdout of separated process 
@@ -306,16 +331,16 @@ function executeProcessRule(strKey) {
    It turns out we have cases where the above function processRules
 
 */
-function executeProcessCallback(strData) { 
-
+function executeProcessCallback(strData, nextFunction) { 
 	var probe = strData.split("==");
 	if(probe.length>1) { 
-	
             data = JSON.parse(probe[1]);
-
 	    sys.puts("Testing output of stdout callback = " + data.result);
-	
+            if (data.result=="ok") { 
+		nextFunction();
+	    } 
 	} 
+
 
 } 
 

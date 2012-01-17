@@ -47,6 +47,7 @@ So when the feed is loaded, all images are to be fetched, resized, and stored in
  * NodeJS
  * npm
  * Forever
+ * xml2js ( https://github.com/Leonidas-from-XIV/node-xml2js ) 
  * ImageMagick ( for the media transcoding converter channel = 0.2 ) 
  
 ## LICENSE
