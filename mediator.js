@@ -407,7 +407,7 @@ function ruleLoadSaveRSS(name, href) {
 */
 
 function configLoad() { 
-	var filename = 'config.json';
+	var filename = 'script.json';
 	fs.readFile(filename, "binary", function(err, file) {  
             if(err) {  
 		sys.puts('Error:configLoad:' + err);
