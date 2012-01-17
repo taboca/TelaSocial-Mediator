@@ -54,7 +54,7 @@ var localRules = new Array(); // Old model we had local rules and these were not
                               // globals. This is 0.1 
 
 var eventQueue = new Array(); // This is 0.2 approach. We can also queue 
-				// events. Each event has a rule for processing etc
+                              // events. Each event has a rule for processing etc
 
 var urlMap = {
 	
