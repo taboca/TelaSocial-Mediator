@@ -35,60 +35,48 @@
  * ***** END LICENSE BLOCK ***** */
 
 var sys = require("sys"),
+    path = require("path"),
     fs = require("fs")
-    forever = require('forever'),
-    xml2js = require('xml2js');
+    url = require("url"),
+    http = require("http");
+ 
+function getAndSaveImage(href, name) {
 
-this.flickrEvent = function () { 
+	var host = url.parse(href).host;
+	var path = url.parse(href).pathname;
+        var options = {
+            host: host,
+            port: 80,
+            path: path
+        };
+        var request = http.get(options);
 
-   this.listImages= new Array();
-   this.channel = null; 
+sys.puts('trying to fetch ' + host + ' and ' + path);
+        request.on('response', function (res) {
+           var bufferedData = "";
+           res.setEncoding('binary');
+           res.on('data', function (dataBuffer) {
+		bufferedData+=dataBuffer;	
+               });
+           res.on('end', function () {
+                var filedate= JSON.stringify({ date: new Date() });
+	        var filename = JSON.parse(filedate).date;
+                fs.writeFile('channel/store/'+name+'/image-'+filename+'.jpg', bufferedData, 'binary', function(err){
+                  if (err) throw err;
+                  console.log('file saved');
+                });
+           });
+       });
+}
 
-   this.init = function (channelName) { 
-	this.channel = channelName; 
-	sys.puts("Parsing the RSS??? for channel " + channelName);	
-	var parser = new xml2js.Parser({'mergeAttrs':true});
-	var that=this;
-	parser.addListener('end', function(result) {
-          // Use this to inspect everything JSON from this XML 
-          //console.log(sys.inspect(result, false, null))
-		for(var i=0;i<result.entry.length;i++) { 
-          		var linkImage = result.entry[i].link[1].href;
-			that.listImages.push(linkImage);
-		} 
-		that.renderFetch(); 
-	});
-	fs.readFile('./channel/'+channelName+'.xml', function(err, data) {
-		parser.parseString(data);
-	});
-   } 
+/*
+sys.puts("This expects a local directory, created, named ./store ");
+sys.puts("Pass HTTP URL to image ( http://site.com/image.png ) and data store dir ");
+sys.puts("Trying to open "+ process.argv[2] + " and to save to " + process.argv[3] );
+*/
 
-   this.renderFetch = function () { 
-	var curr = this.listImages.pop();
-        if(curr) { 
-		sys.puts("will pass " + this.channel + " and curr image = " + curr);
-		this.fetchImage(this.channel, curr);
-	} 	
-   } 
+getAndSaveImage(process.argv[2], process.argv[3]);
 
-   this.fetchImage = function (channel, url) { 
-	    var script = path.join(__dirname, 'fetch-save-image.js');
-            var child1 = new (forever.Monitor)(script,  { max: 1, options: [ url, channel] });
-            child1.start();
-	    child1.on('exit', function () { sys.puts('  ...flickr-fetch  .. Exited')} );
-	    child1.on('stdout', function (data) { 
-		sys.puts(' I think I saved .. ' ) ;
-		/*
-		var data = commonJSfromStdOut(data.toString());
-		try { 
-			if(data.result=="ok") { 
-			} 
-		} catch(i) { 
-			sys.puts('not processed'); 
-		}
-		*/
-            });
-    } 
-	
-} 
+
+
 
