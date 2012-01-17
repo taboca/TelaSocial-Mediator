@@ -40,14 +40,14 @@ var sys = require("sys"),
     url = require("url"),
     http = require("http");
  
-function getAndSaveImage(href, name) {
+function getAndSaveImage(name, href) {
 
 	var host = url.parse(href).host;
 	var path = url.parse(href).pathname;
         var options = {
             host: host,
             port: 80,
-            path: path
+            path: path+"?"+Math.random();
         };
         var request = http.get(options);
 
@@ -71,14 +71,4 @@ function getAndSaveImage(href, name) {
        });
 }
 
-/*
-sys.puts("This expects a local directory, created, named ./store ");
-sys.puts("Pass HTTP URL to image ( http://site.com/image.png ) and data store dir ");
-sys.puts("Trying to open "+ process.argv[2] + " and to save to " + process.argv[3] );
-*/
-
 getAndSaveImage(process.argv[2], process.argv[3]);
-
-
-
-

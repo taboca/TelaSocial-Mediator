@@ -274,6 +274,23 @@ function executeProcessRule(uuid) {
             sys.puts('Forever process spawn');
 	} 
 
+	if (curr.script.function == 'getImageNoCache') { 
+	    script = path.join(__dirname, 'action/fetch-save-image-nocache.js');
+            var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.channel,  curr.script.url  ]  });
+            child1.start();
+	    child1.on('exit', function () { sys.puts('....exited...')} );
+	    child1.on('stdout', function (data) { 
+		var data = stdout2json.get(data);
+                try { 
+                  if(data.result=="ok") { 
+                  } 
+                } catch(i) { 
+                        sys.puts('.'); 
+                }
+            });
+	} 
+
+
 /* 
 This ImageFetchAndResize is a chained event. So it first will 
 go after the flickr RSS Feed to fetch the data, similarly to the above
