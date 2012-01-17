@@ -51,7 +51,7 @@ function getAndSaveImage(href, name) {
         };
         var request = http.get(options);
 
-sys.puts('trying to fetch ' + host + ' and ' + path);
+        sys.puts('trying to fetch ' + host + ' and ' + path);
         request.on('response', function (res) {
            var bufferedData = "";
            res.setEncoding('binary');
@@ -62,7 +62,10 @@ sys.puts('trying to fetch ' + host + ' and ' + path);
                 var filedate= JSON.stringify({ date: new Date() });
 	        var filename = JSON.parse(filedate).date;
                 fs.writeFile('channel/store/'+name+'/image-'+filename+'.jpg', bufferedData, 'binary', function(err){
-                  if (err) throw err;
+                  if (err) { 
+                    throw err;
+                    console.error(
+                  }
                   console.log('file saved');
                 });
            });

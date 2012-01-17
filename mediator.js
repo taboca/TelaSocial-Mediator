@@ -44,6 +44,7 @@ var http = require("http"),
     qs = require("querystring"),
     flickr = require('./3rdparty/flickr-fetch/flickr-fetch'),
     blendstore = require('./3rdparty/blend-store/blend-store'),
+    stdout2json = require('./3rdparty/stdout-2-json/stdout-2-json'),
     forever = require('forever'),
     xml2js = require('xml2js'),
     static = require('./3rdparty/server-static/lib/node-static');
@@ -188,10 +189,6 @@ function proxyNodeStaticForControl(request, response, dir) {
 } 
 
 
-function setupApp()  { 
-	configLoad();
-	run(); 
-} 
 
 /* Run engine 0.1
  
@@ -235,19 +232,21 @@ function setupApp()  {
 
 
 function run() { 
-    for(k in localRules) { 
-	var currentRule = localRules[k];
-        sys.puts('Checking rule..' + k);
-	if(currentRule.executionContext == 0) { 
-		var kk = k;
-		currentRule.executionContext = 1;
-		sys.puts("  -> Setting timer : " + currentRule.timer + " for " + kk);
-		setTimeout(executeProcessRule, parseInt(currentRule.timer), kk );
-	} 
+    for(k in eventQueue) { 
+	var currentEvent = eventQueue[k];
+        sys.puts('Checking event:' + currentEvent.uuid);
+        if(currentEvent.executionContext == 0) { 
+          var kk = k;
+          currentEvent.executionContext = 1;
+          //sys.puts("  -> Setting timer : " + currentRule.timer + " for " + kk);
+          executeProcessRule(currentEvent.uuid);
+        } 
     } 
+/*
     setTimeout(function () { 
         run();
     },5000); 
+*/
 } 
 
 
@@ -255,45 +254,43 @@ function run() {
    https://github.com/indexzero/forever
 */
 
-function executeProcessRule(strKey) { 
-	var curr = localRules[strKey];
+function executeProcessRule(uuid) { 
+	var curr = eventQueue[uuid];
 	curr.executionContext = 0;
-	sys.puts("Rule processing..." + strKey);
+	sys.puts("Rule processing..." + uuid);
 
-	if(curr.function == "saveRSS") { 
-	    //https://github.com/indexzero/forever#readme
-	    script = path.join(__dirname, 'action_loadRSS.js');
-            // Note that forever monitor should be used for NodeJS scripts only 
-            var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.channel,  curr.url  ]  });
-            child1.start();
-
-            // events...https://github.com/nodejitsu/forever
+	if(curr.script.function == "saveRSS") { 
+	    script = path.join(__dirname, 'action/loadRSS.js');
+            var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.channel,  curr.script.url  ]  });
+            curr.processHandler = child1;
 	    child1.on('exit', function () { } );
 	    child1.on('stdout', function (data) { 
-                sys.puts('...from saveRSS = { ' + data + ' } ' )
-		executeProcessCallback(data.toString());	
+		executeProcessFlow(uuid, data.toString());	
             });
+	    child1.on('stderr', function (data) { 
+		executeProcessFlow(uuid, data.toString());	
+            });
+            child1.start();
             sys.puts('Forever process spawn');
-//		ruleLoadSaveRSS(curr.channel, curr.url);
 	} 
 
-	/* 
-		This ImageFetchAndResize is a chained event. So it first will 
- 		go after the flickr RSS Feed to fetch the data, similarly to the above
-		the saveRSS. Then, and only then, when the data arrives, it will 
-		initiate fetching all the images, so it's an async process going 
-		on here. Then, and only then, when the images are loaded, it will 
-		resize all them and then it will properly be able to serve 
-		the local feed with the new images Paths ( to this localhost 
-		to the appropriate channel ). 
-        */
-	if (curr.function == 'ImageFetchAndResizeImagesFromRSS') { 
+/* 
+This ImageFetchAndResize is a chained event. So it first will 
+go after the flickr RSS Feed to fetch the data, similarly to the above
+the saveRSS. Then, and only then, when the data arrives, it will 
+initiate fetching all the images, so it's an async process going 
+on here. Then, and only then, when the images are loaded, it will 
+resize all them and then it will properly be able to serve 
+the local feed with the new images Paths ( to this localhost 
+to the appropriate channel ). 
+*/
+	if (curr.script.function == 'ImageFetchAndResizeImagesFromRSS') { 
 	    script = path.join(__dirname, 'action_loadRSS.js');
-            var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.channel,  curr.url  ]  });
+            var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.channel,  curr.script.url  ]  });
             child1.start();
 	    child1.on('exit', function () { sys.puts('....exited...')} );
 	    child1.on('stdout', function (data) { 
-		var data = commonJSfromStdOut(data);
+		var data = stdout2json.get(data);
                 try { 
                   if(data.result=="ok") { 
 
@@ -303,7 +300,7 @@ function executeProcessRule(strKey) {
                        with the idea of a pipeline with events.. */
 
                     var a = new flickr.flickrEvent();
-                    a.init(curr.channel);
+                    a.init(curr.script.channel);
                   } 
                 } catch(i) { 
                         sys.puts('.'); 
@@ -312,124 +309,64 @@ function executeProcessRule(strKey) {
 	} 
 } 
 
-function commonJSfromStdOut(strData) { 
-   var probe = strData.toString().split("==");
-   if(probe.length>1) {
-      var data = JSON.parse(probe[1]);
-      return data; 
-   }
-}
-
 /* This function will parse the stdout of separated process 
    and will check if there is a follow up operation to do. 
    It turns out we have cases where the above function processRules
 
 */
-function executeProcessCallback(strData, nextFunction) { 
-	var probe = strData.split("==");
-	if(probe.length>1) { 
-            data = JSON.parse(probe[1]);
-	    sys.puts("Testing output of stdout callback = " + data.result);
-            if (data.result=="ok") { 
-		nextFunction();
-	    } 
-	} 
-
-
+function executeProcessFlow(uuid, strData) { 
+sys.puts("1");
+   var payload = stdout2json.get(strData);
+    if(payload.result == 'ok') { 
+     sys.puts('Removing ' + uuid + " from queue.. " );
+     eventQueue[uuid].pop();
+   } 
+   if(payload.result == 'expired') { 
+     sys.puts('Expired event for uuid = ' + uuid + ' and trying to kill process ' );
+     if(eventQueue[uuid].executionContext==1) { 
+        eventQueue[uuid].processHandler.stop();
+        eventQueue[uuid].pop();
+     } 
+   } 
+  // we do something against the uuid next linked event..
 } 
 
-// if the channel is not available we need to make a decision
-function ruleLoadSaveRSS(name, href) { 
-	/*
-	var feed_url = 'http://www.latinoware.org/en/rss.xml';
-	var feed_url = url;
-	*/
-	var buffer = "";
-
-	var host = url.parse(href).host;
-	var path = url.parse(href).path;
-
-        var options = {
-            host: host,
-            port: 80,
-            path: path
-        };
-
-        var request = http.get(options);
-
-        request.on('response', function (res) {
-            res.on('data', function (buffer) {
-       	       fs.writeFile('channel/'+name+'.xml', buffer, 'utf8', function(err){
-       	        if (err) throw err
-       	        console.log('File saved.')
-               });
-           });
-        })
-
-
-/*
-	var response = rss.parseURL(feed_url, function(itemArticle) {
-	    sys.puts(itemArticle.length);
-		// This is a hack — we keep an RSS but we will need a lot of 
-		// code here to allow mediation with filter ie pipe style 
-		// chain of events? 
-		buffer += '<?xml version="1.0" encoding="utf-8"?><rss version="2.0"  xmlns:dc="http://purl.org/dc/elements/1.1/"> <channel><title>proxy social</title>';
-	    for(i=0; i<itemArticle.length; i++) {
-		buffer+='<item><title>'+itemArticle[i].title+'</title>';
-		buffer+='<link>'+itemArticle[i].link+'</link>';
-		buffer+='<description>'+itemArticle[i].description+'</description>';
-		buffer+='<pubDate>'+itemArticle[i].pubDate+'</pubDate></item>';
-	        //buffer+="Article: "+i+", "+ itemArticle[i].title+"\n"+ itemArticle[i].link+"\n"+ itemArticle[i].description+"\n"+ itemArticle[i].content; 
-	    }
-	    buffer+= '</channel></rss>';
-       	    fs.writeFile('channel/'+name+'.xml', buffer, 'utf8', function(err){
-       	        if (err) throw err
-       	        console.log('File saved.')
-            })
-	});
-*/
-
-} 
-
-
-/* 
-
- This is a bit of spec towards 0.2 Mediator 
- eventRule { 
-    uniqueID 
-    function 
-    executionContext
-    generatorCallback { 
-      success:  
-      failure:
-    }  
- } 
-*/
-
-function configLoad() { 
-	var filename = 'script.json';
+function setupApp() { 
+  var filename = 'script.json';
+  if(process.argv[2]) { 
+      filename = process.argv[2];
+  } 
 	fs.readFile(filename, "binary", function(err, file) {  
             if(err) {  
-		sys.puts('Error:configLoad:' + err);
+		sys.puts('Error:configScript:' + err);
                 return;  
             }  
             data = JSON.parse(file); 
 	    var listJSONRules = data.rules;
  	    for(k in listJSONRules) { 
-		var currentRule = listJSONRules[k];
-		// This can be tricky. In our model we have a strict set of 
-		// rules, so it's not a per uniqueID set of rules. We may, 
-		// in the future, consider to have rules to work more like 		
-		// messages as well. So, then, when the config script is read
-		// we populate the rules message queue. And if there is a new
-		// cycling rule ( from time to time ) we simply add again and 
-		// again to this queue based in the execution state. So a real
-		// linear model. Right now it's like our rules are global objects
-		currentRule.executionContext = 0;
-		localRules[currentRule.channel] = currentRule;
-	        sys.puts('Loading rule..' + currentRule.channel);
+		var currentEvent = new eventRuleObject(); 
+                currentEvent.script = listJSONRules[k];
+		// 0.1 localRules[currentRule.channel] = currentRule;
+		eventQueue[currentEvent.uuid] = currentEvent; 
+	        sys.puts('Inserting event..' + currentEvent.uuid);
 	    } 
+            // Now that we have all the basic rules inserted as events, 
+            // we kick start things..
+            run(); 
         });
+} 
+
+/* This is 0.2 architecture, 
+   where a rule is an event */
+
+function eventRuleObject() { 
+    this.uuid = null; 
+    this.name = null; 
+    this.script = null;  // this is the payload - it's associated with the 
+                         // script.json - rules file. 
+    this.uuid = Math.random();
+    this.executionContext = 0; 
+    this.processHandler = null; 
 } 
 
 console.log('Server running at http://127.0.0.1:80/');
