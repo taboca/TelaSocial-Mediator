@@ -314,19 +314,6 @@ function commonJSfromStdOut(strData) {
    }
 }
 
-function flickrParseAllImages(channelName) { 
-	sys.puts("Parsing the RSS??? for channel " + channelName);	
-	var parser = new xml2js.Parser({'mergeAttrs':true});
-	parser.addListener('end', function(result) {
-          // Use this to inspect everything JSON from this XML 
-          //console.log(sys.inspect(result, false, null))
-          var linkImage = result.entry[0].link[1].href;
-	});
-	fs.readFile('./channel/'+channelName+'.xml', function(err, data) {
-		parser.parseString(data);
-	});
-} 
-
 /* This function will parse the stdout of separated process 
    and will check if there is a follow up operation to do. 
    It turns out we have cases where the above function processRules
