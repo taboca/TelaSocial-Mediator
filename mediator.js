@@ -285,7 +285,7 @@ the local feed with the new images Paths ( to this localhost
 to the appropriate channel ). 
 */
 	if (curr.script.function == 'ImageFetchAndResizeImagesFromRSS') { 
-	    script = path.join(__dirname, 'action_loadRSS.js');
+	    script = path.join(__dirname, 'action/loadRSS.js');
             var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.channel,  curr.script.url  ]  });
             child1.start();
 	    child1.on('exit', function () { sys.puts('....exited...')} );
