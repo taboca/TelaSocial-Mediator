@@ -41,15 +41,16 @@ var sys = require("sys"),
 
 this.flickrEvent = function () { 
 
-   this.listImages: new Array(), 
+   this.listImages= new Array();
 
-   this.flickrParseAllImages = function (channelName) { 
+   this.init = function (channelName) { 
 	sys.puts("Parsing the RSS??? for channel " + channelName);	
 	var parser = new xml2js.Parser({'mergeAttrs':true});
 	parser.addListener('end', function(result) {
           // Use this to inspect everything JSON from this XML 
           //console.log(sys.inspect(result, false, null))
           var linkImage = result.entry[0].link[1].href;
+		sys.puts('Will try to fetch.. ' + linkImage);
 	});
 	fs.readFile('./channel/'+channelName+'.xml', function(err, data) {
 		parser.parseString(data);

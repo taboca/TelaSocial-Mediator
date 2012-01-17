@@ -42,7 +42,7 @@ var http = require("http"),
     fs = require("fs")
     url = require("url"),
     qs = require("querystring"),
-    rss = require('./3rdparty/node-rss/node-rss'),
+    flickr = require('./3rdparty/flickr-fetch/flickr-fetch'),
     blendstore = require('./3rdparty/blend-store/blend-store'),
     forever = require('forever'),
     xml2js = require('xml2js'),
@@ -296,7 +296,8 @@ function executeProcessRule(strKey) {
 		var data = commonJSfromStdOut(data.toString());
 		try { 
 			if(data.result=="ok") { 
-				flickrParseAllImages(curr.channel);
+				var a = new flickr.flickrEvent();
+				a.init(curr.channel);
 			} 
 		} catch(i) { 
 			sys.puts('not processed'); 
