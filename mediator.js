@@ -293,21 +293,27 @@ function executeProcessRule(strKey) {
             child1.start();
 	    child1.on('exit', function () { sys.puts('....exited...')} );
 	    child1.on('stdout', function (data) { 
-		var data = commonJSfromStdOut(data.toString());
-		try { 
-			if(data.result=="ok") { 
-				var a = new flickr.flickrEvent();
-				a.init(curr.channel);
-			} 
-		} catch(i) { 
-			sys.puts('not processed'); 
-		}
+		var data = commonJSfromStdOut(data);
+                try { 
+                  if(data.result=="ok") { 
+
+                    /* this is interesting case, a bit hybrid architecture here. 
+                       we are simply calling the flickr flickrEvent app 
+                       instead using a local event queue. This is a bit conflicting 
+                       with the idea of a pipeline with events.. */
+
+                    var a = new flickr.flickrEvent();
+                    a.init(curr.channel);
+                  } 
+                } catch(i) { 
+                        sys.puts('.'); 
+                }
             });
 	} 
 } 
 
 function commonJSfromStdOut(strData) { 
-   var probe = strData.split("==");
+   var probe = strData.toString().split("==");
    if(probe.length>1) {
       var data = JSON.parse(probe[1]);
       return data; 
