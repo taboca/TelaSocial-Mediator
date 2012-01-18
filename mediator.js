@@ -244,24 +244,18 @@ function executeProcessRule(uuid) {
 	    child1.on('exit', function () { } );
 	    child1.on('stdout', function (data) { 
 		var data = stdout2json.get(data);
-                try { 
-                  if(data.result) { 
-			executeProcessFlow(uuid, data);	
-                  } 
-                } catch(i) { 
-                        sys.puts('.'); 
-                }
+		execFlow(uuid, data);	
             });
 	    child1.on('stderr', function (data) { 
 		var data = stdout2json.get(data);
                 try { 
                   if(data.result) { 
-			executeProcessFlow(uuid, data);	
+			execFlow(uuid, data);	
                   } 
                 } catch(i) { 
                         sys.puts('.'); 
                 }
-//		executeProcessFlow(uuid, data.toString());	
+//		execFlow(uuid, data.toString());	
             });
             sys.puts('Forever process spawn');
 	} 
@@ -321,7 +315,7 @@ to the appropriate channel ).
    It turns out we have cases where the above function processRules
 
 */
-function executeProcessFlow(uuid, payload) { 
+function execFlow(uuid, payload) { 
    if(payload.result == 'ok') { 
      sys.puts('Removing ' + uuid + " from queue.. " );
      eventQueue[uuid].pop();

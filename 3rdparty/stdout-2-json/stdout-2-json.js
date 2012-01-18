@@ -36,11 +36,15 @@
 
 
 this.get = function (strData) {
-  var probe = strData.toString().split("==");
-  if(probe.length>1) {
-     var data = JSON.parse(probe[1]);
-     return data;
-  }
+  if(typeof strData == 'string') { 
+    var probe = strData.toString().split("==");
+    if(probe.length>1) {
+       var data = JSON.parse(probe[1]);
+       return data;
+    }
+  } else { 
+    console.log("stdout2json: not a string coming through: " + strData);
+  }  
 }
 
 this.send = function (obj) { 

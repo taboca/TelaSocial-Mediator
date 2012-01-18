@@ -21,8 +21,9 @@ function ruleLoadSaveRSS(name, href) {
 
    var request = http.get(options);
    var strOut = "";
+   // This is network error
    request.on('error', function (e) {
-             stdout2json.senderr({'result':'error','data':e} );
+             stdout2json.senderr({'result':'error','type':'offline','data':e} );
    });
    request.on('response', function (res) {
       var strOut = "";
