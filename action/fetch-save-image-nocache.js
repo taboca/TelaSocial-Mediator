@@ -38,7 +38,8 @@ var sys = require("sys"),
     path = require("path"),
     fs = require("fs")
     url = require("url"),
-    http = require("http");
+    http = require("http"),
+    stdout2json = require('../3rdparty/stdout-2-json/stdout-2-json');
  
 function getAndSaveImage(name, href) {
 
@@ -50,8 +51,10 @@ function getAndSaveImage(name, href) {
             path: path+"?"+Math.random()
         };
         var request = http.get(options);
-
-        sys.puts('trying to fetch ' + host + ' and ' + path);
+        request.on('error', function (e) {
+            stdout2json.senderr({'result':'error','type':'offline','data':e} );
+        });
+        stdout2json({'note':'init fetch: '+host+path});
         request.on('response', function (res) {
            var bufferedData = "";
            res.setEncoding('binary');
@@ -65,7 +68,8 @@ function getAndSaveImage(name, href) {
                   if (err) { 
                     throw err;
                   }
-                  console.log('file saved');
+                  stdout2json({'note':'file saved: ./channel/'+name+'/image-'+filename+'.jpg'});
+                  stdout2json({'result':'ok'});
                 });
            });
        });

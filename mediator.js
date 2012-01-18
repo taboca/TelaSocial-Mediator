@@ -315,27 +315,39 @@ to the appropriate channel ).
    It turns out we have cases where the above function processRules
 
 */
+
+
+function flog(uuid, str) { 	
+   console.log('eventUpdate: '+uuid+': '+str);	
+} 
+
 function execFlow(uuid, payload) { 
  if(typeof payload != 'undefined') { 
+   if(payload.result == 'note') { 
+     flog(uuid, 'result=note;' + payload.data );
+     eventQueue[uuid] = null;
+   } 
    if(payload.result == 'ok') { 
-     sys.puts('Removing ' + uuid + " from queue.. " );
-     eventQueue[uuid].pop();
+     flog(uuid, 'result=ok; removing ' + uuid + ' from queue.. ' );
+     eventQueue[uuid] = null;
    } 
    if(payload.result == 'error') { 
-     sys.puts('Error from' + uuid + " which is :" + payload.data +" and removing it from queue.. " );
-     eventQueue[uuid].pop();
+     flog(uuid, 'result=error;'+ payload.data +' and removing it from queue.. ' );
+     eventQueue[uuid] = null; 
    } 
    if(payload.result == 'expired') { 
-     sys.puts('Expired event for uuid = ' + uuid + ' and trying to kill process ' );
+     flog(uuid,'result=expired; will kill process... ' );
      if(eventQueue[uuid].executionContext==1) { 
         eventQueue[uuid].processHandler.stop();
-        eventQueue[uuid].pop();
+        eventQueue[uuid] = null; 
      } 
    } 
  } else { 
    console.log('execFlow: problem, got payload = ' + payload); 
  } 
 } 
+
+var flogArchive = false;
 
 function setupApp() { 
   var filename = 'script.json';

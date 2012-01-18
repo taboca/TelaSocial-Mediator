@@ -34,7 +34,6 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-
 this.get = function (stdoutChunk) {
   if(typeof stdoutChunk != 'undefined') { 
     var strData = stdoutChunk.toString();

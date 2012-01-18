@@ -44,7 +44,7 @@ function ruleLoadSaveRSS(name, href) {
    })
 }
 
-sys.puts("trying to open "+ process.argv[3]);
+stdout2json.send({'result':'note', 'data':'Will open + '+ process.argv[3] } );
 timer = setTimeout(function () { stdout2json.send({'result':'expired'}) },5000); 
 ruleLoadSaveRSS(process.argv[2], process.argv[3]);
 
