@@ -3,3 +3,8 @@ Check the function handlers, in mediator, to comply with the new format, attempt
 ./scripts-cam.js ( an example ) which is sort of like RDF
 Check timer ( static to 5 secs ) in ./action/loadRSS.js
 [ ] Need to test the condition of timeout - network loading..
+
+[x] Tested condition stderr for DNS invalid, for loadRSS. 
+
+[x] Need to move the DNS use case to ./tests/ scripts. We need to be able to grab data from the tests and to measure
+the pass no pass for everything. 
