@@ -243,11 +243,9 @@ function executeProcessRule(uuid) {
             child1.start();
 	    child1.on('exit', function () { } );
 	    child1.on('stdout', function (data) { 
-		var data = stdout2json.get(data);
 		execFlow(uuid, data);	
             });
 	    child1.on('stderr', function (data) { 
-		var data = stdout2json.get(data);
 		execFlow(uuid, data);	
             });
             sys.puts('Forever process spawn');
@@ -314,29 +312,34 @@ function flog(uuid, str) {
    console.log('eventUpdate: '+uuid+': '+str);	
 } 
 
-function execFlow(uuid, payload) { 
- if(typeof payload != 'undefined') { 
-   if(payload.result == 'note') { 
-     flog(uuid, 'result=note;' + payload.data );
-     eventQueue[uuid] = null;
+function execFlow(uuid, streamStdout) { 
+ if(typeof streamStdout != 'undefined') { 
+   var payload = stdout2json.get(streamStdout);
+   if(typeof payload != 'undefined' ) { 
+    if(payload.result == 'note') { 
+      flog(uuid, 'result=note;' + payload.data );
+      eventQueue[uuid] = null;
+    } 
+    if(payload.result == 'ok') { 
+      flog(uuid, 'result=ok; removing ' + uuid + ' from queue.. ' );
+      eventQueue[uuid] = null;
+    } 
+    if(payload.result == 'error') { 
+      flog(uuid, 'result=error;'+ payload.data +' and removing it from queue.. ' );
+      eventQueue[uuid] = null; 
+    } 
+    if(payload.result == 'expired') { 
+      flog(uuid,'result=expired; will kill process... ' );
+      if(eventQueue[uuid].executionContext==1) { 
+         eventQueue[uuid].processHandler.stop();
+         eventQueue[uuid] = null; 
+      } 
    } 
-   if(payload.result == 'ok') { 
-     flog(uuid, 'result=ok; removing ' + uuid + ' from queue.. ' );
-     eventQueue[uuid] = null;
-   } 
-   if(payload.result == 'error') { 
-     flog(uuid, 'result=error;'+ payload.data +' and removing it from queue.. ' );
-     eventQueue[uuid] = null; 
-   } 
-   if(payload.result == 'expired') { 
-     flog(uuid,'result=expired; will kill process... ' );
-     if(eventQueue[uuid].executionContext==1) { 
-        eventQueue[uuid].processHandler.stop();
-        eventQueue[uuid] = null; 
-     } 
-   } 
+  } else { 
+     console.log('execFlow: stdout different than expected..' + payload); 
+  } 
  } else { 
-   console.log('execFlow: problem, got payload = ' + payload); 
+   console.log('execFlow: problem, got streamStdout undefined? = ' + payload); 
  } 
 } 
 

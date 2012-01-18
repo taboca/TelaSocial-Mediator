@@ -7,4 +7,12 @@ Check timer ( static to 5 secs ) in ./action/loadRSS.js
 [x] Tested condition stderr for DNS invalid, for loadRSS. 
 
 [x] Need to move the DNS use case to ./tests/ scripts. We need to be able to grab data from the tests and to measure
-the pass no pass for everything. 
+ehe pass no pass for everything. 
+
+[x] Some of action scripts may generate an exception that has a lot of messages. As we wrap these 
+    in the out.send ( and out.senderr ) we get now a propoerly formated json which is quite strange 
+    example: 
+
+    =={"result":"error","data":{"stack":"Error: ENOENT, No such file or directory 'channel/store/logo/image-2012-01-18T21:13:29.804Z.jpg'","message":"ENOENT, No such file or directory 'channel/store/logo/image-2012-01-18T21:13:29.804Z.jpg'","errno":2,"code":"ENOENT","path":"channel/store/logo/image-2012-01-18T21:13:29.804Z.jpg"}}==
+
+

@@ -66,6 +66,7 @@ function getAndSaveImage(name, href) {
 	        var filename = JSON.parse(filedate).date;
                 fs.writeFile('channel/'+name+'/image-'+filename+'.jpg', bufferedData, 'binary', function(err){
                   if (err) { 
+                    out.senderr({'result':'error','data':err} );
                     throw err;
                   }
                   out.send({'note':'file saved: ./channel/'+name+'/image-'+filename+'.jpg'});
