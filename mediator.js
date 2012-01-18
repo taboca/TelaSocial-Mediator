@@ -205,31 +205,7 @@ function proxyNodeStaticForControl(request, response, dir) {
  	+ arguments 
 	+ success
 	+ error 
-
-  Example of chained events
-
-  LoadRSS 
-	url 
-	ok:channel,timerCicle
-	err:loadRSSAlt, timerCicle
-
-   timerCicle 
- 	30s
-	ok: loadRSS
-
-   fetchFlickr 
-	url
-	ok:fetchImages
-	err: timerCicleflickr 
-
-   fetchImages 
- 	channel.fetchFLickr.url	
-	channel.store.flickr
-	ok: resizeImage
-	err: pass
-	
 */
-
 
 function run() { 
     for(k in eventQueue) { 
