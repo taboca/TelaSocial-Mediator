@@ -1,0 +1,14 @@
+{
+"rules": [
+
+{
+ "about":"latinoware-en",
+ "function":"saveRSS",
+ "expiretimer":10000, 
+ "data":{"value":"http://www.latinoware.org/en/rss.xml","about":"latinoware-en"}
+}
+
+]
+
+}
+
