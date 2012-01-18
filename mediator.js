@@ -241,32 +241,21 @@ function executeProcessRule(uuid) {
             var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
             curr.processHandler = child1;
             child1.start();
-	    child1.on('exit', function () { } );
-	    child1.on('stdout', function (data) { 
-		execFlow(uuid, data);	
-            });
-	    child1.on('stderr', function (data) { 
-		execFlow(uuid, data);	
-            });
+	    child1.on('exit', function () { flog(uuid, ' script exited...')} );
+	    child1.on('stdout', function (data) { execFlow(uuid, data);	});
+	    child1.on('stderr', function (data) { execFlow(uuid, data);	});
             sys.puts('Forever process spawn');
 	} 
 
 	if (curr.script.function == 'getImageNoCache') { 
 	    script = path.join(__dirname, 'action/fetch-save-image-nocache.js');
             var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
+            curr.processHandler = child1;
             child1.start();
-	    child1.on('exit', function () { sys.puts('....exited...')} );
-	    child1.on('stdout', function (data) { 
-		var data = stdout2json.get(data);
-                try { 
-                  if(data.result=="ok") { 
-                  } 
-                } catch(i) { 
-                        sys.puts('.'); 
-                }
-            });
+	    child1.on('exit', function () { flog(uuid, ' script exited...')} );
+	    child1.on('stdout', function (data) { execFlow(uuid, data);	});
+	    child1.on('stderr', function (data) { execFlow(uuid, data);	});
 	} 
-
 
 /* 
 This ImageFetchAndResize is a chained event. So it first will 
@@ -282,7 +271,11 @@ to the appropriate channel ).
 	    script = path.join(__dirname, 'action/loadRSS.js');
             var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
             child1.start();
-	    child1.on('exit', function () { sys.puts('....exited...')} );
+
+	    child1.on('exit', function () { flog(uuid, ' script exited...')} );
+	    child1.on('stdout', function (data) { execFlow(uuid, data);	});
+	    child1.on('stderr', function (data) { execFlow(uuid, data);	});
+
 	    child1.on('stdout', function (data) { 
 		var data = stdout2json.get(data);
                 try { 
@@ -304,9 +297,7 @@ to the appropriate channel ).
 /* This function will parse the stdout of separated process 
    and will check if there is a follow up operation to do. 
    It turns out we have cases where the above function processRules
-
 */
-
 
 function flog(uuid, str) { 	
    console.log('eventUpdate: '+uuid+': '+str);	
@@ -316,9 +307,10 @@ function execFlow(uuid, streamStdout) {
  if(typeof streamStdout != 'undefined') { 
    var payload = stdout2json.get(streamStdout);
    if(typeof payload != 'undefined' ) { 
+console.log('2');
     if(payload.result == 'note') { 
       flog(uuid, 'result=note;' + payload.data );
-      eventQueue[uuid] = null;
+      //eventQueue[uuid] = null;
     } 
     if(payload.result == 'ok') { 
       flog(uuid, 'result=ok; removing ' + uuid + ' from queue.. ' );

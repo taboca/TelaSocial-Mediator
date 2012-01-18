@@ -54,7 +54,7 @@ function getAndSaveImage(name, href) {
         request.on('error', function (e) {
             out.senderr({'result':'error','type':'offline','data':e} );
         });
-        out.send({'note':'init fetch: '+host+path});
+        out.send({'result':'note','data':'init fetch: '+host+path});
         request.on('response', function (res) {
            var bufferedData = "";
            res.setEncoding('binary');
@@ -69,7 +69,7 @@ function getAndSaveImage(name, href) {
                     out.senderr({'result':'error','data':err} );
                     throw err;
                   }
-                  out.send({'note':'file saved: ./channel/'+name+'/image-'+filename+'.jpg'});
+                  out.send({'result':'note','data':'file saved: ./channel/'+name+'/image-'+filename+'.jpg'});
                   out.send({'result':'ok'});
                 });
            });
