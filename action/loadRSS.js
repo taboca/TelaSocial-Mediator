@@ -4,7 +4,7 @@ var sys = require("sys"),
     url = require("url"),
     http = require("http"),
     qs = require("querystring"),
-    stdout2json = require('../3rdparty/stdout-2-json/stdout-2-json');
+    out = require('../3rdparty/stdout-2-json/stdout-2-json');
  
 var timer = null; 
 
@@ -23,7 +23,7 @@ function ruleLoadSaveRSS(name, href) {
    var strOut = "";
    // This is network error
    request.on('error', function (e) {
-             stdout2json.senderr({'result':'error','type':'offline','data':e} );
+             out.senderr({'result':'error','type':'offline','data':e} );
    });
    request.on('response', function (res) {
       var strOut = "";
@@ -33,18 +33,18 @@ function ruleLoadSaveRSS(name, href) {
       res.on('end', function () {
           fs.writeFile('channel/'+name+'.xml', strOut, 'utf8', function(err){
            if (err) { 
-             stdout2json.senderr({'result':'error', 'payload': err});
+             out.senderr({'result':'error', 'payload': err});
              throw err; 
            }   
            // warning: we need to clear the timer...
-           stdout2json.send({'result':'ok'});
+           out.send({'result':'ok'});
            clearTimeout(timer);
           });
       });
    })
 }
 
-stdout2json.send({'result':'note', 'data':'Will open + '+ process.argv[3] } );
-timer = setTimeout(function () { stdout2json.send({'result':'expired'}) },5000); 
+out.send({'result':'note', 'data':'Will open + '+ process.argv[3] } );
+timer = setTimeout(function () { out.send({'result':'expired'}) },5000); 
 ruleLoadSaveRSS(process.argv[2], process.argv[3]);
 
