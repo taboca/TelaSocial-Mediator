@@ -71,9 +71,12 @@ function getAndSaveImage(name, href) {
                   }
                   out.send({'result':'note','data':'file saved: ./channel/'+name+'/image-'+filename+'.jpg'});
                   out.send({'result':'ok'});
+                  clearTimeout(timer);
                 });
            });
        });
 }
 
+/* Remember to clear the timeouts */
+timer = setTimeout(function () { out.send({'result':'expired'}) },15000); 
 getAndSaveImage(process.argv[2], process.argv[3]);

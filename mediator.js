@@ -304,10 +304,9 @@ function flog(uuid, str) {
 } 
 
 function execFlow(uuid, streamStdout) { 
- if(typeof streamStdout != 'undefined') { 
-   var payload = stdout2json.get(streamStdout);
-   if(typeof payload != 'undefined' ) { 
-console.log('2');
+  var list = stdout2json.get(streamStdout);
+  for(var key in list.flow) { 
+    var payload = list.flow[key];
     if(payload.result == 'note') { 
       flog(uuid, 'result=note;' + payload.data );
       //eventQueue[uuid] = null;
@@ -326,13 +325,8 @@ console.log('2');
          eventQueue[uuid].processHandler.stop();
          eventQueue[uuid] = null; 
       } 
-   } 
-  } else { 
-     console.log('execFlow: stdout different than expected..' + payload); 
-  } 
- } else { 
-   console.log('execFlow: problem, got streamStdout undefined? = ' + payload); 
- } 
+    } 
+  }
 } 
 
 var flogArchive = false;
@@ -352,8 +346,17 @@ function setupApp() {
  	    for(k in listJSONRules) { 
 		var currentEvent = new eventRuleObject(); 
                 currentEvent.script = listJSONRules[k];
-		// 0.1 localRules[currentRule.channel] = currentRule;
-		eventQueue[currentEvent.uuid] = currentEvent; 
+	
+		/* The idea here is to insert some events so we get things started. 
+                   we do this via inserting, in the event queue, all the events
+                   with about 'states' start. And for all the rest we keep them in the 
+                   script ( localRules ) list.  */
+
+		if(currentEvent.script.about == 'start') { 
+			eventQueue[currentEvent.uuid] = currentEvent; 
+		} else { 
+			localRules[currentEvent.script.about] = currentEvent;
+		}  
 	        sys.puts('Inserting event..' + currentEvent.uuid);
 	    } 
             // Now that we have all the basic rules inserted as events, 

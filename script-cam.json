@@ -2,11 +2,20 @@
 "rules": [
 
 { 
- "about":"logo", 
+ "about":"start",
  "function":"getImageNoCache",
- "data":{"value":"http://www.taboca.com/output/vendor-taboca/logomini.png","about":"store/logo"}
+ "data":{"value":"http://www.taboca.com/output/vendor-taboca/logomini.png","about":"store/logo"},
+ "to":"store/logo"
 } 
 
+,
+
+{ 
+ "about":"store/logo", 
+ "function":"getImageNoCache",
+ "data":{"value":"http://www.taboca.com/output/vendor-taboca/logomini.png","about":"store/logo"},
+ "to":"logo"
+} 
 
 ]
 

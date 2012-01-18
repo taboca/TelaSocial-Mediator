@@ -45,6 +45,6 @@ function ruleLoadSaveRSS(name, href) {
 }
 
 out.send({'result':'note', 'data':'Will open + '+ process.argv[3] } );
-timer = setTimeout(function () { out.send({'result':'expired'}) },5000); 
+timer = setTimeout(function () { out.send({'result':'expired'}) },15000); 
 ruleLoadSaveRSS(process.argv[2], process.argv[3]);
 

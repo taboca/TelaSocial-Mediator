@@ -36,27 +36,30 @@
 
 this.get = function (stdoutChunk) {
   if(typeof stdoutChunk != 'undefined') { 
+    var dataBuffer = '{"flow":[';
     var strData = stdoutChunk.toString();
-    var probe = strData.toString().split("==");
-    if(probe.length>1) {
-       var data = JSON.parse(probe[1]);
-       return data;
-    } else { 
-       var data = {'result':''}; 
-       return data; 
+    var probe = strData.toString().split("=>");
+    for(var i=1;i<probe.length;i++) { 
+      var dataChunk = probe[i]; 
+      dataBuffer += dataChunk.split("<=")[0];
+      dataBuffer += ',';
     } 
+    dataBuffer += '{"end":""}]}';
+    data = JSON.parse(dataBuffer);
+    return data;
   } else { 
+    return null;
     console.log("stdout2json: stdout undefined! =  " + strData);
   }  
 }
 
 this.send = function (obj) { 
-  var outStream = "=="+JSON.stringify(obj)+"==";
+  var outStream = "=>"+JSON.stringify(obj)+"<=";
   console.log(outStream);
 } 
 
 this.senderr = function (obj) { 
-  var outStream = "=="+JSON.stringify(obj)+"==";
+  var outStream = "=>"+JSON.stringify(obj)+"<=";
   console.error(outStream);
 } 
 
