@@ -54,8 +54,28 @@ var localRules = new Array(); // Old model we had local rules and these were not
                               // an event in the system. These were more like 
                               // globals. This is 0.1 
 
-var eventQueue = new Array(); // This is 0.2 approach. We can also queue 
-                              // events. Each event has a rule for processing etc
+/* Run engine 0.2
+ 
+    + each event in the queue { 
+
+	+ uuid
+  	+ script function 
+ 	+ arguments 
+	+ success
+	+ error 
+*/
+
+var eventQueue = new Array(); 
+
+function eventRuleObject() { 
+    this.uuid = null; 
+    this.name = null; 
+    this.script = null;  // this is the payload - it's associated with the 
+                         // script.json - rules file. 
+    this.uuid = Math.random();
+    this.executionContext = 0; 
+    this.processHandler = null; 
+} 
 
 var urlMap = {
 	
@@ -187,25 +207,6 @@ function proxyNodeStaticForControl(request, response, dir) {
         });
     });
 } 
-
-
-
-/* Run engine 0.1
- 
-   The version 0.1 Run Engine is basically a loop, every 5 seconds, through all 
-   the items in the localRules. We check their execution state, so if a rule is 
-   not being executed, then we kick the executio of that rule. 
-
-   0.2 Architecture is a queue ( perhaps of stacks ) 
-   
-    + each event in the queue { 
-
-	+ uuid
-  	+ script function 
- 	+ arguments 
-	+ success
-	+ error 
-*/
 
 function run() { 
     for(k in eventQueue) { 
@@ -345,19 +346,6 @@ function setupApp() {
             // we kick start things..
             run(); 
         });
-} 
-
-/* This is 0.2 architecture, 
-   where a rule is an event */
-
-function eventRuleObject() { 
-    this.uuid = null; 
-    this.name = null; 
-    this.script = null;  // this is the payload - it's associated with the 
-                         // script.json - rules file. 
-    this.uuid = Math.random();
-    this.executionContext = 0; 
-    this.processHandler = null; 
 } 
 
 console.log('Server running at http://127.0.0.1:80/');
