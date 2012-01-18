@@ -4,9 +4,10 @@ var sys = require("sys"),
     url = require("url"),
     http = require("http"),
     qs = require("querystring"),
-    rss = require('./3rdparty/node-rss/node-rss'),
-    stdout2json = require('./3rdparty/stdout-2-json/stdout-2-json');
+    stdout2json = require('../3rdparty/stdout-2-json/stdout-2-json');
  
+var timer = null; 
+
 function ruleLoadSaveRSS(name, href) {
 
 	var buffer = "";
@@ -33,12 +34,13 @@ function ruleLoadSaveRSS(name, href) {
            }   
            // warning: we need to clear the timer...
            stdout2json.send({'result':'ok'});
+           clearTimeout(timer);
           });
       });
    })
 }
 
 sys.puts("trying to open "+ process.argv[3]);
-setTimeout(function () { stdout2json.senderr({'result':'expired'}) },5000); 
+timer = setTimeout(function () { stdout2json.senderr({'result':'expired'}) },5000); 
 ruleLoadSaveRSS(process.argv[2], process.argv[3]);
 

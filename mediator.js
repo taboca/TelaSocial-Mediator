@@ -276,7 +276,7 @@ function executeProcessRule(uuid) {
 
 	if (curr.script.function == 'getImageNoCache') { 
 	    script = path.join(__dirname, 'action/fetch-save-image-nocache.js');
-            var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.channel,  curr.script.url  ]  });
+            var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
             child1.start();
 	    child1.on('exit', function () { sys.puts('....exited...')} );
 	    child1.on('stdout', function (data) { 

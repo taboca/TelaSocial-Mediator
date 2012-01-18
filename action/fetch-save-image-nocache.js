@@ -47,7 +47,7 @@ function getAndSaveImage(name, href) {
         var options = {
             host: host,
             port: 80,
-            path: path+"?"+Math.random();
+            path: path+"?"+Math.random()
         };
         var request = http.get(options);
 
@@ -61,7 +61,7 @@ function getAndSaveImage(name, href) {
            res.on('end', function () {
                 var filedate= JSON.stringify({ date: new Date() });
 	        var filename = JSON.parse(filedate).date;
-                fs.writeFile('channel/store/'+name+'/image-'+filename+'.jpg', bufferedData, 'binary', function(err){
+                fs.writeFile('channel/'+name+'/image-'+filename+'.jpg', bufferedData, 'binary', function(err){
                   if (err) { 
                     throw err;
                   }

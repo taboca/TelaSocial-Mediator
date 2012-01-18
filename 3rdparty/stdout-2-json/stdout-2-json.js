@@ -44,12 +44,12 @@ this.get = function (strData) {
 }
 
 this.send = function (obj) { 
-  var outStream = "=="+JSON.stringify+"==";
-  console.out(outStream);
+  var outStream = "=="+JSON.stringify(obj)+"==";
+  console.log(outStream);
 } 
 
 this.senderr = function (obj) { 
-  var outStream = "=="+JSON.stringify+"==";
-  console.out(outStream);
+  var outStream = "=="+JSON.stringify(obj)+"==";
+  console.error(outStream);
 } 
 
