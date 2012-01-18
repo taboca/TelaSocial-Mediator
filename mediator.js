@@ -303,21 +303,19 @@ to the appropriate channel ).
 */
 	if (curr.script.function == 'ImageFetchAndResizeImagesFromRSS') { 
 	    script = path.join(__dirname, 'action/loadRSS.js');
-            var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.channel,  curr.script.url  ]  });
+            var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
             child1.start();
 	    child1.on('exit', function () { sys.puts('....exited...')} );
 	    child1.on('stdout', function (data) { 
 		var data = stdout2json.get(data);
                 try { 
                   if(data.result=="ok") { 
-
                     /* this is interesting case, a bit hybrid architecture here. 
                        we are simply calling the flickr flickrEvent app 
                        instead using a local event queue. This is a bit conflicting 
                        with the idea of a pipeline with events.. */
-
                     var a = new flickr.flickrEvent();
-                    a.init(curr.script.channel);
+                    a.init(curr.script.data.about);
                   } 
                 } catch(i) { 
                         sys.puts('.'); 

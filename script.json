@@ -1,12 +1,11 @@
 {
 "rules": [
 
-{ 
- "channel":"localpictures", 
- "timer": 3000,
- "expiration":15000,
+{
+ "about":"localpictures",
  "function":"ImageFetchAndResizeImagesFromRSS",
- "url":"http://api.flickr.com/services/feeds/photos_public.gne?tags=flower&lang=pt-br&format="
+ "expiretimer":10000, 
+ "data":{"value":"http://api.flickr.com/services/feeds/photos_public.gne?tags=flower&lang=pt-br&format=","about":"store/localpictures"}
 }
 
 ]

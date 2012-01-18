@@ -61,7 +61,7 @@ function getAndSaveImage(href, name) {
            res.on('end', function () {
                 var filedate= JSON.stringify({ date: new Date() });
 	        var filename = JSON.parse(filedate).date;
-                fs.writeFile('channel/store/'+name+'/image-'+filename+'.jpg', bufferedData, 'binary', function(err){
+                fs.writeFile('channel/'+name+'/image-'+filename+'.jpg', bufferedData, 'binary', function(err){
                   if (err) { 
                     throw err;
                   }
