@@ -2,16 +2,11 @@
 "rules": [
 
 { 
- "about":"security", 
+ "about":"logo", 
  "function":"getImageNoCache",
- "data":{"value":"http://10.0.0.4/snapshot.cgi","about':"store/security"}
-}, 
+ "data":{"value":"http://www.taboca.com/output/vendor-taboca/logomini.png","about":"store/logo"}
+} 
 
-{
- "about":"store/security", 
- "function":"waitKickEvent", 
- "data":{'value':3000,'about':'security'}
-}
 
 ]
 
