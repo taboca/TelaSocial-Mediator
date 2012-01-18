@@ -21,9 +21,12 @@ function ruleLoadSaveRSS(name, href) {
 
    var request = http.get(options);
    var strOut = "";
+   request.on('error', function (e) {
+             stdout2json.senderr({'result':'error','data':e} );
+   });
    request.on('response', function (res) {
       var strOut = "";
-      res.on('data', function (buffer) {
+     res.on('data', function (buffer) {
            strOut += buffer;
       });
       res.on('end', function () {
@@ -41,6 +44,6 @@ function ruleLoadSaveRSS(name, href) {
 }
 
 sys.puts("trying to open "+ process.argv[3]);
-timer = setTimeout(function () { stdout2json.senderr({'result':'expired'}) },5000); 
+timer = setTimeout(function () { stdout2json.send({'result':'expired'}) },5000); 
 ruleLoadSaveRSS(process.argv[2], process.argv[3]);
 

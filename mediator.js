@@ -238,16 +238,31 @@ function executeProcessRule(uuid) {
 
 	if(curr.script.function == "saveRSS") { 
 	    script = path.join(__dirname, 'action/loadRSS.js');
-            var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.channel,  curr.script.url  ]  });
+            var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
             curr.processHandler = child1;
+            child1.start();
 	    child1.on('exit', function () { } );
 	    child1.on('stdout', function (data) { 
-		executeProcessFlow(uuid, data.toString());	
+		var data = stdout2json.get(data);
+                try { 
+                  if(data.result) { 
+			executeProcessFlow(uuid, data);	
+                  } 
+                } catch(i) { 
+                        sys.puts('.'); 
+                }
             });
 	    child1.on('stderr', function (data) { 
-		executeProcessFlow(uuid, data.toString());	
+		var data = stdout2json.get(data);
+                try { 
+                  if(data.result) { 
+			executeProcessFlow(uuid, data);	
+                  } 
+                } catch(i) { 
+                        sys.puts('.'); 
+                }
+//		executeProcessFlow(uuid, data.toString());	
             });
-            child1.start();
             sys.puts('Forever process spawn');
 	} 
 
@@ -306,11 +321,13 @@ to the appropriate channel ).
    It turns out we have cases where the above function processRules
 
 */
-function executeProcessFlow(uuid, strData) { 
-sys.puts("1");
-   var payload = stdout2json.get(strData);
-    if(payload.result == 'ok') { 
+function executeProcessFlow(uuid, payload) { 
+   if(payload.result == 'ok') { 
      sys.puts('Removing ' + uuid + " from queue.. " );
+     eventQueue[uuid].pop();
+   } 
+   if(payload.result == 'error') { 
+     sys.puts('Error from' + uuid + " which is :" + payload.data +" and removing it from queue.. " );
      eventQueue[uuid].pop();
    } 
    if(payload.result == 'expired') { 
