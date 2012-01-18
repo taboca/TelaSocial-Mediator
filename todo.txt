@@ -1,3 +1,4 @@
 Check the ./action/loadRSS.js design clearTimeouts 
 Check the function handlers, in mediator, to comply with the new format, attempt spec in 
 ./scripts-cam.js ( an example ) which is sort of like RDF
+Check timer ( static to 5 secs ) in ./action/loadRSS.js
