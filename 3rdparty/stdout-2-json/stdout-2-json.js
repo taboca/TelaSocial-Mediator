@@ -35,15 +35,19 @@
  * ***** END LICENSE BLOCK ***** */
 
 
-this.get = function (strData) {
-  if(typeof strData == 'string') { 
+this.get = function (stdoutChunk) {
+  if(typeof stdoutChunk != 'undefined') { 
+    var strData = stdoutChunk.toString();
     var probe = strData.toString().split("==");
     if(probe.length>1) {
        var data = JSON.parse(probe[1]);
        return data;
-    }
+    } else { 
+       var data = {'result':''}; 
+       return data; 
+    } 
   } else { 
-    console.log("stdout2json: not a string coming through: " + strData);
+    console.log("stdout2json: stdout undefined! =  " + strData);
   }  
 }
 

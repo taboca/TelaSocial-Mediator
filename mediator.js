@@ -316,6 +316,7 @@ to the appropriate channel ).
 
 */
 function execFlow(uuid, payload) { 
+ if(typeof payload != 'undefined') { 
    if(payload.result == 'ok') { 
      sys.puts('Removing ' + uuid + " from queue.. " );
      eventQueue[uuid].pop();
@@ -331,7 +332,9 @@ function execFlow(uuid, payload) {
         eventQueue[uuid].pop();
      } 
    } 
-  // we do something against the uuid next linked event..
+ } else { 
+   console.log('execFlow: problem, got payload = ' + payload); 
+ } 
 } 
 
 function setupApp() { 
