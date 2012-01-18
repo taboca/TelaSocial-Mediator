@@ -248,14 +248,7 @@ function executeProcessRule(uuid) {
             });
 	    child1.on('stderr', function (data) { 
 		var data = stdout2json.get(data);
-                try { 
-                  if(data.result) { 
-			execFlow(uuid, data);	
-                  } 
-                } catch(i) { 
-                        sys.puts('.'); 
-                }
-//		execFlow(uuid, data.toString());	
+		execFlow(uuid, data);	
             });
             sys.puts('Forever process spawn');
 	} 
