@@ -14,7 +14,7 @@
  "about":"store/logo", 
  "function":"getImageNoCache",
  "data":{"value":"http://www.taboca.com/output/vendor-taboca/logomini.png","about":"store/logo"},
- "to":"logo"
+ "to":"start"
 } 
 
 ]

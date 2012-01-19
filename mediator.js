@@ -209,8 +209,9 @@ function proxyNodeStaticForControl(request, response, dir) {
 } 
 
 function run() { 
-    for(k in eventQueue) { 
+    for(var k in eventQueue) { 
 	var currentEvent = eventQueue[k];
+        if(currentEvent != null) { 
         sys.puts('Checking event:' + currentEvent.uuid);
         if(currentEvent.executionContext == 0) { 
           var kk = k;
@@ -218,6 +219,9 @@ function run() {
           //sys.puts("  -> Setting timer : " + currentRule.timer + " for " + kk);
           executeProcessRule(currentEvent.uuid);
         } 
+       } else { 
+	sys.puts("Ignoring event: " + k);
+       } 
     } 
 /*
     setTimeout(function () { 
@@ -313,20 +317,36 @@ function execFlow(uuid, streamStdout) {
     } 
     if(payload.result == 'ok') { 
       flog(uuid, 'result=ok; removing ' + uuid + ' from queue.. ' );
+      var toEvent = eventQueue[uuid].script.to; 
+      //eventQueue.splice(uuid,1);
       eventQueue[uuid] = null;
+      createEvent(toEvent);
     } 
     if(payload.result == 'error') { 
       flog(uuid, 'result=error;'+ payload.data +' and removing it from queue.. ' );
-      eventQueue[uuid] = null; 
+      eventQueue[uuid] = null;
+      delete eventQueue[uuid];
     } 
     if(payload.result == 'expired') { 
       flog(uuid,'result=expired; will kill process... ' );
       if(eventQueue[uuid].executionContext==1) { 
          eventQueue[uuid].processHandler.stop();
-         eventQueue[uuid] = null; 
+         eventQueue[uuid] = null;
+         delete eventQueue[uuid];
       } 
     } 
   }
+} 
+
+/* We create an event from the localEvents by name */
+
+function createEvent(namedEvent) { 
+	var scriptToEvent = localRules[namedEvent];
+	var currentEvent = new eventRuleObject(); 
+        currentEvent.script = scriptToEvent;
+        sys.puts('Inserting event..' + currentEvent.uuid);
+	eventQueue[currentEvent.uuid] = currentEvent; 
+	run();
 } 
 
 var flogArchive = false;
@@ -344,20 +364,20 @@ function setupApp() {
             data = JSON.parse(file); 
 	    var listJSONRules = data.rules;
  	    for(k in listJSONRules) { 
-		var currentEvent = new eventRuleObject(); 
-                currentEvent.script = listJSONRules[k];
 	
 		/* The idea here is to insert some events so we get things started. 
                    we do this via inserting, in the event queue, all the events
                    with about 'states' start. And for all the rest we keep them in the 
                    script ( localRules ) list.  */
 
-		if(currentEvent.script.about == 'start') { 
-			eventQueue[currentEvent.uuid] = currentEvent; 
-		} else { 
-			localRules[currentEvent.script.about] = currentEvent;
+                var currScript = listJSONRules[k];
+		if(currScript.about == 'start') { 
+		   var currentEvent = new eventRuleObject(); 
+                   currentEvent.script = currScript;
+		   eventQueue[currentEvent.uuid] = currentEvent; 
+                   sys.puts('Inserting event..' + currentEvent.uuid);
 		}  
-	        sys.puts('Inserting event..' + currentEvent.uuid);
+	        localRules[currScript.about] = listJSONRules[k];
 	    } 
             // Now that we have all the basic rules inserted as events, 
             // we kick start things..

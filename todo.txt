@@ -16,3 +16,6 @@ ehe pass no pass for everything.
     =={"result":"error","data":{"stack":"Error: ENOENT, No such file or directory 'channel/store/logo/image-2012-01-18T21:13:29.804Z.jpg'","message":"ENOENT, No such file or directory 'channel/store/logo/image-2012-01-18T21:13:29.804Z.jpg'","errno":2,"code":"ENOENT","path":"channel/store/logo/image-2012-01-18T21:13:29.804Z.jpg"}}==
 
 
+[x] FInd a means to remove the key from the associative array ( in eventQueue ) 
+
+[x] check the expired event why not for loop case
