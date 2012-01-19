@@ -240,6 +240,12 @@ function executeProcessRule(uuid) {
 	curr.executionContext = 0;
 	sys.puts("Rule processing..." + uuid);
 
+	if(curr.script.function == "timer") { 
+            setTimeout(function () { 
+              execFlow(uuid, '=>{"result":"ok"}<=');
+            },parseInt(curr.script.data.value)); 
+	} 
+
 	if(curr.script.function == "saveRSS") { 
 	    script = path.join(__dirname, 'action/loadRSS.js');
             var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
