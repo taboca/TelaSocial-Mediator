@@ -14,8 +14,13 @@
 },
 { "about":"channel/store/localpictures",
   "function":"resizeImages",
-  "data":{"value":"channel/store/localpictures","about":"channel/store/resizedpictures"},
-  "to":"channel/store/resizedpictures"
+  "data":{"value":"store/localpictures","about":"store/resizedpictures"},
+  "to":"store/resizedpictures"
+},
+{ "about":"store/resizedpictures",
+  "function":"serveFeed",
+  "data":{"value":"store/resizedpictures","about":"resizedpictures"},
+  "to":"refresh"
 }
 
 ]

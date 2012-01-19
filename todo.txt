@@ -1,3 +1,7 @@
+[x] Workout / create the /store/images/image-by-date-xxx.jpg to quality check and to make them available via an 
+    RSS. So a new rule to probably become ( list, organize, and wrap to serve ) wrapToFeed that makes  
+    a feed that calls images from the store. This means " serving state " . See script-flickr.json example
+
 [x] Check the ./action/loadRSS.js design clearTimeouts ; see following redesigned approach for timeouts.
 
 [x] Need to move the DNS use case to ./tests/ scripts. We need to be able to grab data from the tests and to measure
