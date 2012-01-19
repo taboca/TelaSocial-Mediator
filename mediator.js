@@ -320,6 +320,7 @@ function execFlow(uuid, streamStdout) {
       var toEvent = eventQueue[uuid].script.to; 
       //eventQueue.splice(uuid,1);
       eventQueue[uuid] = null;
+      delete eventQueue[uuid];
       createEvent(toEvent);
     } 
     if(payload.result == 'error') { 
