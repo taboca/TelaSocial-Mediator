@@ -1,10 +1,7 @@
 Check the ./action/loadRSS.js design clearTimeouts 
 Check the function handlers, in mediator, to comply with the new format, attempt spec in 
 ./scripts-cam.js ( an example ) which is sort of like RDF
-Check timer ( static to 5 secs ) in ./action/loadRSS.js
-[ ] Need to test the condition of timeout - network loading..
 
-[x] Tested condition stderr for DNS invalid, for loadRSS. 
 
 [x] Need to move the DNS use case to ./tests/ scripts. We need to be able to grab data from the tests and to measure
 ehe pass no pass for everything. 
@@ -15,7 +12,30 @@ ehe pass no pass for everything.
 
     =={"result":"error","data":{"stack":"Error: ENOENT, No such file or directory 'channel/store/logo/image-2012-01-18T21:13:29.804Z.jpg'","message":"ENOENT, No such file or directory 'channel/store/logo/image-2012-01-18T21:13:29.804Z.jpg'","errno":2,"code":"ENOENT","path":"channel/store/logo/image-2012-01-18T21:13:29.804Z.jpg"}}==
 
-
-[x] FInd a means to remove the key from the associative array ( in eventQueue ) 
-
 [x] check the expired event why not for loop case
+
+[x] Rewrite the whole timer problem. Right now we have a timer that is statically in the 
+    ./action/loadRSS.js script. When the script process is up, the timer ( setTimeout ) 
+    starts and then if the script is not finished ( result=ok + clearTimeout ) then what 
+    happens is that the timer ends up kicking the stderr ( or should it be stdout ) 
+    with a result=expired code. This is how we do the timer now. And when the expiration comes to the 
+    actual mediator/run/execFlow, we don't even treat right now. In the traditional way of doing, 
+    if we maintain this code, the solution would be to put conditions in the ./script.js and 
+    so the script.json would have the cases ( ok, err, expired, etc ). 
+
+    Perhaps another approach, for this timer, is to think a model of expectations. The reason we may think 
+    about this is because some of our use case has more than one network action so our real expectation, 
+    when thinking about expiration timers, is to wait for the whole thing and not each individual step. So, 
+    for example, in the resize picts from flickr case, 1-step is load RSS, 2-step is bring images, 3-step 
+    is save image, resize and serve. So what we want in this case is simply to set an expiration to the actual 
+    expected final result. For example 
+
+    about:'flickrstart', 
+    function: checkState, 
+    data:'about/flickr/load/saved/resized',
+    to:'allThingsAreReady',
+    data:15000, 
+    
+     
+    
+    
