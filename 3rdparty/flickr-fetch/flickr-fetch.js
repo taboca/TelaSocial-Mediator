@@ -43,10 +43,13 @@ this.flickrEvent = function () {
 
    this.listImages= new Array();
    this.channel = null; 
+   this.targetStore = null; 
 
-   this.init = function (channelName) { 
-	this.channel = channelName; 
-	sys.puts("Parsing the RSS??? for channel " + channelName);	
+   this.init = function (sourceChannel, targetStore) { 
+	this.channel = sourceChannel; 
+	this.targetStore = targetStore;
+
+	sys.puts("Parsing the RSS??? for channel " + sourceChannel);	
 	var parser = new xml2js.Parser({'mergeAttrs':true});
 	var that=this;
 	parser.addListener('end', function(result) {
@@ -58,7 +61,7 @@ this.flickrEvent = function () {
 		} 
 		that.renderFetch(); 
 	});
-	fs.readFile('./channel/'+channelName+'.xml', function(err, data) {
+	fs.readFile('./channel/'+sourceChannel+'.xml', function(err, data) {
 		parser.parseString(data);
 	});
    } 
@@ -67,7 +70,7 @@ this.flickrEvent = function () {
 	var curr = this.listImages.pop();
         if(curr) { 
 		sys.puts("will pass " + this.channel + " and curr image = " + curr);
-		this.fetchImage(this.channel, curr);
+		this.fetchImage(this.targetStore, curr);
 	} 	
    } 
 

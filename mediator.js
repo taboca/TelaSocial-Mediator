@@ -267,18 +267,8 @@ function executeProcessRule(uuid) {
 	    child1.on('stderr', function (data) { execFlow(uuid, data);	});
 	} 
 
-/* 
-This ImageFetchAndResize is a chained event. So it first will 
-go after the flickr RSS Feed to fetch the data, similarly to the above
-the saveRSS. Then, and only then, when the data arrives, it will 
-initiate fetching all the images, so it's an async process going 
-on here. Then, and only then, when the images are loaded, it will 
-resize all them and then it will properly be able to serve 
-the local feed with the new images Paths ( to this localhost 
-to the appropriate channel ). 
-*/
-	if (curr.script.function == 'ImageFetchAndResizeImagesFromRSS') { 
-	    script = path.join(__dirname, 'action/loadRSS.js');
+	if (curr.script.function == 'fetchFlickrImages') { 
+	    script = path.join(__dirname, 'action/fetch-flickr-images-for-channel.js');
             var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
             child1.start();
 
