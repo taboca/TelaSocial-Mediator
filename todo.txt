@@ -1,18 +1,14 @@
-Check the ./action/loadRSS.js design clearTimeouts 
-Check the function handlers, in mediator, to comply with the new format, attempt spec in 
-./scripts-cam.js ( an example ) which is sort of like RDF
-
+[x] Check the ./action/loadRSS.js design clearTimeouts ; see following redesigned approach for timeouts.
 
 [x] Need to move the DNS use case to ./tests/ scripts. We need to be able to grab data from the tests and to measure
-ehe pass no pass for everything. 
+ehe pass no pass for everything.; This solution may simply be what we doing now, scripts-xxx.json but we may need
+to workout some more the expectations stuff = how we measure the outputs, data astore, etc.  
 
 [x] Some of action scripts may generate an exception that has a lot of messages. As we wrap these 
     in the out.send ( and out.senderr ) we get now a propoerly formated json which is quite strange 
     example: 
 
     =={"result":"error","data":{"stack":"Error: ENOENT, No such file or directory 'channel/store/logo/image-2012-01-18T21:13:29.804Z.jpg'","message":"ENOENT, No such file or directory 'channel/store/logo/image-2012-01-18T21:13:29.804Z.jpg'","errno":2,"code":"ENOENT","path":"channel/store/logo/image-2012-01-18T21:13:29.804Z.jpg"}}==
-
-[x] check the expired event why not for loop case
 
 [x] Rewrite the whole timer problem. Right now we have a timer that is statically in the 
     ./action/loadRSS.js script. When the script process is up, the timer ( setTimeout ) 
