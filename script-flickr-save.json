@@ -14,7 +14,7 @@
 },
 { "about":"store/localpictures",
  "function":"timer",
- "data":{"value":15000},
+ "data":{"value":250000},
  "to":"start"
 }
 

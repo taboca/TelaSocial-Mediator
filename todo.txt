@@ -1,4 +1,7 @@
-[x] if there is a 'to' it will will create an event for that. So we should report an error
+[x] With the flickr RSS feed sometimes it picks an URL that does not look like an image,
+    like the creative commons licensing stuff. Test with script-flickr-save.json
+
+[w] if there is a 'to' it will will create an event for that. So we should report an error
     in this case. Let's say an end event, result=ok, does a to='statenew' and statenew
     does not exist. 
 
