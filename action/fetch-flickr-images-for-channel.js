@@ -43,9 +43,13 @@ var sys = require("sys"),
     out = require('../3rdparty/stdout-2-json/stdout-2-json');
  
 function getFlickrImagesSaveInStore(about, source) {
-        out.send({'result':'note','data':'init fetch...'});
-        var a = new flickr.flickrEvent();
-        a.init(source, about);
+    out.send({'result':'note','data':'init fetch...'});
+    var a = new flickr.flickrEvent();
+    a.init(source, about, function (str) {
+       out.send({'result':'note','data':str } );
+    }, function () { 
+       out.send({'result':'ok'});
+    })
 /*
         a.on('end',function () { 
            out.send({'result':'ok'});

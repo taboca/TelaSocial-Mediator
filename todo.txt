@@ -1,3 +1,7 @@
+[x] if there is a 'to' it will will create an event for that. So we should report an error
+    in this case. Let's say an end event, result=ok, does a to='statenew' and statenew
+    does not exist. 
+
 [x] Workout / create the /store/images/image-by-date-xxx.jpg to quality check and to make them available via an 
     RSS. So a new rule to probably become ( list, organize, and wrap to serve ) wrapToFeed that makes  
     a feed that calls images from the store. This means " serving state " . See script-flickr.json example

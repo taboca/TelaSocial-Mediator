@@ -43,13 +43,18 @@ this.flickrEvent = function () {
 
    this.listImages= new Array();
    this.channel = null; 
+   this.sendToApp = null;
    this.targetStore = null; 
+   this.hasEnded = null;
 
-   this.init = function (sourceChannel, targetStore) { 
+   this.init = function (sourceChannel, targetStore, sendingDataFunction, hasEndedFunction) { 
 	this.channel = sourceChannel; 
 	this.targetStore = targetStore;
 
-	sys.puts("Parsing the RSS??? for channel " + sourceChannel);	
+	this.sendToApp = sendingDataFunction;
+	this.hasEnded  = hasEndedFunction;
+
+        this.sendToApp("Parsing the RSS for channel " + sourceChannel);	
 	var parser = new xml2js.Parser({'mergeAttrs':true});
 	var that=this;
 	parser.addListener('end', function(result) {
@@ -69,8 +74,11 @@ this.flickrEvent = function () {
    this.renderFetch = function () { 
 	var curr = this.listImages.pop();
         if(curr) { 
-		sys.puts("will pass " + this.channel + " and curr image = " + curr);
+		this.sendToApp("will pass " + this.channel + " and curr image = " + curr);
 		this.fetchImage(this.targetStore, curr);
+		this.renderFetch();
+	} else { 
+		this.hasEnded();
 	} 	
    } 
 
