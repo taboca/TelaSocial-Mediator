@@ -48,14 +48,9 @@ function getFlickrImagesSaveInStore(about, source) {
     a.init(source, about, function (str) {
        out.send({'result':'note','data':str } );
     }, function () { 
+       clearTimeout(timer);
        out.send({'result':'ok'});
     })
-/*
-        a.on('end',function () { 
-           out.send({'result':'ok'});
-           clearTimeout(timer);
-        });
-*/
 }
 
 /* Remember to clear the timeouts */
