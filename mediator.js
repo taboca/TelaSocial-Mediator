@@ -84,6 +84,11 @@ var urlMap = {
 		proxyNodeStatic(req,res);
 		//proxyStatic(req,res);
   		}, 
+
+        'static-eesc': function (req, res) { 
+		proxyNodeStatic(req,res);
+		//proxyStatic(req,res);
+  		}, 
 	
         'control': function (req, res) { 
 		proxyNodeStaticForControl(req,res);

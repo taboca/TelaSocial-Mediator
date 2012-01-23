@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Example local store</title>
+  <updated>2012-01-23T19:26:44Z</updated>
+  <generator uri="http://www.telasocial.com/">TelaSocial</generator>
+
+<entry>
+    <title></title>
+    <id>tag:flickr.com,2005:/photo/6750513805</id>
+    <published>2012-01-23T19:26:44Z</published>
+    <updated>2012-01-23T19:26:44Z</updated>
+    <dc:date.Taken>2011-05-29T11:21:24-08:00</dc:date.Taken>
+    <link rel="enclosure" type="image/jpeg" href="http://farm8.staticflickr.com/7147/6750513805_3eb37b4df3_b.jpg" />
+</entry>
+
+</feed>
