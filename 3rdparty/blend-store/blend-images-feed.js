@@ -34,6 +34,27 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+/* Example
+
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<feed xmlns="http://www.w3.org/2005/atom">
+  <title>example local store</title>
+  <updated>2012-01-23t19:26:44z</updated>
+  <generator uri="http://www.telasocial.com/">telasocial</generator>
+
+<entry>
+    <title></title>
+    <id>tag:flickr.com,2005:/photo/6750513805</id>
+    <published>2012-01-23T19:26:44Z</published>
+    <updated>2012-01-23T19:26:44Z</updated>
+    <dc:date.Taken>2011-05-29T11:21:24-08:00</dc:date.Taken>
+    <link rel="enclosure" type="image/jpeg" href="http://farm8.staticflickr.com/7147/6750513805_3eb37b4
+df3_b.jpg" />
+</entry>
+
+</feed>
+
+*/
 var sys = require("sys"),
     fs  = require("fs");
 
@@ -47,7 +68,8 @@ this.proxyStore = function (req, res) {
   mergeAndSave(param, function (files) { 
     for(k in files) { 
       sys.puts("List item:" + files[k]);
-      var buffer = '{"data":[';
+      var buffer = '<?xml version="1.0" encoding="utf-8" standalone="yes"?><feed xmlns="http://www.w3.org/2005/Atom"><title>Example local store</title><updated>2012-01-23T19:26:44Z</updated><generator uri="http://www.telasocial.com/">TelaSocial</generator>';
+
 
       var missing = files.length;
       var total = files.length;
@@ -55,21 +77,26 @@ this.proxyStore = function (req, res) {
       while(file = files.pop()) { 
         missing--;
 	if(file.indexOf("image-")>-1) { 
-	  var uriString = '"http://localhost/channel/store/'+param+'/'+file+'"'; 
+	  var uriString = '<entry><link rel="enclosure" type="image/jpeg" href="http://localhost/channel/store/'+param+'/'+file+'" /></entry>'; 
+/*
           var sep = ",";
           if(missing == total-1) { 
             sep = '';	
           } 
-          buffer += sep + uriString;
+*/
+          //buffer += sep + uriString;
+          buffer += uriString;
 	} 
         if(missing==0) { 
-          buffer += ']}';
-          var obj = JSON.parse(buffer);
-          var body = JSON.stringify(obj);
+          buffer += '</feed>';
+          //var obj = JSON.parse(buffer);
+          //var body = JSON.stringify(obj);
           res.writeHead(200, {
-             "Content-Type": "text/json"
+             //"Content-Type": "text/json"
+             "Content-Type": "text/xml"
           });
-          res.end(body);
+          //res.end(body);
+          res.end(buffer);
         } 
       } 
     } 	
