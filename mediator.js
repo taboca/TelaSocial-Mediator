@@ -44,6 +44,7 @@ var http = require("http"),
     qs = require("querystring"),
     flickr = require('./3rdparty/flickr-fetch/flickr-fetch'),
     blendstore = require('./3rdparty/blend-store/blend-store'),
+    blendImagesFeed = require('./3rdparty/blend-store/blend-images-feed'),
     stdout2json = require('./3rdparty/stdout-2-json/stdout-2-json'),
     forever = require('forever'),
     xml2js = require('xml2js'),
@@ -95,6 +96,10 @@ var urlMap = {
 
         'channel-store': function (req, res) { 
 		blendstore.proxyStore(req,res);
+  		}, 
+
+        'channel-store-images': function (req, res) { 
+		blendImagesFeed.proxyStore(req,res);
   		}, 
 
         'proxy': function (req, res) { 
