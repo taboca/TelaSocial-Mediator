@@ -1,7 +1,10 @@
 [bug] With the flickr RSS feed sometimes it picks an URL that does not look like an image,
     like the creative commons licensing stuff. Test with script-flickr-save.json
 
-[todo] imagesServe, action plugin, that serves for a directory. The design is a channel/store that is available at all times and may serve images from prior sessions, so an s0-default session and updated sessions. A session is , for example, a whole RSS image fetch operation. This channel needs to read all images from a sub-directory that represents a session for example ./channel/store/servingImages/noSession/image.jpg(s) or ./channel/store/servingImages/sessionID/images*
+[x] we need some new architecture to serving images feed flow: at this point we save all images from a
+    a feed to the actual localstore. The new version should create a fresh — downloading — directory and fetch all them in there. Then when the operation is done ( full directory loaded with images ) 
+   it moves these images to an actual about/store/localpictures/serving direectory. So the idea here
+   is that a store directory will have some contextual states: default, serving, and history. 
 
 [w] if there is a 'to' it will will create an event for that. So we should report an error
     in this case. Let's say an end event, result=ok, does a to='statenew' and statenew
