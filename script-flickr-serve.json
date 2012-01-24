@@ -1,0 +1,29 @@
+{
+"rules": [
+
+{
+ "about":"start",
+ "function":"saveRSS",
+ "data":{"value":"http://api.flickr.com/services/feeds/photos_public.gne?tags=redl&lang=pt-br&format=","about":"localpictures"},
+ "to":"localpictures"
+},
+{ "about":"localpictures",
+  "function":"fetchFlickrImages",
+  "data":{"value":"localpictures","about":"store/localpictures"},
+  "to":"store/localpictures"
+},
+{ "about":"store/localpictures",
+ "function":"imageServe",
+ "data":{"about":"store/flickrimages"},
+ "to":"store/served"
+},
+{ "about":"store/served",
+ "function":"timer",
+ "data":{"value":250000},
+ "to":"start"
+}
+
+]
+
+}
+

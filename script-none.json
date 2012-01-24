@@ -1,0 +1,14 @@
+{
+"rules": [
+
+{
+ "about":"start",
+ "function":"timer",
+ "data":{"value":250000},
+ "to":"start"
+}
+
+]
+
+}
+
