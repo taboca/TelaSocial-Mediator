@@ -277,30 +277,24 @@ function executeProcessRule(uuid) {
 	    child1.on('stderr', function (data) { execFlow(uuid, data);	});
 	} 
 
-	if (curr.script.function == 'fetchFlickrImages') { 
-	    script = path.join(__dirname, 'action/fetch-flickr-images-for-channel.js');
+	if (curr.script.function == 'fetchTEDPages') { 
+	    script = path.join(__dirname, 'action/fetch-ted-html.js');
             var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
             child1.start();
 
 	    child1.on('exit', function () { flog(uuid, ' script exited...')} );
 	    child1.on('stdout', function (data) { execFlow(uuid, data);	});
 	    child1.on('stderr', function (data) { execFlow(uuid, data);	});
+	} 
 
-	    child1.on('stdout', function (data) { 
-		var data = stdout2json.get(data);
-                try { 
-                  if(data.result=="ok") { 
-                    /* this is interesting case, a bit hybrid architecture here. 
-                       we are simply calling the flickr flickrEvent app 
-                       instead using a local event queue. This is a bit conflicting 
-                       with the idea of a pipeline with events.. */
-                    var a = new flickr.flickrEvent();
-                    a.init(curr.script.data.about);
-                  } 
-                } catch(i) { 
-                        sys.puts('.'); 
-                }
-            });
+	if (curr.script.function == 'fetchFlickrImages') { 
+	    script = path.join(__dirname, 'action/fetch-ted-pages.js');
+            var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
+            child1.start();
+
+	    child1.on('exit', function () { flog(uuid, ' script exited...')} );
+	    child1.on('stdout', function (data) { execFlow(uuid, data);	});
+	    child1.on('stderr', function (data) { execFlow(uuid, data);	});
 	} 
 } 
 
