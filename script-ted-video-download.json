@@ -1,0 +1,13 @@
+{
+"rules": [
+
+{ "about":"localtedtalks",
+  "function":"fetchTEDPages",
+  "data":{"value":"localtedtalks","about":"store/localtedtalks"},
+  "to":"store/localtedtalks"
+}
+
+]
+
+}
+
