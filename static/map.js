@@ -20,8 +20,8 @@ function s1() {
 	if(document.location.toString().indexOf("mode")>-1) { 
 		var param = document.location.toString().split("mode=");
 		if(param[1]=="tv") { 
-			document.getElementById("viewport").style.width="1080";
-			document.getElementById("viewport").style.height="1920";
+			document.getElementById("viewport").style.width="1920";
+			document.getElementById("viewport").style.height="1080";
 			tv.setup();
                		tv.add($('#animation li'));
 			animate();
