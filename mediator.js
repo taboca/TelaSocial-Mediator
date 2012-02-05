@@ -288,7 +288,7 @@ function executeProcessRule(uuid) {
 	} 
 
 	if (curr.script.function == 'fetchFlickrImages') { 
-	    script = path.join(__dirname, 'action/fetch-ted-pages.js');
+	    script = path.join(__dirname, 'action/fetch-flickr-images.js');
             var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
             child1.start();
 
