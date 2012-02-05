@@ -278,7 +278,7 @@ function executeProcessRule(uuid) {
 	} 
 
 	if (curr.script.function == 'fetchTEDPages') { 
-	    script = path.join(__dirname, 'action/fetch-ted-html.js');
+	    script = path.join(__dirname, 'action/fetch-ted-pages.js');
             var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
             child1.start();
 
