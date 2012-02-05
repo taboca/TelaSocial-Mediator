@@ -5,7 +5,14 @@
   "function":"fetchTEDPages",
   "data":{"value":"localtedtalks","about":"store/localtedtalks"},
   "to":"store/localtedtalks"
+},
+{ "about":"store/localtedtalks",
+ "function":"timer",
+ "data":{"value":250000},
+ "to":"start"
 }
+
+
 
 ]
 

@@ -39,25 +39,11 @@ var sys = require("sys"),
     fs = require("fs")
     url = require("url"),
     http = require("http"),
+    forever = require('forever'),
     out = require('../3rdparty/stdout-2-json/stdout-2-json'),
     xml2js = require('xml2js');
  
-function getTEDpagesSaveInStore(about, source) {
-    out.send({'result':'note','data':'init fetch...'});
-    var a = new tedPageSave();
-    a.init(source, about, function (str) {
-       out.send({'result':'note','data':str } );
-    }, function () { 
-       clearTimeout(timer);
-       out.send({'result':'ok'});
-    })
-}
-
-/* Remember to clear the timeouts */
-timer = setTimeout(function () { out.send({'result':'expired'}) },15000); 
-getTEDpagesSaveInStore(process.argv[2], process.argv[3]);
-
-tedPageSave = function () { 
+function tedPageSave() { 
 
    this.listPages= new Array();
    this.channel = null; 
@@ -76,8 +62,10 @@ tedPageSave = function () {
 	var parser = new xml2js.Parser({'mergeAttrs':true});
 	var that=this;
 	parser.addListener('end', function(result) {
+		console.log("======" + result.entry.length);
 		for(var i=0;i<result.entry.length;i++) { 
-          		var linkHTML = result.entry[i].link[1].href;
+		//console.log("111111" + result.entry[i].link);
+          		var linkHTML = result.entry[i].link.href;
 			that.listPages.push(linkHTML);
 		} 
 		that.renderFetch(); 
@@ -109,4 +97,19 @@ tedPageSave = function () {
     } 
 	
 } 
+
+function getTEDpagesSaveInStore(about, source) {
+    out.send({'result':'note','data':'init fetch...'});
+    var a = new tedPageSave();
+    a.init(source, about, function (str) {
+       out.send({'result':'note','data':str } );
+    }, function () { 
+       clearTimeout(timer);
+       out.send({'result':'ok'});
+    })
+}
+
+/* Remember to clear the timeouts */
+timer = setTimeout(function () { out.send({'result':'expired'}) },15000); 
+getTEDpagesSaveInStore(process.argv[2], process.argv[3]);
 

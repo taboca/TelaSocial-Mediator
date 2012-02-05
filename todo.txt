@@ -1,3 +1,4 @@
+[bug] Too many open files, when testing the fetch to the fetch-ted script
 [bug] The flickr save won't save if the local store directory is not there. Maybe we need a solution that can maintain these directories and perhaps history associated with them.
 
 [bug] With the flickr RSS feed sometimes it picks an URL that does not look like an image,

@@ -61,7 +61,7 @@ function getAndSaveImage(href, name) {
            res.on('end', function () {
                 var filedate= JSON.stringify({ date: new Date() });
 	        var filename = JSON.parse(filedate).date;
-                fs.writeFile('channel/'+name+'/ted-'+filename+'.html', bufferedData, 'text', function(err){
+                fs.writeFile('channel/'+name+'/ted-'+filename+'.html', bufferedData, 'utf8', function(err){
                   if (err) { 
                     throw err;
                   }
