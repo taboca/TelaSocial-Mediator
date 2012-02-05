@@ -65,7 +65,7 @@ function getAndSaveImage(href, name) {
                   if (err) { 
                     throw err;
                   }
-                  console.log('file saved');
+                  console.log('==ok==, file saved');
                 });
            });
        });

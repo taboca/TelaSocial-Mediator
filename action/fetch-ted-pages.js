@@ -80,7 +80,6 @@ function tedPageSave() {
         if(curr) { 
 		this.sendToApp("will pass " + this.channel + " and current HTML = " + curr);
 		this.fetchHTMLPage(this.targetStore, curr);
-		this.renderFetch();
 	} else { 
 		this.hasEnded();
 	} 	
@@ -91,8 +90,13 @@ function tedPageSave() {
             var child1 = new (forever.Monitor)(script,  { max: 1, options: [ url, channel] });
             child1.start();
 	    child1.on('exit', function () { sys.puts(' fetch-save-file.js .. Exited')} );
+            var self= this;
 	    child1.on('stdout', function (data) { 
-		sys.puts(' I think I saved .. ' ) ;
+		if(data.toString().indexOf("==ok==")>-1) { 
+			sys.puts(' I think I saved .. ' ) ;
+			setTimeout(function () { self.renderFetch() },5000);
+			//this.renderFetch();
+		} 
             });
     } 
 	
