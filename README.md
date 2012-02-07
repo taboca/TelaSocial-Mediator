@@ -2,6 +2,14 @@
 
 The mediator application is a NodeJS-based app that acts as a middleware agent between a web client ( our use case is a web kiosk ) and the web ( think feeds .) It uses a configuration file [1] to fetch remote feeds and it keeps it in the disk so it can be served when the client application requests it. In a way it's a subscription as it uses rules from this config file to load the associated feed and save it in the disk from time to time. 
 
+# Installation
+
+* NodeJS ( https://github.com/joyent/node/ ) 
+* npm ( http://npmjs.org/) 
+* Forever ( http://www.telasocial.com/p/d/nodejs/forever.html ) 
+* xml2js ( https://github.com/Leonidas-from-XIV/node-xml2js )
+* ImageMagick ( experiental, for 0.2 ) 
+
 # Launching version 0.1 
 
 sudo node mediator 
