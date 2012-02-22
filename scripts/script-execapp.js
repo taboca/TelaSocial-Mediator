@@ -9,8 +9,8 @@
 {
  "about":"start/checked",
  "function":"execCommand",
- "data":{"argument":"/Applications/Mozilla/Chromeless.app"},
- "to":"start/done"
+ "data":{"argument":"/opt/telasocial-manager/telasocial-runner"},
+ "to":"start"
 }
 
 

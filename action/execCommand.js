@@ -6,14 +6,18 @@ var sys = require("sys"),
     forever = require("forever"),
     qs = require("querystring"),
     util   = require('util'),
-    exec  = require('child_process').spawn,
+    spawn  = require('child_process').spawn,
     out = require('../3rdparty/stdout-2-json/stdout-2-json');
  
 var timer = null; 
 
+// Eventually we can use options (  spawn(arg1,[args]) )
+
 function execCommand(argument) {
 
-  var child = exec('/usr/bin/open',[argument]);
+  // for mac var child = exec('/usr/bin/open',[argument]);
+  var child = spawn(argument);
+  out.send({'result':'ok'});
 
 /*, 
     function (error, stdout, stderr) {
