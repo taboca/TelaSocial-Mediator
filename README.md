@@ -7,7 +7,8 @@ The mediator application is a NodeJS-based app that acts as a middleware agent b
 * NodeJS ( https://github.com/joyent/node/ ) 
 * npm ( http://npmjs.org/) 
 * Forever ( http://www.telasocial.com/p/d/nodejs/forever.html ) 
-* xml2js ( https://github.com/Leonidas-from-XIV/node-xml2js )
+* npm install xml2js ( https://github.com/Leonidas-from-XIV/node-xml2js )
+* npm install ftp-server ( https://github.com/naholyr/node-ftp-server ) 
 * ImageMagick ( experiental, for 0.2 ) 
 
 # Launching version 0.1 
