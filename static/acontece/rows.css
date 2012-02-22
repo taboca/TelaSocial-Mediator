@@ -1,0 +1,38 @@
+    body { 
+ 	font-weight:bold;	
+    } 
+
+    div.pubdate { 
+	float:right;
+	padding:.3em;
+	color:#aaa;
+	-moz-border-radius:15px;
+	font-size:130%;
+	margin:0;
+	margin-right10px;
+    } 
+    
+    div.item { 
+ 	padding:1em;
+	padding-left:0;
+	border-bottom:1px solid #ddd;
+	margin-bottom:8px;
+	color:#aaa;
+    } 
+    div#container { 
+    } 
+    div h3 { 
+	font-size:130%;
+	color:#aaa;
+	padding:.2em;
+	margin:0;
+	margin-top:0em;
+    } 
+    div.desc * { 
+	font-size:16px ! important;
+	margin-bottom:5px;
+	color:#aaa ! important;
+    } 
+
+    div.desc { 
+    } 
