@@ -165,7 +165,7 @@ http.createServer(function (req, res) {
 		res.end(body);
 	};
 
-}).listen(80);
+}).listen(8888);
 
 /* application setup */ 
 setupApp(); 
