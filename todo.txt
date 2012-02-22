@@ -1,3 +1,5 @@
+[telasocial integration] We need to chmod or chown for the ubuntu user, the /var/log/telasocial.log when you want a specific user to launch TelaSocial. 
+
 [design] We can use watchers to drop by day, date or files for realtime updates so they 
 can be dropped to the action reaction events list. This is an approach to make the system
 subject to intervention. 
