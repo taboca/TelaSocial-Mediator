@@ -280,6 +280,19 @@ function executeProcessRule(uuid) {
             sys.puts('Forever process spawn');
 	} 
 
+	// we might need execFlow to check other cases other than the normal pass 'ok'
+
+	if(curr.script.function == "execCommand") { 
+	    script = path.join(__dirname, 'action/execCommand.js');
+            var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.argument ]  });
+            curr.processHandler = child1;
+            child1.start();
+	    child1.on('exit', function () { flog(uuid, ' script exited...')} );
+	    child1.on('stdout', function (data) { execFlow(uuid, data);	});
+	    child1.on('stderr', function (data) { execFlow(uuid, data);	});
+            sys.puts('Forever process spawn');
+	} 
+
 	if (curr.script.function == 'getImageNoCache') { 
 	    script = path.join(__dirname, 'action/fetch-save-image-nocache.js');
             var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
@@ -328,6 +341,7 @@ function execFlow(uuid, streamStdout) {
       flog(uuid, 'result=note;' + payload.data );
       //eventQueue[uuid] = null;
     } 
+
     if(payload.result == 'ok') { 
       flog(uuid, 'result=ok; removing ' + uuid + ' from queue.. ' );
       var toEvent = eventQueue[uuid].script.to; 
@@ -336,6 +350,18 @@ function execFlow(uuid, streamStdout) {
       delete eventQueue[uuid];
       createEvent(toEvent);
     } 
+
+    // We are testing the concept of pass... 
+
+    if(payload.result == 'pass') { 
+      flog(uuid, 'result=pass; removing ' + uuid + ' from queue.. ' );
+      var toEvent = eventQueue[uuid].script.to; 
+      //eventQueue.splice(uuid,1);
+      eventQueue[uuid] = null;
+      delete eventQueue[uuid];
+      createEvent(toEvent);
+    } 
+
     if(payload.result == 'error') { 
       flog(uuid, 'result=error;'+ payload.data +' and removing it from queue.. ' );
       eventQueue[uuid] = null;
