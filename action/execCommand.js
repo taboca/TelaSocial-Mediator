@@ -3,16 +3,19 @@ var sys = require("sys"),
     fs = require("fs")
     url = require("url"),
     http = require("http"),
+    forever = require("forever"),
     qs = require("querystring"),
     util   = require('util'),
-    exec  = require('child_process').exec,
+    exec  = require('child_process').spawn,
     out = require('../3rdparty/stdout-2-json/stdout-2-json');
  
 var timer = null; 
 
 function execCommand(argument) {
 
-  var child = exec(argument, 
+  var child = exec('/usr/bin/open',[argument]);
+
+/*, 
     function (error, stdout, stderr) {
       console.log('stdout: ' + stdout);
       console.log('stderr: ' + stderr);
@@ -20,6 +23,7 @@ function execCommand(argument) {
         console.log('exec error: ' + error);
       }
   });
+*/
 
 }
 
