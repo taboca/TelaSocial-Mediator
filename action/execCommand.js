@@ -32,6 +32,6 @@ function execCommand(argument) {
 }
 
 out.send({'result':'note', 'data':'Will open + '+ process.argv[2] } );
-timer = setTimeout(function () { out.send({'result':'expired'}) },15000); 
+//timer = setTimeout(function () { out.send({'result':'expired'}) },15000); 
 execCommand(process.argv[2]);
 
