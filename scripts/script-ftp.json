@@ -1,0 +1,20 @@
+{
+"rules": [
+{
+ "about":"start",
+ "function":"daemon-ftp",
+ "data":{"value":250000},
+ "force":"start/ftp"
+}
+,
+{
+ "about":"start/ftp",
+ "function":"timer",
+ "data":{"value":250000},
+ "to":"start/ftp"
+}
+
+]
+
+}
+
