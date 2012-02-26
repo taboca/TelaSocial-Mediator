@@ -36,6 +36,7 @@
 
 var sys = require("sys"),
     fs = require("fs")
+    path = require("path")
     forever = require('forever'),
     xml2js = require('xml2js');
 
