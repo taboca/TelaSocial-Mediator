@@ -221,7 +221,7 @@ function proxyNodeStaticForControl(request, response, dir) {
 function run() { 
     for(var k in eventQueue) { 
 	var currentEvent = eventQueue[k];
-        if(currentEvent != null) { 
+        if(typeof currentEvent != 'undefined') { 
         sys.puts('Checking event:' + currentEvent.uuid);
         if(currentEvent.executionContext == 0) { 
           var kk = k;
@@ -254,6 +254,11 @@ function executeProcessRule(uuid) {
             setTimeout(function () { 
               execFlow(uuid, '=>{"result":"ok"}<=');
             },parseInt(curr.script.data.value)); 
+	} 
+
+        if(curr.script.function == "script") { 
+            execFlow(uuid, '=>{"result":"ok"}<=');
+            loadScript(curr.script.data.value, curr.script.about);
 	} 
 
         if(curr.script.function == "daemon-ftp") { 
@@ -343,12 +348,16 @@ function execFlow(uuid, streamStdout) {
     } 
 
     if(payload.result == 'ok') { 
-      flog(uuid, 'result=ok; removing ' + uuid + ' from queue.. ' );
-      var toEvent = eventQueue[uuid].script.to; 
-      //eventQueue.splice(uuid,1);
+      var toEvent = null; 
+      if(typeof eventQueue[uuid].script.to != 'undefined') { 
+        toEvent = eventQueue[uuid].script.to; 
+      } 
       eventQueue[uuid] = null;
       delete eventQueue[uuid];
-      createEvent(toEvent);
+      flog(uuid, 'result=ok; removing ' + uuid + ' from queue.. ' );
+      if(toEvent != null) { 
+	  createEvent(toEvent);
+      } 
     } 
 
     // We are testing the concept of pass... 
@@ -410,18 +419,22 @@ function loadScript(filename, namespace) {
  	    for(k in listJSONRules) { 
                 var currScript = listJSONRules[k];
                 var stateAbout = currScript.about;
+                var stateTo = currScript.to;
 		currScript.about = namespace +"/"+ stateAbout;
-		currScript.to = namespace +"/"+ stateAbout;
-                
+
+                if(typeof currScript.to != 'undefined') { 
+			currScript.to = namespace +"/"+ stateTo;
+		} 
+               
 		if(currScript.about == namespace + '/start') { 
 		   var currentEvent = new eventRuleObject(); 
                    currentEvent.script = currScript;
 		   eventQueue[currentEvent.uuid] = currentEvent; 
                    sys.puts('Inserting event..' + currentEvent.uuid);
+                   run(); 
 		}  
 	        localRules[currScript.about] = currScript;
 	    } 
-            run(); 
         });
 } 
 
