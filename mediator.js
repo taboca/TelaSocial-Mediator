@@ -396,6 +396,10 @@ function setupApp() {
   if(process.argv[2]) { 
       filename = process.argv[2];
   } 
+  loadScript(filename,"init");
+} 
+
+function loadScript(filename, namespace) { 
 	fs.readFile(filename, "binary", function(err, file) {  
             if(err) {  
 		sys.puts('Error:configScript:' + err);
@@ -404,26 +408,23 @@ function setupApp() {
             data = JSON.parse(file); 
 	    var listJSONRules = data.rules;
  	    for(k in listJSONRules) { 
-	
-		/* The idea here is to insert some events so we get things started. 
-                   we do this via inserting, in the event queue, all the events
-                   with about 'states' start. And for all the rest we keep them in the 
-                   script ( localRules ) list.  */
-
                 var currScript = listJSONRules[k];
-		if(currScript.about == 'start') { 
+                var stateAbout = currScript.about;
+		currScript.about = namespace +"/"+ stateAbout;
+		currScript.to = namespace +"/"+ stateAbout;
+                
+		if(currScript.about == namespace + '/start') { 
 		   var currentEvent = new eventRuleObject(); 
                    currentEvent.script = currScript;
 		   eventQueue[currentEvent.uuid] = currentEvent; 
                    sys.puts('Inserting event..' + currentEvent.uuid);
 		}  
-	        localRules[currScript.about] = listJSONRules[k];
+	        localRules[currScript.about] = currScript;
 	    } 
-            // Now that we have all the basic rules inserted as events, 
-            // we kick start things..
             run(); 
         });
 } 
+
 
 console.log('Server running at http://127.0.0.1:8888/');
 
