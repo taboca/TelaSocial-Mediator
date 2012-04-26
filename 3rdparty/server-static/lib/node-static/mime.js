@@ -42,6 +42,7 @@ this.contentTypes = {
   "jar": "application/java-archive",
   "jpeg": "image/jpeg",
   "jpg": "image/jpeg",
+  "ogv": "video/ogg",
   "js": "text/javascript",
   "json": "application/json",
   "latex": "application/x-latex",
