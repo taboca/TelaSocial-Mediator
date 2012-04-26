@@ -1,0 +1,13 @@
+{
+"rules": [
+
+{
+ "about":"start",
+ "function":"script",
+ "data":{"value":"./scripts/script-none.json"}
+}
+
+]
+
+}
+

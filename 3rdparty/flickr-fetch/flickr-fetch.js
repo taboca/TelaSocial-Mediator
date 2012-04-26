@@ -62,8 +62,13 @@ this.flickrEvent = function () {
           // Use this to inspect everything JSON from this XML 
           //console.log(sys.inspect(result, false, null))
 		for(var i=0;i<result.entry.length;i++) { 
-          		var linkImage = result.entry[i].link[1].href;
-			that.listImages.push(linkImage);
+			for(var j=0;j<result.entry[i].link.length;j++) { 
+				var currLink = result.entry[i].link[j];
+				if(currLink.rel=="enclosure") { 
+          				var linkImage = result.entry[i].link[1].href;
+					that.listImages.push(linkImage);
+				} 
+			} 
 		} 
 		that.renderFetch(); 
 	});

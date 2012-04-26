@@ -77,7 +77,7 @@ this.proxyStore = function (req, res) {
       while(file = files.pop()) { 
         missing--;
 	if(file.indexOf("image-")>-1) { 
-	  var uriString = '<entry><link rel="enclosure" type="image/jpeg" href="http://localhost/channel/store/'+param+'/'+file+'" /></entry>'; 
+	  var uriString = '<entry><link rel="enclosure" type="image/jpeg" href="http://localhost:8888/channel/store/'+param+'/'+file+'" /></entry>'; 
 /*
           var sep = ",";
           if(missing == total-1) { 

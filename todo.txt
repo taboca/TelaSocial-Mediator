@@ -1,3 +1,26 @@
+Recursive App Execution Engine
+
+Parses a script file and maintains its list in the eventsStore["scriptfilenamespace"] 
+
+eventsStore["start"] 
+
+function scriptLoad will push to the eventsStore["start/something"]
+
+Real use case of EESC Node Mediator
+
+* Fetch Flickr Images = { 
+   http://location/rss.xml
+   store/channel/flickrimages
+   store/channel/flickrimages/default
+   
+play.json
+
+flickr * 1min 
+   
+
+[bug/feature] we need to create a temporary "directory store" mediator interface. This function
+will make sure the directory exists for an operation. 
+
 [telasocial integration] We need to chmod or chown for the ubuntu user, the /var/log/telasocial.log when you want a specific user to launch TelaSocial. 
 
 [design] We can use watchers to drop by day, date or files for realtime updates so they 
@@ -5,7 +28,6 @@ can be dropped to the action reaction events list. This is an approach to make t
 subject to intervention. 
 
 [bug] Too many open files, when testing the fetch to the fetch-ted script
-[bug] The flickr save won't save if the local store directory is not there. Maybe we need a solution that can maintain these directories and perhaps history associated with them.
 
 [bug] With the flickr RSS feed sometimes it picks an URL that does not look like an image,
     like the creative commons licensing stuff. Test with script-flickr-save.json

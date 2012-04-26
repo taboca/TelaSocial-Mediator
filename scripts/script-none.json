@@ -4,7 +4,7 @@
 {
  "about":"start",
  "function":"timer",
- "data":{"value":250000},
+ "data":{"value":5000},
  "to":"start"
 }
 

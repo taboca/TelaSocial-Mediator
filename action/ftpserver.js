@@ -4,7 +4,7 @@
 
 var ftpd = require('../3rdparty/nodeftpd/ftpd.js')
 
-var server = ftpd.createServer("10.0.0.3", "./channel/store/ftpserver");
+var server = ftpd.createServer("127.0.0.1", "./channel/store/ftpserver");
 
 //ftpd.fsOptions.root = './channel/store/ftpserver';
 //ftpd.listen(7001, '10.0.0.3');

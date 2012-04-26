@@ -7,6 +7,7 @@ var sys = require("sys"),
     qs = require("querystring"),
     util   = require('util'),
     spawn  = require('child_process').spawn,
+    exec  = require('child_process').exec,
     out = require('../3rdparty/stdout-2-json/stdout-2-json');
  
 var timer = null; 
@@ -15,8 +16,9 @@ var timer = null;
 
 function execCommand(argument) {
 
-  // for mac var child = exec('/usr/bin/open',[argument]);
-  var child = spawn(argument);
+  var child = exec('/usr/bin/open',[argument]);
+ 
+  //var child = spawn('/usr/bin/open', [argument, '--args','-P test', '-no-remote']);
   out.send({'result':'ok'});
 
 /*, 
@@ -28,6 +30,19 @@ function execCommand(argument) {
       }
   });
 */
+
+child.stdout.on('data', function (data) {
+  console.log('stdout: ' + data);
+});
+
+child.stderr.on('data', function (data) {
+  console.log('stderr: ' + data);
+});
+
+child.on('exit', function (code) {
+  console.log('child process exited with code ' + code);
+});
+
 
 }
 
