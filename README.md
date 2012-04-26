@@ -18,6 +18,8 @@ sudo node mediator
 Point your browser to: 
 
     http://localhost/static/index.html
+   
+    If you want to launch a ./static/index.html app you need to install yourself
 
 ## The concept of channel 
 
