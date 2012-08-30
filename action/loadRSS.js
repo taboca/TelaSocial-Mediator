@@ -13,10 +13,11 @@ function ruleLoadSaveRSS(name, href) {
 	var buffer = "";
 	var host = url.parse(href).host;
 	var path = url.parse(href).pathname;
+	var search = url.parse(href).search;
         var options = {
             host: host,
             port: 80,
-            path: path
+            path: path+search
         };
 
    var request = http.get(options);
