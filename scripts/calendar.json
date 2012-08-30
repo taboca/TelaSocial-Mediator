@@ -3,7 +3,7 @@
 
 {
  "about":"start",
- "function":"saveICAL",
+ "function":"loadICAL",
  "expiretimer":10000, 
  "data":{"value":"http://www.google.com/calendar/ical/8osmf16hks86iaamrvo31hnq7s%40group.calendar.google.com/public/basic.ics","about":"calendario"}, 
  "to":"next"
