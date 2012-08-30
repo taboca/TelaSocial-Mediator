@@ -4,7 +4,7 @@
 {
  "about":"start",
  "function":"script",
- "data":{"value":"./scripts/script-none.json"}
+ "data":{"value":"./scripts/calendar.json"}
 }
 
 ]
