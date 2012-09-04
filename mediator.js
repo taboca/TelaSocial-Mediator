@@ -117,7 +117,7 @@ var urlMap = {
 
         /* We will need to work out this "grade" here so these 
            stores can be arguments.. */
-	'send_store_item' : function (req, res, json) {
+	'send_feed_item' : function (req, res, json) {
 		blendstore.appendInStore( "grade", json );
 		res.simpleJSON(200, {});
 	}
