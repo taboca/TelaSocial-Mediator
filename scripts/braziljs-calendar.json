@@ -1,0 +1,22 @@
+{
+"rules": [
+
+{
+ "about":"start",
+ "function":"loadICAL",
+ "expiretimer":10000, 
+ "data":{"value":"http://www.google.com/calendar/ical/8osmf16hks86iaamrvo31hnq7s%40group.calendar.google.com/public/basic.ics","about":"calendario"}, 
+ "to":"next"
+}, 
+{
+ "about":"next",
+ "function":"timer",
+ "data":{"value":40000},
+ "to":"start"
+}
+
+
+]
+
+}
+

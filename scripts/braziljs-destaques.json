@@ -1,0 +1,21 @@
+{
+"rules": [
+
+{
+ "about":"start",
+ "function":"saveRSS",
+ "expiretimer":10000, 
+ "data":{"value":"http://twitter.com/statuses/user_timeline/133252196.rss","about":"destaques"},
+  "to":"next"
+}, 
+{
+ "about":"next",
+ "function":"timer",
+ "data":{"value":40000},
+ "to":"start"
+}
+
+]
+
+}
+
