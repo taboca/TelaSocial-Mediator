@@ -16,8 +16,16 @@ var timer = null;
 
 function execCommand(argument) {
 
-  //var child = exec('/usr/bin/open',[argument]);
-  var child = exec([argument]);
+  console.log(argument);
+
+  a=argument.split(',');
+  var params = new Array(); 
+  for(var i=1;i<a.length;i++) { 
+	params.push(a[i]);
+  } 
+
+  var child = exec(a[0],params);
+  //var child = exec(program, [argument]);
  
   //var child = spawn('/usr/bin/open', [argument, '--args','-P test', '-no-remote']);
   out.send({'result':'ok'});
