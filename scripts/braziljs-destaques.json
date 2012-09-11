@@ -5,8 +5,7 @@
  "about":"start",
  "function":"saveRSS",
  "expiretimer":10000, 
- "data":{"value":"http://twitter.com/statuses/user_timeline/133252196.rss","about":"destaques"},
-  "to":"next"
+ "data":{"value":"http://www.eesc.usp.br/portal/index.php?option=com_ninjarsssyndicator&feed_id=13&format=raw","about":"destaques"}, "to":"next"
 }, 
 {
  "about":"next",
