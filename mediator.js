@@ -388,13 +388,16 @@ function execFlow(uuid, streamStdout) {
       eventQueue[uuid] = null;
       delete eventQueue[uuid];
     } 
+
     if(payload.result == 'expired') { 
       flog(uuid,'result=expired; will kill process... ' );
-      if(eventQueue[uuid].executionContext==1) { 
+      if(eventQueue[uuid]) { 
+        if(eventQueue[uuid].executionContext==1) { 
          eventQueue[uuid].processHandler.stop();
          eventQueue[uuid] = null;
          delete eventQueue[uuid];
-      } 
+        } 
+      }
     } 
   }
 } 
