@@ -13,15 +13,22 @@ function ruleLoadSaveRSS(name, href) {
 	var buffer = "";
 	var host = url.parse(href).host;
 	var path = url.parse(href).pathname;
-	var search = url.parse(href).search;
+	var search ='';
+	var searchProbe = url.parse(href).search;
+	if(typeof searchProbe != 'undefined') { 
+		search=searchProbe;	
+	} 
         var options = {
             host: host,
             port: 80,
+            method: 'GET',
             path: path+search
         };
 
-   var request = http.get(options);
    var strOut = "";
+   var request = http.request(options);
+   request.end();
+
    // This is network error
    request.on('error', function (e) {
              out.senderr({'result':'error','type':'offline','data':e} );

@@ -5,7 +5,7 @@
  "about":"start",
  "function":"saveRSS",
  "expiretimer":10000, 
- "data":{"value":"http://g1.globo.com/dynamo/ciencia-e-saude/rss2.xml","about":"destaques"}, "to":"next"
+ "data":{"value":"http://www.pti.org.br/feed","about":"destaques"}, "to":"next"
 }, 
 {
  "about":"next",
