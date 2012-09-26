@@ -3,9 +3,9 @@
 
 {
  "about":"start",
- "function":"loadTXT",
+ "function":"spawnJS",
  "expiretimer":10000, 
- "data":{"value":"http://eventos.pti.org.br/reservas_ts.php?dia=22/09/2012&sala=170","about":"sala-florestan-3"}, "to":"next"
+ "data":{"value":"pti-eventos.js","about":"salas-eventos-pti"}, "to":"next"
 }, 
 {
  "about":"next",
