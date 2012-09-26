@@ -231,8 +231,8 @@ function executeProcessRule(uuid) {
             sys.puts('Forever process spawn');
 	} 
 
-	if(curr.script.function == "loadICAL") { 
-	    script = path.join(__dirname, 'action/loadICAL.js');
+	if(curr.script.function == "loadTXT") { 
+	    script = path.join(__dirname, 'action/loadTXT.js');
             var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
             curr.processHandler = child1;
             child1.start();
