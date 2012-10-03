@@ -9,6 +9,8 @@ var sys = require("sys"),
  
 var timer = null; 
 
+var URL ='http://eventos.pti.org.br/_FIXME_reservs.php?dia=';
+
 function initApp(name) {
 
 	var buffer = "";
@@ -18,23 +20,24 @@ function initApp(name) {
 	var cM = currDate.getMonth()+1;
 	var cY = currDate.getFullYear();
 
-        var options = [
-		{
+
+  var options = [
+                {
             method: 'GET',
-            uri:'http:///reservas_ts.php?dia='+cD+'/'+cM+'/'+cY+'&sala=167' 
-		},
-		{
+            uri:URL+cD+'/'+cM+'/'+cY+'&sala=167'
+                },
+                {
             method: 'GET',
-            uri:'http:///reservas_ts.php?dia='+cD+'/'+cM+'/'+cY+'&sala=168' 
-		},
-		{
+            uri:URL+cD+'/'+cM+'/'+cY+'&sala=168'
+                },
+                {
             method: 'GET',
-            uri:'http:///reservas_ts.php?dia='+cD+'/'+cM+'/'+cY+'&sala=169' 
-		},
-		{
+            uri:URL+cD+'/'+cM+'/'+cY+'&sala=169'
+                },
+                {
             method: 'GET',
-            uri:'http:///reservas_ts.php?dia='+cD+'/'+cM+'/'+cY+'&sala=170' 
-		}
+            uri:'http://eventos.pti.org.br/reservas_ts.php?dia='+cD+'/'+cM+'/'+cY+'&sala=170'
+                }
 
         ];
 
