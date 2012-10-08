@@ -3,13 +3,15 @@ var sys = require("sys"),
     fs = require("fs")
     url = require("url"),
     http = require("http"),
+    config = require('../config.js'),
     httpAgent = require('http-agent'),
     qs = require("querystring"),
     out = require('../3rdparty/stdout-2-json/stdout-2-json');
  
 var timer = null; 
 
-var URL ='http://eventos.pti.org.br/_FIXME_reservs.php?dia=';
+console.log(config);
+var URL = config.url_eventos_pti;
 
 function initApp(name) {
 
@@ -36,7 +38,7 @@ function initApp(name) {
                 },
                 {
             method: 'GET',
-            uri:'http://eventos.pti.org.br/reservas_ts.php?dia='+cD+'/'+cM+'/'+cY+'&sala=170'
+            uri:URL+cD+'/'+cM+'/'+cY+'&sala=170'
                 }
 
         ];

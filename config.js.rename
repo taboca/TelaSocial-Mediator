@@ -1,0 +1,11 @@
+var config = {
+        'url_eventos_pti':'', 
+ 	'twit': { 
+    consumer_key:         'kmMgA1BHTR8BQ'
+  , consumer_secret:      'zmv4HeXUcrjAQybeSxYV7qTSTUDmRBJkwA'
+  , access_token:         '2-HNpAZLMNZuaUT57ebAIuXlgMPT98N5cW5l2TCs17g'
+  , access_token_secret:  'vlTJecBrS4f8asvs1sJtimujo3Zs5X11AI'
+        } 
+ };
+
+module.exports = config;

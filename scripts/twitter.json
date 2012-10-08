@@ -5,12 +5,12 @@
  "about":"start",
  "function":"spawnJS",
  "expiretimer":10000, 
- "data":{"value":"mergeJSON.js","about":"calendario"}, "to":"next"
+ "data":{"value":"mergeTwitter.js","about":"twitter"}, "to":"next"
 }, 
 {
  "about":"next",
  "function":"timer",
- "data":{"value":760000},
+ "data":{"value":500000},
  "to":"start"
 }
 
