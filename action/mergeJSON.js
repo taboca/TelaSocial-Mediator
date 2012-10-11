@@ -24,23 +24,23 @@ function initApp(name) {
 
 
   var options = [
-                {
+             {
             method: 'GET',
-            uri:URL+cD+'/'+cM+'/'+cY+'&sala=167'
-                },
-                {
-            method: 'GET',
-            uri:URL+cD+'/'+cM+'/'+cY+'&sala=168'
+            uri:URL+cD+'/'+cM+'/'+cY+'&sala=170'
                 },
                 {
             method: 'GET',
             uri:URL+cD+'/'+cM+'/'+cY+'&sala=169'
                 },
+                 {
+            method: 'GET',
+            uri:URL+cD+'/'+cM+'/'+cY+'&sala=168'
+                },
                 {
             method: 'GET',
-            uri:URL+cD+'/'+cM+'/'+cY+'&sala=170'
+            uri:URL+cD+'/'+cM+'/'+cY+'&sala=167'
                 }
-
+  
         ];
 
    var strOut = "";

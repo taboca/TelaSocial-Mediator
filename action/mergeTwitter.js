@@ -50,9 +50,9 @@ stream.on('tweet', function (tweet) {
       
 */
 //
-//  filter the twitter public stream by the word 'mango'. 
+//  filter the twitter public stream by the word 'go'. 
 //
-var stream = T.stream('statuses/filter', { track: 'latinoware' })
+var stream = T.stream('statuses/filter', { track: 'telasocial' })
 stream.on('tweet', function (tweet) {
   console.log(tweet);
 
