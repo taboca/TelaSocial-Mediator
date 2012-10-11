@@ -131,7 +131,8 @@ var urlMap = {
 
 http.createServer(function (req, res) {
 	// Try to find the handler or trigger a 404
-        sys.puts("argument from ajax " + req.url);
+        sys.puts("argument from ajax " + req.url + " from " + req.connection.remoteAddress);
+
 	var firstArgument = req.url.split('/')[1];
 	var param = firstArgument;
 	if(firstArgument.indexOf("?")>-1) { 
