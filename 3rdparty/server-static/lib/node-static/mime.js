@@ -43,6 +43,7 @@ this.contentTypes = {
   "jpeg": "image/jpeg",
   "jpg": "image/jpeg",
   "ogv": "video/ogg",
+  "webm": "video/webm",
   "js": "text/javascript",
   "json": "application/json",
   "latex": "application/x-latex",

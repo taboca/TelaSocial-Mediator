@@ -25,7 +25,9 @@ function ruleLoadSaveRSS(name, href) {
             path: path+search
         };
 
+ 
    var strOut = "";
+   var accept = false;
    var request = http.request(options);
    request.end();
 
@@ -36,9 +38,10 @@ function ruleLoadSaveRSS(name, href) {
    request.on('response', function (res) {
       var strOut = "";
      res.on('data', function (buffer) {
-           strOut += buffer;
+              strOut += buffer;
       });
       res.on('end', function () {
+
           fs.writeFile('channel/'+name+'.xml', strOut, 'utf8', function(err){
            if (err) { 
              out.senderr({'result':'error', 'payload': err});
