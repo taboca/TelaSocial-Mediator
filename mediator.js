@@ -435,7 +435,8 @@ function setupApp() {
 } 
 
 function loadScript(filename, namespace) { 
-	fs.readFile(filename, "binary", function(err, file) {  
+        var configScript = path.join(__dirname, filename);
+	fs.readFile( configScript, "binary", function(err, file) {  
             if(err) {  
 		sys.puts('Error:configScript:' + err);
                 return;  
