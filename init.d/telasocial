@@ -2,7 +2,7 @@
 # Ref article http://labs.telasocial.com/nodejs-forever-daemon/
 
 ### BEGIN INIT INFO
-# Provides:             telasocial2
+# Provides:             telasocial
 # Required-Start:
 # Required-Stop:
 # Default-Start:        2 3 4 5
