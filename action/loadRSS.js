@@ -37,12 +37,15 @@ function ruleLoadSaveRSS(name, href) {
    });
    request.on('response', function (res) {
       var strOut = "";
-     res.on('data', function (buffer) {
+
+      res.setEncoding('binary')
+
+      res.on('data', function (buffer) {
               strOut += buffer;
       });
       res.on('end', function () {
 
-          fs.writeFile('channel/'+name+'.xml', strOut, 'utf8', function(err){
+          fs.writeFile('channel/'+name+'.xml', strOut, 'binary', function(err){
            if (err) { 
              out.senderr({'result':'error', 'payload': err});
              throw err; 
