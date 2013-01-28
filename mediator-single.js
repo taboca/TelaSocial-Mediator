@@ -155,7 +155,7 @@ function executeProcessRule(uuid) {
 
 	if(curr.script.function == "execCommand") { 
 	    script = path.join(__dirname, 'action/execCommand.js');
-        var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.argument ]  });
+        var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.argument, gLocalAppDir ]  });
         curr.processHandler = child1;
         child1.start();
 	    child1.on('exit', function () { flog(uuid, ' script exited...')} );
