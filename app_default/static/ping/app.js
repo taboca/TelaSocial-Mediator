@@ -77,7 +77,12 @@ var app =  {
 			k.className="item";
 			var kk = document.createElement('div');
 			kk.className="itemshadow";
-			k.innerHTML = this.tweetQueue.pop();
+
+
+			var tStr = this.tweetQueue.pop();
+
+			k.innerHTML = tStr.replace(/from.*\:/g,'Ping stat from: X.Y.Z.K'); 
+
 			//this.element.insertBefore(k, this.element.firstChild);
 			this.element.appendChild(k);
 			this.element.appendChild(kk);
@@ -100,7 +105,7 @@ var app =  {
 
 				this.total--;
 			} 
-			setTimeout( function () { self.render() }, 3000);
+			setTimeout( function () { self.render() }, 2000);
 		} 
 	},
 
@@ -119,7 +124,7 @@ var app =  {
 
           if(cc<5) { 
             var out = doFilter(this); 
-            self.tweetQueue.push( '<div class=""><h3>'+out.title+'</h3></div>')
+            self.tweetQueue.push( out.title)
           } 
           cc++;
         });
