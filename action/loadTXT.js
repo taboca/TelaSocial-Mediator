@@ -1,5 +1,5 @@
 var sys = require("sys"),
-    path = require("path"),
+    pathFS = require("path"),
     fs = require("fs")
     url = require("url"),
     http = require("http"),
@@ -8,7 +8,7 @@ var sys = require("sys"),
  
 var timer = null; 
 
-function ruleLoadSaveRSS(name, href) {
+function ruleLoadSaveRSS(name, href, appDir) {
 
 	var buffer = "";
 	var host = url.parse(href).host;
@@ -19,11 +19,11 @@ function ruleLoadSaveRSS(name, href) {
 		search=searchProbe;	
 	} 
  
-        var options = {
-            host: host,
-            port: 80,
-            path: path+search
-        };
+    var options = {
+        host: host,
+        port: 80,
+        path: path+search
+    };
 
    var request = http.get(options);
    var strOut = "";
@@ -37,7 +37,8 @@ function ruleLoadSaveRSS(name, href) {
            strOut += buffer;
       });
       res.on('end', function () {
-          fs.writeFile('channel/'+name+'.txt', strOut, 'utf8', function(err){
+          var filePath = pathFS.join( appPath, 'channel', name+'.txt');
+          fs.writeFile(filePath, strOut, 'utf8', function(err){
            if (err) { 
              out.senderr({'result':'error', 'payload': err});
              throw err; 
@@ -52,5 +53,5 @@ function ruleLoadSaveRSS(name, href) {
 
 out.send({'result':'note', 'data':'Will open + '+ process.argv[3] } );
 timer = setTimeout(function () { out.send({'result':'expired'}) },15000); 
-ruleLoadSaveRSS(process.argv[2], process.argv[3]);
+ruleLoadSaveRSS(process.argv[2], process.argv[3], process.argv[4]);
 

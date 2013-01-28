@@ -1,5 +1,5 @@
 var sys = require("sys"),
-    path = require("path"),
+    pathFS = require("path"),
     fs = require("fs")
     url = require("url"),
     http = require("http"),
@@ -11,7 +11,7 @@ var sys = require("sys"),
  
 var timer = null; 
 
-function initApp(name) {
+function initApp(name, appPath) {
 
 var T = new Twit(config.twit);
 

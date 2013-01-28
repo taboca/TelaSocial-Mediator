@@ -1,5 +1,5 @@
 var sys = require("sys"),
-    path = require("path"),
+    pathFS = require("path"),
     fs = require("fs")
     url = require("url"),
     http = require("http"),
@@ -14,7 +14,7 @@ var timer = null;
 
 // Eventually we can use options (  spawn(arg1,[args]) )
 
-function execCommand(argument) {
+function execCommand(argument, appPath) {
 
   console.log(argument);
 
@@ -24,7 +24,9 @@ function execCommand(argument) {
 	params.push(a[i]);
   } 
 
-  var child = exec(a[0],params);
+  var filePath = pathFS.join( appPath, a[0]);
+  var child = exec(filePath,params);
+
   //var child = exec(program, [argument]);
  
   //var child = spawn('/usr/bin/open', [argument, '--args','-P test', '-no-remote']);
@@ -52,10 +54,9 @@ child.on('exit', function (code) {
   console.log('child process exited with code ' + code);
 });
 
-
 }
 
-out.send({'result':'note', 'data':'Will open + '+ process.argv[2] } );
+out.send({'result':'note', 'data':'Will open + '+ process.argv[2] + ' in ' + process.argv[3] } );
 //timer = setTimeout(function () { out.send({'result':'expired'}) },15000); 
-execCommand(process.argv[2]);
+execCommand(process.argv[2], process.argv[3]);
 
