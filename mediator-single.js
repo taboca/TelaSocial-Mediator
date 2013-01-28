@@ -69,70 +69,8 @@ function eventRuleObject() {
     this.processHandler = null; 
 } 
 
-var urlMap = {
-	
-        'static': function (req, res) { 
-		proxyNodeStatic(req,res);
-  		}, 
-
-        'channel': function (req, res) { 
-		proxyNodeStatic(req,res);
-  		}, 
-
-        // remove
-        'control': function (req, res) { 
-		proxyNodeStaticForControl(req,res);
-  		}, 
-
-        // remove
-        'channel-store': function (req, res) { 
-		blendstore.proxyStore(req,res);
-  		}, 
- 
-        //remove 
-        'channel-store-images': function (req, res) { 
-		blendImagesFeed.proxyStore(req,res);
-  		}, 
-
-        // remove
-        'proxy': function (req, res) { 
-		proxyDynamic(req,res);
-  		}, 
-
-        //remove
-        'proxysave': function (req, res) { 
-		proxySave(req,res);
-  		}, 
-
-        // remove
-        /* We will need to work out this "grade" here so these 
-           stores can be arguments.. */
-    	'send_feed_item' : function (req, res, json) {
-    		blendstore.appendInStore( "grade", json );
-    		res.simpleJSON(200, {});
-    	}
-
-}
-
 /* application setup */ 
 setupApp(); 
-
-var NOT_FOUND = "Not Found\n";
-
-function notFound(req, res) {
-  res.writeHead(404, {'Content-Type': 'text/plain'});
-  res.write(NOT_FOUND);
-  res.end();
-}
-
-/* Multi purpose static local web server 
-   -- 
-   This serves local pages 
-
-  // Using CloudHead node static 
-  // https://github.com/cloudhead/node-static
-  //var file = new(static.Server)('.', { cache: 7200, headers: {'X-Hello':'World!'} });
-*/
 
 function run() { 
     for(var k in eventQueue) { 
