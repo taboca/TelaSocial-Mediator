@@ -1,0 +1,20 @@
+{
+"rules": [
+
+{ "about":"start",
+ "function":"timer",
+ "data":{"value":1000},
+ "to":"start/checked"
+},
+{
+ "about":"start/checked",
+ "function":"execCommandStoreOut",
+ "data":{"argument":["./scripts/ping/index.sh"]},
+ "to":"start"
+}
+
+
+]
+
+}
+

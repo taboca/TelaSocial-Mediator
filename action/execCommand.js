@@ -27,23 +27,11 @@ function execCommand(argument, appPath) {
   var filePath = pathFS.join( appPath, a[0]);
   var child = exec(filePath,params);
 
-  //var child = exec(program, [argument]);
+  var outBuffer = '';
  
-  //var child = spawn('/usr/bin/open', [argument, '--args','-P test', '-no-remote']);
-  out.send({'result':'ok'});
-
-/*, 
-    function (error, stdout, stderr) {
-      console.log('stdout: ' + stdout);
-      console.log('stderr: ' + stderr);
-      if (error !== null) {
-        console.log('exec error: ' + error);
-      }
-  });
-*/
-
 child.stdout.on('data', function (data) {
-  console.log('stdout: ' + data);
+  console.log('stdout : ' + data);
+  outBuffer=data;
 });
 
 child.stderr.on('data', function (data) {
@@ -52,6 +40,8 @@ child.stderr.on('data', function (data) {
 
 child.on('exit', function (code) {
   console.log('child process exited with code ' + code);
+  out.send({'result':'store','data':outBuffer});
+  out.send({'result':'ok'});
 });
 
 }
