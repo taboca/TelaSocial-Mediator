@@ -153,6 +153,18 @@ function executeProcessRule(uuid) {
 
 	// we might need execFlow to check other cases other than the normal pass 'ok'
 
+	if(curr.script.function == "execCommandStoreOut") { 
+	    script = path.join(__dirname, 'action/execCommandPing.js');
+        var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.argument, gLocalAppDir ]  });
+        curr.processHandler = child1;
+        child1.start();
+	    child1.on('exit', function () { flog(uuid, ' script exited...')} );
+	    child1.on('stdout', function (data) { execFlow(uuid, data);	});
+	    child1.on('stderr', function (data) { execFlow(uuid, data);	});
+        sys.puts('Forever process spawn');
+	} 
+
+
 	if(curr.script.function == "execCommand") { 
 	    script = path.join(__dirname, 'action/execCommand.js');
         var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.argument, gLocalAppDir ]  });
