@@ -1,0 +1,65 @@
+@import url("http://fonts.googleapis.com/css?family=Varela");
+@import url("http://fonts.googleapis.com/css?family=Asap");
+
+
+html, body { margin:0; padding:0; color:white; overflow:hidden } 
+
+* { 
+  font-family: 'Asap', sans-serif;
+} 
+
+body { 
+  width:1920px; height:1080px;
+  background: linear-gradient(180deg, rgba(100,150,250,1),  rgba(200,200,250,1), rgba(50,110,220,1));
+  background: -moz-radial-gradient( 50% 50%, circle, rgba(0,50,250,1), black);
+
+} 
+
+.viewport2 { 
+  width:1920px; height:1080px;
+} 
+
+.datetime  { 
+  font-size:200%;
+  font-weight:bold;
+  color:white;
+  text-align:right;
+  text-shadow:3px 3px 3px black;
+} 
+
+/*
+
+*/
+.inner { 
+  margin-right:20px; 
+  margin-top:20px;
+  border-radius:25px;
+  overflow:hidden;
+} 
+
+/*
+  background: linear-gradient(180deg, rgba(0,0,0,.5), rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0));
+  */
+.inner3 { 
+  margin-right:20px; 
+  margin-top:20px;
+  border-radius:25px;
+  overflow:hidden;
+} 
+
+.inner4 { 
+  margin-right:20px; 
+  margin-top:20px;
+  border-radius:25px;
+  overflow:hidden;
+} 
+
+.inner2 { 
+  margin-right:0;
+  margin-top:20px;
+  background-color:rgba(255,255,255,1);
+  border-radius:25px;
+  border-top-right-radius:0;
+  border-bottom-right-radius:0;
+  overflow:hidden;
+} 

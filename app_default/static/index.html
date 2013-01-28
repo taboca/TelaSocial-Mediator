@@ -1,16 +1,41 @@
 <html>
 <head>
-<style>
-html, body { margin:0; padding:0; background-color:white } 
-div { 
-   -moz-transform:scale(.333); -moz-transform-origin:0 0;
-   -webkit-transform:scale(.34); -webkit-transform-origin:0 0;
-} 
-</style>
+    <meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link media="screen, projection" type="text/css" href="lib/hdgrid.css" rel="stylesheet">
+    <link media="screen, projection" type="text/css" href="lib/base.css" rel="stylesheet">
+    <link media="screen, projection" type="text/css" href="lib/tagvisor.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <script type="text/javascript" src="https://www.google.com/jsapi">
+    </script>
+    <script type="text/javascript">
+      google.load("webfont", "1");
+    </script>
+<script src="vendor/jquery-min.js"></script>
+<script src="const.js"></script>
+<!--
+<script src="lib/tagvisor.js"></script>
+-->
+<script src="lib/choreographer.js"></script>
+<script src="index.js"></script>
+<script src="zoom.js"></script>
+<script>
+	function start() { 
+		tv.setup(document);
+	} 
+</script>
 </head>
-<body>
-<div >
-<iframe src='index-app.html?mode=tv' style='border:0;width:1580px;height:1920px'></iframe>
-</div>
-</body>
-</html>
+
+<body id="main" onload='start()'>
+
+<center>
+
+    <img style='margin:400px;margin-bottom:1em' src='vendor/logo.png' />
+        
+    <div id="ping">qqqqqqqqqqqqqqqq
+    </div>
+
+</center>
+
+</body></html>
+

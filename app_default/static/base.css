@@ -1,0 +1,21 @@
+@import url("http://fonts.googleapis.com/css?family=Asap");
+@import url("http://fonts.googleapis.com/css?family=Sanchez");
+
+html, body { margin:0; padding:0; overflow:hidden } 
+
+* { 
+  font-family: 'Asap', sans-serif;
+} 
+
+h1 { 
+   margin-left:0em;
+   font-size:30px;
+   margin-bottom:0;
+   padding-left:1em;
+   color:white;
+   background-color:rgba(0,0,0,.1);
+   font-weight:bold;
+}
+
+h2, h3, h4 { color: darkblue } 
+
