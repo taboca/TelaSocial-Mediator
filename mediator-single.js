@@ -55,16 +55,7 @@ var localRules = new Array(); // Old model we had local rules and these were not
                               // an event in the system. These were more like 
                               // globals. This is 0.1 
 
-/* Run engine 0.2
- 
-    + each event in the queue { 
-
-	+ uuid
-  	+ script function 
- 	+ arguments 
-	+ success
-	+ error 
-*/
+var gLocalAppDir = 'app_default';
 
 var eventQueue = new Array(); 
 
@@ -82,45 +73,44 @@ var urlMap = {
 	
         'static': function (req, res) { 
 		proxyNodeStatic(req,res);
-		//proxyStatic(req,res);
-  		}, 
-
-        'static-eesc': function (req, res) { 
-		proxyNodeStatic(req,res);
-		//proxyStatic(req,res);
-  		}, 
-	
-        'control': function (req, res) { 
-		proxyNodeStaticForControl(req,res);
-		//proxyStatic(req,res);
   		}, 
 
         'channel': function (req, res) { 
 		proxyNodeStatic(req,res);
   		}, 
 
+        // remove
+        'control': function (req, res) { 
+		proxyNodeStaticForControl(req,res);
+  		}, 
+
+        // remove
         'channel-store': function (req, res) { 
 		blendstore.proxyStore(req,res);
   		}, 
-
+ 
+        //remove 
         'channel-store-images': function (req, res) { 
 		blendImagesFeed.proxyStore(req,res);
   		}, 
 
+        // remove
         'proxy': function (req, res) { 
 		proxyDynamic(req,res);
   		}, 
 
+        //remove
         'proxysave': function (req, res) { 
 		proxySave(req,res);
   		}, 
 
+        // remove
         /* We will need to work out this "grade" here so these 
            stores can be arguments.. */
-	'send_store_item' : function (req, res, json) {
-		blendstore.appendInStore( "grade", json );
-		res.simpleJSON(200, {});
-	}
+    	'send_feed_item' : function (req, res, json) {
+    		blendstore.appendInStore( "grade", json );
+    		res.simpleJSON(200, {});
+    	}
 
 }
 
@@ -143,37 +133,6 @@ function notFound(req, res) {
   // https://github.com/cloudhead/node-static
   //var file = new(static.Server)('.', { cache: 7200, headers: {'X-Hello':'World!'} });
 */
-var file = new(static.Server)('.', { cache: 00, headers: {'X-TelaSocial':'hi'} });
-
-function proxyNodeStatic(request, response, dir) { 
-    request.addListener('end', function () {
-        file.serve(request, response, function (err, res) {
-            if (err) { // An error as occured
-                sys.error("> Error serving " + request.url + " - " + err.message);
-                response.writeHead(err.status, err.headers);
-                response.end();
-            } else { // The file was served successfully
-                sys.puts("> " + request.url + " - " + res.message);
-            }
-        });
-    });
-} 
-
-var fileControlServer = new(static.Server)('.', { cache: 7200, headers: {'X-TelaSocial':'control'} });
-
-function proxyNodeStaticForControl(request, response, dir) { 
-    request.addListener('end', function () {
-        fileControlServer.serve(request, response, function (err, res) {
-            if (err) { // An error as occured
-                sys.error("> Error serving " + request.url + " - " + err.message);
-                response.writeHead(err.status, err.headers);
-                response.end();
-            } else { // The file was served successfully
-                sys.puts("> " + request.url + " - " + res.message);
-            }
-        });
-    });
-} 
 
 function run() { 
     for(var k in eventQueue) { 
@@ -190,13 +149,7 @@ function run() {
 	sys.puts("Ignoring event: " + k);
        } 
     } 
-/*
-    setTimeout(function () { 
-        run();
-    },5000); 
-*/
 } 
-
 
 /* Forever 
    https://github.com/indexzero/forever
@@ -208,80 +161,76 @@ function executeProcessRule(uuid) {
 	sys.puts("Rule processing..." + uuid);
 
 	if(curr.script.function == "timer") { 
-            setTimeout(function () { 
-              execFlow(uuid, '=>{"result":"ok"}<=');
-            },parseInt(curr.script.data.value)); 
+       setTimeout(function () { 
+         execFlow(uuid, '=>{"result":"ok"}<=');
+       },parseInt(curr.script.data.value)); 
 	} 
 
-        if(curr.script.function == "script") { 
-            execFlow(uuid, '=>{"result":"ok"}<=');
-            loadScript(curr.script.data.value, curr.script.about);
-	} 
+    if(curr.script.function == "script") { 
+       execFlow(uuid, '=>{"result":"ok"}<=');
+       loadScript(curr.script.data.value, curr.script.about);
+    } 
 
-        if(curr.script.function == "daemon-ftp") { 
+    if(curr.script.function == "daemon-ftp") { 
 	    script = path.join(__dirname, 'action/ftpserver.js');
-            var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
-            curr.processHandler = child1;
-            child1.start();
+        var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
+        curr.processHandler = child1;
+        child1.start();
 	    child1.on('exit', function () { flog(uuid, ' script exited...')} );
-/*
-	    child1.on('stdout', function (data) { execFlow(uuid, data);	});
-	    child1.on('stderr', function (data) { execFlow(uuid, data);	});
-*/
-            sys.puts('Forever process spawn');
+        sys.puts('Forever process spawn');
 	} 
 
 	if(curr.script.function == "loadTXT") { 
 	    script = path.join(__dirname, 'action/loadTXT.js');
-            var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
-            curr.processHandler = child1;
-            child1.start();
+        var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
+        curr.processHandler = child1;
+        child1.start();
 	    child1.on('exit', function () { flog(uuid, ' script exited...')} );
 	    child1.on('stdout', function (data) { execFlow(uuid, data);	});
 	    child1.on('stderr', function (data) { execFlow(uuid, data);	});
-            sys.puts('Forever process spawn');
-	} 
+        sys.puts('Forever process spawn');
+    } 
 
 	if(curr.script.function == "spawnJS") { 
 	    script = path.join(__dirname, 'action/'+curr.script.data.value);
-            var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about ]  });
-            curr.processHandler = child1;
-            child1.start();
+        var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about ]  });
+        curr.processHandler = child1;
+        child1.start();
 	    child1.on('exit', function () { flog(uuid, ' script exited...')} );
 	    child1.on('stdout', function (data) { execFlow(uuid, data);	});
 	    child1.on('stderr', function (data) { execFlow(uuid, data);	});
-            sys.puts('Forever process spawn');
+        sys.puts('Forever process spawn');
 	} 
 
 	if(curr.script.function == "saveRSS") { 
 	    script = path.join(__dirname, 'action/loadRSS.js');
-            var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
-            curr.processHandler = child1;
-            child1.start();
+        var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value , gLocalAppDir ]  });
+        curr.processHandler = child1;
+        child1.start();
 	    child1.on('exit', function () { flog(uuid, ' script exited...')} );
 	    child1.on('stdout', function (data) { execFlow(uuid, data);	});
 	    child1.on('stderr', function (data) { execFlow(uuid, data);	});
-            sys.puts('Forever process spawn');
+        sys.puts('Forever process spawn');
 	} 
 
 	// we might need execFlow to check other cases other than the normal pass 'ok'
 
 	if(curr.script.function == "execCommand") { 
 	    script = path.join(__dirname, 'action/execCommand.js');
-            var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.argument ]  });
-            curr.processHandler = child1;
-            child1.start();
+        var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.argument ]  });
+        curr.processHandler = child1;
+        child1.start();
 	    child1.on('exit', function () { flog(uuid, ' script exited...')} );
 	    child1.on('stdout', function (data) { execFlow(uuid, data);	});
 	    child1.on('stderr', function (data) { execFlow(uuid, data);	});
-            sys.puts('Forever process spawn');
+        sys.puts('Forever process spawn');
 	} 
 
 	if (curr.script.function == 'getImageNoCache') { 
 	    script = path.join(__dirname, 'action/fetch-save-image-nocache.js');
-            var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
-            curr.processHandler = child1;
-            child1.start();
+        var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
+        curr.processHandler = child1;
+        child1.start();
 	    child1.on('exit', function () { flog(uuid, ' script exited...')} );
 	    child1.on('stdout', function (data) { execFlow(uuid, data);	});
 	    child1.on('stderr', function (data) { execFlow(uuid, data);	});
@@ -289,9 +238,8 @@ function executeProcessRule(uuid) {
 
 	if (curr.script.function == 'fetchTEDPages') { 
 	    script = path.join(__dirname, 'action/fetch-ted-pages.js');
-            var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
-            child1.start();
-
+        var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
+        child1.start();
 	    child1.on('exit', function () { flog(uuid, ' script exited...')} );
 	    child1.on('stdout', function (data) { execFlow(uuid, data);	});
 	    child1.on('stderr', function (data) { execFlow(uuid, data);	});
@@ -299,9 +247,8 @@ function executeProcessRule(uuid) {
 
 	if (curr.script.function == 'fetchFlickrImages') { 
 	    script = path.join(__dirname, 'action/fetch-flickr-images.js');
-            var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
-            child1.start();
-
+        var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
+        child1.start();
 	    child1.on('exit', function () { flog(uuid, ' script exited...')} );
 	    child1.on('stdout', function (data) { execFlow(uuid, data);	});
 	    child1.on('stderr', function (data) { execFlow(uuid, data);	});
@@ -352,11 +299,10 @@ function execFlow(uuid, streamStdout) {
 
     if(payload.result == 'error') { 
       flog(uuid, 'result=error;'+ payload.data +' and removing it from queue.. ' );
-      var toEvent = eventQueue[uuid].script.to; 
       eventQueue[uuid] = null;
       delete eventQueue[uuid];
-      createEvent(toEvent);
     } 
+
     if(payload.result == 'expired') { 
       flog(uuid,'result=expired; will kill process... ' );
       if(eventQueue[uuid]) { 
@@ -384,43 +330,47 @@ function createEvent(namedEvent) {
 var flogArchive = false;
 
 function setupApp() { 
-  var filename = 'script.json';
-  if(process.argv[2]) { 
-      filename = process.argv[2];
-  } 
-  loadScript(filename,"init");
+    var filename = 'script.json';
+    if(process.argv[2]) { 
+        gLocalAppDir = process.argv[2];
+        serverPath = path.join(__dirname, gLocalAppDir);
+    }
+    if(process.argv[3]) { 
+        filename = process.argv[3];
+    } 
+    loadScript(filename,"init");
 } 
 
 function loadScript(filename, namespace) { 
-	fs.readFile(filename, "binary", function(err, file) {  
-            if(err) {  
-		sys.puts('Error:configScript:' + err);
-                return;  
-            }  
-            data = JSON.parse(file); 
-	    var listJSONRules = data.rules;
- 	    for(k in listJSONRules) { 
-                var currScript = listJSONRules[k];
-                var stateAbout = currScript.about;
-                var stateTo = currScript.to;
-		currScript.about = namespace +"/"+ stateAbout;
+    var configScript = path.join(serverPath, filename);
+    fs.readFile( configScript, "binary", function(err, file) {  
+        if(err) {  
+            sys.puts('Error:configScript:' + err);
+            return;  
+        }  
+        data = JSON.parse(file); 
+        var listJSONRules = data.rules;
+        for(k in listJSONRules) { 
+            var currScript = listJSONRules[k];
+            var stateAbout = currScript.about;
+            var stateTo = currScript.to;
+            currScript.about = namespace +"/"+ stateAbout;
 
-                if(typeof currScript.to != 'undefined') { 
-			currScript.to = namespace +"/"+ stateTo;
-		} 
+            if(typeof currScript.to != 'undefined') { 
+                currScript.to = namespace +"/"+ stateTo;
+            } 
                
-		if(currScript.about == namespace + '/start') { 
-		   var currentEvent = new eventRuleObject(); 
-                   currentEvent.script = currScript;
-		   eventQueue[currentEvent.uuid] = currentEvent; 
-                   sys.puts('Inserting event..' + currentEvent.uuid);
-                   run(); 
-		}  
-	        localRules[currScript.about] = currScript;
-	    } 
-        });
+            if(currScript.about == namespace + '/start') { 
+                var currentEvent = new eventRuleObject(); 
+                currentEvent.script = currScript;
+                eventQueue[currentEvent.uuid] = currentEvent; 
+                sys.puts('Inserting event..' + currentEvent.uuid);
+                run(); 
+            }  
+            localRules[currScript.about] = currScript;
+        } 
+    });
 } 
 
-
-console.log('Single mode — no server attached');
+console.log('Serverless....');
 
