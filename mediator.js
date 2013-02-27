@@ -263,21 +263,48 @@ function execFlow(uuid, streamStdout) {
     } 
 
     if(payload.result == 'error') { 
+      // likewise to error, so far for 
       flog(uuid, 'result=error;'+ payload.data +' and removing it from queue.. ' );
+      var toEvent = null; 
+      if(payload.type == 'offline') { 
+         if(typeof eventQueue[uuid].script.to != 'undefined') { 
+            toEvent = eventQueue[uuid].script.to; 
+         } 
+      } 
+
+      if(eventQueue[uuid]) { 
+        flog(uuid,'execContext = ' + eventQueue[uuid].executionContext);
+        if(eventQueue[uuid].executionContext==1) { 
+           eventQueue[uuid].processHandler.stop();
+        } 
+      }
+
       eventQueue[uuid] = null;
       delete eventQueue[uuid];
+      // if an error can lead to try again
+      if(toEvent != null) { 
+        createEvent(toEvent);
+      } 
     } 
 
     if(payload.result == 'expired') { 
+      // We are forcing now process kill and we try again... 
       flog(uuid,'result=expired; will kill process... ' );
+      var toEvent = null; 
+      if(typeof eventQueue[uuid].script.to != 'undefined') { 
+         toEvent = eventQueue[uuid].script.to; 
+      } 
       if(eventQueue[uuid]) { 
+        flog(uuid,'execContext = ' + eventQueue[uuid].executionContext);
         if(eventQueue[uuid].executionContext==1) { 
-         eventQueue[uuid].processHandler.stop();
-         eventQueue[uuid] = null;
-         delete eventQueue[uuid];
+           eventQueue[uuid].processHandler.stop();
         } 
       }
+      eventQueue[uuid] = null;
+      delete eventQueue[uuid];
+      if(toEvent != null) { createEvent(toEvent); } 
     } 
+
   }
 } 
 
