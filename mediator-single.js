@@ -95,7 +95,6 @@ function run() {
 
 function executeProcessRule(uuid) { 
 	var curr = eventQueue[uuid];
-	curr.executionContext = 0;
 	sys.puts("Rule processing..." + uuid);
 
 	if(curr.script.function == "timer") { 
@@ -163,7 +162,6 @@ function executeProcessRule(uuid) {
 	    child1.on('stderr', function (data) { execFlow(uuid, data);	});
         sys.puts('Forever process spawn');
 	} 
-
 
 	if(curr.script.function == "execCommand") { 
 	    script = path.join(__dirname, 'action/execCommand.js');

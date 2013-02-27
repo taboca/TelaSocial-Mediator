@@ -34,7 +34,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-/* Mediator 0.2 - work in progress */
+/* Mediator 0.3 - work in progress */
 
 var http = require("http"),
     sys = require("sys"),
@@ -235,7 +235,6 @@ function run() {
 
 function executeProcessRule(uuid) { 
 	var curr = eventQueue[uuid];
-	curr.executionContext = 0;
 	sys.puts("Rule processing..." + uuid);
 
 	if(curr.script.function == "timer") { 
