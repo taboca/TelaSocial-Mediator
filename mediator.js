@@ -74,17 +74,17 @@ setupApp();
 
 function run() { 
     for(var k in eventQueue) { 
-	var currentEvent = eventQueue[k];
-        if(typeof currentEvent != 'undefined') { 
-        sys.puts('Checking event:' + currentEvent.uuid);
-        if(currentEvent.executionContext == 0) { 
-          var kk = k;
-          currentEvent.executionContext = 1;
-          //sys.puts("  -> Setting timer : " + currentRule.timer + " for " + kk);
-          executeProcessRule(currentEvent.uuid);
-        } 
+       var currentEvent = eventQueue[k];
+       if(typeof currentEvent != 'undefined') { 
+            sys.puts('Checking event:' + currentEvent.uuid);
+            if(currentEvent.executionContext == 0) { 
+               var kk = k;
+               currentEvent.executionContext = 1;
+                //sys.puts("  -> Setting timer : " + currentRule.timer + " for " + kk);
+               executeProcessRule(currentEvent.uuid);
+            } 
        } else { 
-	sys.puts("Ignoring event: " + k);
+          sys.puts("Ignoring event: " + k);
        } 
     } 
 } 
