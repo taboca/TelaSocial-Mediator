@@ -138,7 +138,7 @@ function executeProcessRule(uuid) {
 
 	if(curr.script.function == "spawnJS") { 
 	    script = path.join(__dirname, 'action/'+curr.script.data.value);
-        var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about ]  });
+        var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about , gLocalAppDir]  });
         curr.processHandler = child1;
         child1.start();
 	    child1.on('exit', function () { flog(uuid, ' script exited...')} );

@@ -28,7 +28,7 @@ T.post('statuses/update', { status: 'hello world!' }, function(err, reply) {
 //  search twitter for all tweets containing the word 'banana' since Nov. 11, 2011
 //
 /*
-T.get('search/tweets', { q: 'seminarionacional', since: '2011-11-11' }, function(err, reply) {
+T.get('search/tweets', { q: 'pti_brasil', since: '2011-11-11' }, function(err, reply) {
       var max = 0, popular;
       var tweets = reply.statuses , i = tweets.length;
       while(i--) {
@@ -36,7 +36,6 @@ T.get('search/tweets', { q: 'seminarionacional', since: '2011-11-11' }, function
           console.log( tweet.created_at + ' from ' + tweet.user.name + ' says ' + tweet.text);
       }
 });
-
 */
 //
 //  stream a sample of public statuses
@@ -52,15 +51,71 @@ stream.on('tweet', function (tweet) {
 //
 //  filter the twitter public stream by the word 'go'. 
 //
-var stream = T.stream('statuses/filter', { track: 'telasocial' })
+var stream = T.stream('statuses/filter', { track: name })
+//var stream = T.stream('user', { track: 'taboca' })
+
+var list = new Array() 
+
+var ll = 12; 
+
+var bufferRepeat = new Array();
+
 stream.on('tweet', function (tweet) {
-  console.log(tweet);
+
+  var strOut = "";
+
+//  console.log(tweet);
+  
+  console.log('.')
+  var addTo = true; 
+  if(typeof bufferRepeat[tweet.text] == 'undefined') { 
+      bufferRepeat[tweet.text] =1
+      console.log('' + tweet.text);
+  } else { 
+      bufferRepeat[tweet.text] +=1;
+      addTo = false;
+      console.log('-----------' + tweet.text);
+  }  
+ 
+  if(addTo) { 
+     list.push(tweet);
+     if(list.length>ll) { 
+      list.shift();
+     }
+  }
+
+  var userUniqueArray=new Array();
+  for(var i=0;i<list.length;i++) {
+      //  dump(a[i].created_at+ ' - ' + a[i].text);/a
+          userUniqueArray['-'+list[i].user.screen_name]=list[i];
+  } 
+
+  var list2 = new Array();
+
+  for(var k in userUniqueArray) {
+         user = userUniqueArray[k];
+         list2.push(user);
+  }
+  var buffJSON = list2; 
+
+  strOut= JSON.stringify(buffJSON);
+  //strOut = list.length;
+  var filePath = pathFS.join( appPath, 'channel', name+'.txt');
+       // fs.writeFile(filePath, strOut, 'binary', function(err){
+  fs.writeFile( filePath, strOut, 'utf8', function(err){
+     if (err) { 
+         out.senderr({'result':'error', 'payload': err});
+         throw err; 
+     }   
+     //out.send({'result':'ok'});
+//     clearTimeout(timer);
+  });
 
 });
 
 }
 
 out.send({'result':'note', 'data':'JS running '+ process.argv[1] } );
-timer = setTimeout(function () { out.send({'result':'expired'}) },1015000); 
-initApp(process.argv[2], process.argv[3]);
+timer = setTimeout(function () { out.send({'result':'expired'}) },5900000); 
+initApp(process.argv[2], process.argv[3], process.argv[4] );
 
