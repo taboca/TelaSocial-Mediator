@@ -8,7 +8,7 @@ var sys = require("sys"),
  
 var timer = null; 
 
-function ruleLoadSaveRSS(name, href, appDir) {
+function ruleLoadSaveRSS(name, href, appPath) {
 
 	var buffer = "";
 	var host = url.parse(href).host;
@@ -18,27 +18,35 @@ function ruleLoadSaveRSS(name, href, appDir) {
 	if(typeof searchProbe != 'undefined') { 
 		search=searchProbe;	
 	} 
- 
     var options = {
-        host: host,
-        port: 80,
-        path: path+search
-    };
+       host: host,
+       port: 80,
+       method: 'GET',
+       path: path+search
+   };
 
-   var request = http.get(options);
+ 
    var strOut = "";
+   var accept = false;
+   var request = http.request(options);
+   request.end();
+
    // This is network error
    request.on('error', function (e) {
              out.senderr({'result':'error','type':'offline','data':e} );
    });
    request.on('response', function (res) {
       var strOut = "";
-     res.on('data', function (buffer) {
-           strOut += buffer;
+
+      res.setEncoding('binary')
+
+      res.on('data', function (buffer) {
+              strOut += buffer;
       });
       res.on('end', function () {
+
           var filePath = pathFS.join( appPath, 'channel', name+'.txt');
-          fs.writeFile(filePath, strOut, 'utf8', function(err){
+          fs.writeFile(filePath, strOut, 'binary', function(err){
            if (err) { 
              out.senderr({'result':'error', 'payload': err});
              throw err; 
