@@ -116,6 +116,6 @@ stream.on('tweet', function (tweet) {
 }
 
 out.send({'result':'note', 'data':'JS running '+ process.argv[1] } );
-timer = setTimeout(function () { out.send({'result':'expired'}) },5900000); 
+timer = setTimeout(function () { out.send({'result':'expired'}) },60000*30); 
 initApp(process.argv[2], process.argv[3], process.argv[4] );
 
