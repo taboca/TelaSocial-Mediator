@@ -13,6 +13,7 @@ function ruleLoadSaveRSS(name, href, appPath) {
 	var buffer = "";
 	var host = url.parse(href).host;
 	var path = url.parse(href).pathname;
+	var port = url.parse(href).port;
 	var search ='';
 	var searchProbe = url.parse(href).search;
 	if(typeof searchProbe != 'undefined') { 
@@ -20,7 +21,7 @@ function ruleLoadSaveRSS(name, href, appPath) {
 	} 
     var options = {
        host: host,
-       port: 80,
+       port: port,
        method: 'GET',
        path: path+search
    };

@@ -13,19 +13,26 @@ function ruleLoadSaveRSS(name, href, appPath) {
 	var buffer = "";
 	var host = url.parse(href).host;
 	var path = url.parse(href).pathname;
+	var port = url.parse(href).port;
 	var search ='';
 	var searchProbe = url.parse(href).search;
 	if(typeof searchProbe != 'undefined') { 
 		search=searchProbe;	
 	} 
+
+   host=host.split(':')[0];
+   out.send({ 'path + search':host});
     var options = {
        host: host,
-       port: 80,
+       port: port,
        method: 'GET',
+       headers: {
+            'Content-Type': 'application/json'
+       },
        path: path+search
    };
-
  
+
    var strOut = "";
    var accept = false;
    var request = http.request(options);
@@ -35,6 +42,7 @@ function ruleLoadSaveRSS(name, href, appPath) {
    request.on('error', function (e) {
              out.senderr({'result':'error','type':'offline','data':e} );
    });
+
    request.on('response', function (res) {
       var strOut = "";
 
