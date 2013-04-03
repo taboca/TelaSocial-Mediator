@@ -1,3 +1,7 @@
+## WHere to go 
+
+To read more about the other components, please see http://www.telasocial.com
+
 ## Welcome to TelaSocial Mediator ( Aka feedMediator ) 
 
 The mediator application is a NodeJS-based app that acts as a middleware agent between a web client ( our use case is a web kiosk ) and the web ( think feeds .) It uses a configuration file [1] to fetch remote feeds and it keeps it in the disk so it can be served when the client application requests it. In a way it's a subscription as it uses rules from this config file to load the associated feed and save it in the disk from time to time. 
@@ -17,7 +21,7 @@ sudo node mediator
 
 Point your browser to: 
 
-    http://localhost/static/index.html
+    http://localhost:8888/static/index.html
    
     If you want to launch a ./static/index.html app you need to install yourself
 

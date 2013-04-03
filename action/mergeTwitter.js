@@ -52,7 +52,7 @@ stream.on('tweet', function (tweet) {
 //  filter the twitter public stream by the word 'go'. 
 //
 var stream = T.stream('statuses/filter', { track: name })
-//var stream = T.stream('user', { track: 'taboca' })
+//var stream = T.stream('user', { track:'' })
 
 var list = new Array() 
 
