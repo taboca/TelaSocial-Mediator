@@ -53,7 +53,7 @@ function ruleLoadSaveRSS(name, href, appPath) {
       });
       res.on('end', function () {
 
-          var filePath = pathFS.join( appPath, 'channel', name+'.txt');
+          var filePath = pathFS.join( __dirname, '..', appPath, 'channel', name+'.txt');
           fs.writeFile(filePath, strOut, 'binary', function(err){
            if (err) { 
              out.senderr({'result':'error', 'payload': err});
