@@ -24,7 +24,7 @@ function execCommand(argument, appPath) {
 	params.push(a[i]);
   } 
 
-  var filePath = pathFS.join( appPath, a[0]);
+  var filePath = pathFS.join( __dirname, '..', appPath, a[0]);
   var child = exec(filePath,params);
 
   var outBuffer = '';
