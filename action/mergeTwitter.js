@@ -15,44 +15,7 @@ function initApp(name, appPath) {
 
 var T = new Twit(config.twit);
 
-//
-//  tweet 'hello world!'
-//
-/*
-T.post('statuses/update', { status: 'hello world!' }, function(err, reply) {
-  //  ...
-});
-*/
-      
-//
-//  search twitter for all tweets containing the word 'banana' since Nov. 11, 2011
-//
-/*
-T.get('search/tweets', { q: 'pti_brasil', since: '2011-11-11' }, function(err, reply) {
-      var max = 0, popular;
-      var tweets = reply.statuses , i = tweets.length;
-      while(i--) {
-        var tweet = tweets[i];
-          console.log( tweet.created_at + ' from ' + tweet.user.name + ' says ' + tweet.text);
-      }
-});
-*/
-//
-//  stream a sample of public statuses
-//
-/*
-var stream = T.stream('statuses/sample')
-
-stream.on('tweet', function (tweet) {
-  console.log(tweet); 
-});
-      
-*/
-//
-//  filter the twitter public stream by the word 'go'. 
-//
 var stream = T.stream('statuses/filter', { track: name })
-//var stream = T.stream('user', { track:'' })
 
 var list = new Array() 
 
@@ -60,11 +23,19 @@ var ll = 12;
 
 var bufferRepeat = new Array();
 
+stream.on('error', function (info) { 
+  console.log('111111111' + info);
+});
+
+stream.on('disconnect', function (info) { 
+  console.log('action/mergeTwitter.js: disconnect: '  + info);
+  out.send({'result':'ok'});
+  clearTimeout(timer);
+});
+
 stream.on('tweet', function (tweet) {
 
   var strOut = "";
-
-//  console.log(tweet);
   
   console.log('.')
   var addTo = true; 
@@ -116,6 +87,6 @@ stream.on('tweet', function (tweet) {
 }
 
 out.send({'result':'note', 'data':'JS running '+ process.argv[1] } );
-timer = setTimeout(function () { out.send({'result':'expired'}) },60000*30); 
+timer = setTimeout(function () { out.send({'result':'expired'}) },60000*30*24); 
 initApp(process.argv[2], process.argv[3], process.argv[4] );
 
