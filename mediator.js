@@ -113,16 +113,7 @@ function executeProcessRule(uuid) {
         curr.processHandler = child1;
         child1.start();
 	    child1.on('exit', function () { flog(uuid, ' script exited...')} );
-        flog(uuid, ' initiated process...'+child1);
-	} 
-
-    if(curr.script.function == "daemon-ftp") { 
-	    script = path.join(__dirname, 'action/ftpserver.js');
-        var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
-        curr.processHandler = child1;
-        child1.start();
-	    child1.on('exit', function () { flog(uuid, ' script exited...')} );
-        sys.puts('Forever process spawn');
+        flog(uuid, ' initiated process...'+child1.data.pid);
 	} 
 
 	if(curr.script.function == "spawnJS") { 
@@ -133,7 +124,7 @@ function executeProcessRule(uuid) {
 	    child1.on('exit', function () { flog(uuid, ' script exited...')} );
 	    child1.on('stdout', function (data) { execFlow(uuid, data);	});
 	    child1.on('stderr', function (data) { execFlow(uuid, data);	});
-        sys.puts('Forever process spawn');
+        flog(uuid, ' initiated process...'+child1.data.pid);
 	} 
 
 	if(curr.script.function == "loadTXT") { 
@@ -144,7 +135,7 @@ function executeProcessRule(uuid) {
 	    child1.on('exit', function () { flog(uuid, ' script exited...')} );
 	    child1.on('stdout', function (data) { execFlow(uuid, data);	});
 	    child1.on('stderr', function (data) { execFlow(uuid, data);	});
-        sys.puts('Forever process spawn');
+        flog(uuid, ' initiated process...'+child1.data.pid);
     } 
 
 	if(curr.script.function == "saveRSS") { 
@@ -155,7 +146,7 @@ function executeProcessRule(uuid) {
 	    child1.on('exit', function () { flog(uuid, ' script exited...')} );
 	    child1.on('stdout', function (data) { execFlow(uuid, data);	});
 	    child1.on('stderr', function (data) { execFlow(uuid, data);	});
-        sys.puts('Forever process spawn');
+        flog(uuid, ' initiated process...'+child1.data.pid);
 	} 
 
 	// we might need execFlow to check other cases other than the normal pass 'ok'
@@ -168,7 +159,7 @@ function executeProcessRule(uuid) {
 	    child1.on('exit', function () { flog(uuid, ' script exited...')} );
 	    child1.on('stdout', function (data) { execFlow(uuid, data);	});
 	    child1.on('stderr', function (data) { execFlow(uuid, data);	});
-        sys.puts('Forever process spawn');
+        flog(uuid, ' initiated process...'+child1.data.pid);
 	} 
 
 	if(curr.script.function == "execCommand") { 
@@ -179,7 +170,7 @@ function executeProcessRule(uuid) {
 	    child1.on('exit', function () { flog(uuid, ' script exited...')} );
 	    child1.on('stdout', function (data) { execFlow(uuid, data);	});
 	    child1.on('stderr', function (data) { execFlow(uuid, data);	});
-        sys.puts('Forever process spawn');
+        flog(uuid, ' initiated process...'+child1.data.pid);
 	} 
 
 	if (curr.script.function == 'getImageNoCache') { 
@@ -190,25 +181,9 @@ function executeProcessRule(uuid) {
 	    child1.on('exit', function () { flog(uuid, ' script exited...')} );
 	    child1.on('stdout', function (data) { execFlow(uuid, data);	});
 	    child1.on('stderr', function (data) { execFlow(uuid, data);	});
+        flog(uuid, ' initiated process...'+child1.data.pid);
 	} 
 
-	if (curr.script.function == 'fetchTEDPages') { 
-	    script = path.join(__dirname, 'action/fetch-ted-pages.js');
-        var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
-        child1.start();
-	    child1.on('exit', function () { flog(uuid, ' script exited...')} );
-	    child1.on('stdout', function (data) { execFlow(uuid, data);	});
-	    child1.on('stderr', function (data) { execFlow(uuid, data);	});
-	} 
-
-	if (curr.script.function == 'fetchFlickrImages') { 
-	    script = path.join(__dirname, 'action/fetch-flickr-images.js');
-        var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value  ]  });
-        child1.start();
-	    child1.on('exit', function () { flog(uuid, ' script exited...')} );
-	    child1.on('stdout', function (data) { execFlow(uuid, data);	});
-	    child1.on('stderr', function (data) { execFlow(uuid, data);	});
-	} 
 } 
 
 /* This function will parse the stdout of separated process 
