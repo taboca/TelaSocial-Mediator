@@ -73,10 +73,11 @@ function initApp(name, appPath) {
 
       var buffJSON = [];
       for(var i=0;i<collections.length;i++) { 
-	for(var j=0;j<collections[i].length;j++) { 
-  	   buffJSON.push(collections[i][j]);
-	} 
+        for(var j=0;j<collections[i].length;j++) { 
+          buffJSON.push(collections[i][j]);
+        } 
       } 
+
       strOut= JSON.stringify(buffJSON);
       var filePath = pathFS.join( appPath, 'channel', name+'.txt');
       fs.writeFile( filePath, strOut, 'utf8', function(err){
