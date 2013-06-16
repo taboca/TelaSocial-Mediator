@@ -10,7 +10,7 @@ var http = require("http"),
     stdout2json = require('../3rdparty/stdout-2-json/stdout-2-json'),
     forever = require('forever'),
     xml2js = require('xml2js'),
-    static = require('../3rdparty/server-static/lib/node-static');
+    static = require('node-static');
 
 var urlMap = {
 	
@@ -132,7 +132,7 @@ function proxyNodeStatic(request, response, dir) {
                 sys.puts("> " + request.url + " - " + res.message);
             }
         });
-    });
+    }).resume();
 } 
 
 var fileControlServer = new(static.Server)(serverPath, { cache: 7200, headers: {'X-TelaSocial':'control'} });
@@ -148,7 +148,7 @@ function proxyNodeStaticForControl(request, response, dir) {
                 sys.puts("> " + request.url + " - " + res.message);
             }
         });
-    });
+    }).resume();
 } 
 
 console.log('Server running at http://127.0.0.1:8888/');
