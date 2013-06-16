@@ -36,7 +36,9 @@ child.stdout.on('data', function (data) {
   console.log('stdout : ' + data);
   strOut="<?xml version='1.0' ?><note>"+data+"</note>";
 
-  var filePath = pathFS.join( appPath, 'channel', 'ping.xml');
+
+  var filePath = pathFS.join( __dirname, '..', appPath, 'channel','ping.xml');
+//  var filePath = pathFS.join( appPath, 'channel', 'ping.xml');
   fs.writeFile(filePath, strOut, 'binary', function(err){
    if (err) { 
      out.senderr({'result':'error', 'payload': err});
