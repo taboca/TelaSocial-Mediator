@@ -17,7 +17,9 @@ function ruleLoadSaveRSS(name, href, appPath) {
 	var search ='';
 	var searchProbe = url.parse(href).search;
 	if(typeof searchProbe != 'undefined') { 
-		search=searchProbe;	
+        if(searchProbe) { 
+		   search=searchProbe;	
+        } 
 	} 
     var options = {
        host: host,

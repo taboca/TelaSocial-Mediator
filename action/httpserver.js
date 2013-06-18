@@ -135,7 +135,7 @@ function proxyNodeStatic(request, response, dir) {
     }).resume();
 } 
 
-var fileControlServer = new(static.Server)(serverPath, { cache: 7200, headers: {'X-TelaSocial':'control'} });
+var fileControlServer = new(static.Server)(serverPath, { cache: 00, headers: {'X-TelaSocial':'control'} });
 
 function proxyNodeStaticForControl(request, response, dir) { 
     request.addListener('end', function () {
