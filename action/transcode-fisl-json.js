@@ -49,18 +49,17 @@ function start(name, appPath) {
               strOut += buffer;
       });
       res.on('end', function () {
-          var filePath = pathFS.join( __dirname, '..', appPath, 'channel', name+'.xml');
-          fs.writeFile(filePath, strOut, 'binary', function(err){
-           if (err) { 
-             out.senderr({'result':'error', 'payload': err});
-             throw err; 
-           }   
             var parser = new xml2js.Parser({'mergeAttrs':true});
-            var that=this;
             parser.addListener('end', function(result) {
+                for(var i=0;i<result.response.slots[0].slot.length;i++) { 
+                    console.log('-------'+JSON.stringify(result.response.slots[0].slot[i].id));
+                    //result.response.slots[0].slot[i].title='';
+                    result.response.slots[0].slot[i].abstract='';
+                    //result.response.slots[i].abstract='';
+                } 
                 var strOut = JSON.stringify(result.response.slots);
                 var filePath = pathFS.join( __dirname, '..', appPath, 'channel', name+'.json');
-                fs.writeFile(filePath, strOut, 'binary', function(err){
+                fs.writeFile(filePath, strOut, 'utf-8', function(err){
                   if (err) { 
                     out.senderr({'result':'error', 'payload': err});
                     throw err; 
@@ -69,12 +68,8 @@ function start(name, appPath) {
                   clearTimeout(timer);
                 });
             });
-            var filePath = pathFS.join( __dirname, '..', appPath, 'channel', name+'.xml');
-            fs.readFile( filePath,  function(err, data) {
-                parser.parseString(data);
-            });
+            parser.parseString(strOut);
 
-          });
       });
    })
 
