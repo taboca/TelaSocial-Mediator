@@ -38,7 +38,7 @@ var sys = require("sys"),
     pathFS = require("path"),
     fs = require("fs")
     url = require("url"),
-    http = require("follow-redirects").http,
+    request = require("request"),
     forever = require('forever'),
     out = require('../3rdparty/stdout-2-json/stdout-2-json'),
     xml2js = require('xml2js');
@@ -92,47 +92,32 @@ function parseAndSave() {
 
    this.fechObject = function (channel, href) { 
 
-        var host = url.parse(href).host;
-        var path = url.parse(href).pathname;
-        var options = {
-            host: host,
-            port: 80,
-            path: path
-        };
-        var request = http.get(options);
+        var href = url.parse(href).href;
 
-        sys.puts('trying to fetch ' + host + ' and ' + path);
+        var filedate= JSON.stringify({ date: new Date() });
+        var filename = JSON.parse(filedate).date;
+        var that = this; 
 
-        that = this; 
-        request.on('response', function (res) {
-          console.log(res);
-           var bufferedData = "";
-           //res.setEncoding('binary');
-           res.on('error', function (e) {
-              console.log('problem with request: ' + e.message);
-           });
+        var filePath = pathFS.join( __dirname, '..', that.appPath, 'channel', channel, filename+'.jpg');
+      
+        var file = fs.createWriteStream(filePath);
 
-           res.on('data', function (dataBuffer) {
-                //console.log(dataBuffer);
-                console.log("==============================");
-                bufferedData+=dataBuffer;	
-           });
-           res.on('end', function () {
-                var filedate= JSON.stringify({ date: new Date() });
-                var filename = JSON.parse(filedate).date;
-
-                var filePath = pathFS.join( __dirname, '..', that.appPath, 'channel', channel, filename+'.jpg');
-                fs.writeFile(filePath, bufferedData, 'binary', function(err){
-                  if (err) { 
-                    throw err;
-                  }
-                  console.log('==ok==, file saved');
-                  setTimeout(function () { that.renderFetch() },5000);
-                });
-           });
+        file.on('close',function () { 
+            console.log('==ok==, file saved');
+            setTimeout(function () { that.renderFetch() },5000);
+         //   file.close();
         });
 
-        request.end();
+        file.on('error', function (err) {
+            console.log('===error====')
+
+        });
+
+        request(href, function fDone(error, response, body) { 
+             // console.log(response)
+        }).pipe(file);
+
+
     }
 } 
 
