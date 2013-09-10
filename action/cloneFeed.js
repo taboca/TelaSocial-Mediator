@@ -63,10 +63,12 @@ function parseAndSave() {
       this.appPath = appPath; 
       this.channelData = null;
 
+     // console.log(1);
+
       this.sendToApp("Parsing the Atom for channel " + sourceChannel);	
+
     	var parser = new xml2js.Parser({'mergeAttrs':true});
     	var that=this;
-
 
     	parser.addListener('end', function(result) {
     		//console.log("======" + JSON.stringify(result));
@@ -82,7 +84,7 @@ function parseAndSave() {
 
       var filePath = pathFS.join( __dirname, '..', this.appPath, 'channel', sourceChannel +'.xml');
       
-      console.log("===>" + filePath);
+     // console.log("===>" + filePath);
 
     	fs.readFile(filePath, function(err, data) {
     		parser.parseString(data);
@@ -133,12 +135,12 @@ function startApp(about, source, appPath) {
       // This is sucess, we think so 
        for(var k in elements) {
           var el = elements[k];
-          console.log(el.uid + ' test = ' + el.test);
+          //console.log(el.uid + ' test = ' + el.test);
        }
 
 
        var filePath = pathFS.join( __dirname, '..', appPath, 'channel', about+'.txt');
-       fs.writeFile(filePath, dataStringOfJSON, 'binary', function(err){
+       fs.writeFile(filePath, dataStringOfJSON, 'utf-8', function(err){
            if (err) { 
              out.senderr({'result':'error', 'payload': err});
              throw err; 
