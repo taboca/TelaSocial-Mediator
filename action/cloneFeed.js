@@ -46,6 +46,8 @@ var sys = require("sys"),
 function parseAndSave() { 
 
    this.listPages= new Array();
+   this.downloadedItems = new Array();
+
    this.channel = null; 
    this.sendToApp = null;
    this.targetStore = null; 
@@ -59,21 +61,29 @@ function parseAndSave() {
     	this.sendToApp = sendingDataFunction;
     	this.hasEnded  = hasEndedFunction;
       this.appPath = appPath; 
+      this.channelData = null;
 
       this.sendToApp("Parsing the Atom for channel " + sourceChannel);	
     	var parser = new xml2js.Parser({'mergeAttrs':true});
     	var that=this;
+
+
     	parser.addListener('end', function(result) {
     		//console.log("======" + JSON.stringify(result));
     		for(var i=0;i<result.feed.item.length;i++) { 
+          var uid = Math.random();
           var linkHTML = result.feed['xml:base']+result.feed.item[i].img[0].src;
-          that.listPages.push(linkHTML);
+          result.feed.item[i].img[0].src=uid;
+          that.listPages.push({"download":linkHTML,"uid":uid, "test":false});
     		} 
+        that.channelData = JSON.stringify(result);
     		that.renderFetch(); 
     	});
 
       var filePath = pathFS.join( __dirname, '..', this.appPath, 'channel', sourceChannel +'.xml');
-      console.log("===>" + filePath)
+      
+      console.log("===>" + filePath);
+
     	fs.readFile(filePath, function(err, data) {
     		parser.parseString(data);
     	});
@@ -82,41 +92,34 @@ function parseAndSave() {
    this.renderFetch = function () { 
     var curr = this.listPages.pop();
     if(curr) { 
-      this.sendToApp("will pass " + this.channel + " and current HTML = " + curr);
+
+      this.sendToApp("will pass " + this.channel + " and current link = " + curr.download);
       this.fechObject(this.targetStore, curr);
     } else { 
-      this.hasEnded();
+      this.hasEnded(this.downloadedItems, this.channelData);
     } 	
    } 
 
-   this.fechObject = function (channel, href) { 
-
-        var href = url.parse(href).href;
-
+   this.fechObject = function (channel, objToFetch) { 
+        var href = url.parse(objToFetch.download).href;
         var filedate= JSON.stringify({ date: new Date() });
         var filename = JSON.parse(filedate).date;
         var that = this; 
-
-        var filePath = pathFS.join( __dirname, '..', that.appPath, 'channel', channel, filename+'.jpg');
-      
+        var filePath = pathFS.join( __dirname, '..', that.appPath, 'channel', channel, objToFetch.uid+'.jpg');
         var file = fs.createWriteStream(filePath);
-
         file.on('close',function () { 
             console.log('==ok==, file saved');
-            setTimeout(function () { that.renderFetch() },5000);
+            objToFetch.test=true;
+            that.downloadedItems.push(objToFetch);
+            setTimeout(function () { that.renderFetch() },1000);
          //   file.close();
         });
-
         file.on('error', function (err) {
             console.log('===error====')
-
         });
-
         request(href, function fDone(error, response, body) { 
              // console.log(response)
         }).pipe(file);
-
-
     }
 } 
 
@@ -125,13 +128,29 @@ function startApp(about, source, appPath) {
     var a = new parseAndSave();
     a.init(about, source, appPath, function (str) {
        out.send({'result':'note','data':str } );
-    }, function () { 
-       clearTimeout(timer);
-       out.send({'result':'ok'});
+    }, function (elements, dataStringOfJSON) { 
+
+      // This is sucess, we think so 
+       for(var k in elements) {
+          var el = elements[k];
+          console.log(el.uid + ' test = ' + el.test);
+       }
+
+
+       var filePath = pathFS.join( __dirname, '..', appPath, 'channel', about+'.txt');
+       fs.writeFile(filePath, dataStringOfJSON, 'binary', function(err){
+           if (err) { 
+             out.senderr({'result':'error', 'payload': err});
+             throw err; 
+           }   
+           clearTimeout(timer);
+           out.send({'result':'ok'});
+        });
+
     })
 }
 
 /* Remember to clear the timeouts */
-timer = setTimeout(function () { out.send({'result':'expired'}) },15000); 
+timer = setTimeout(function () { out.send({'result':'expired'}) },45000); 
 startApp(process.argv[2], process.argv[3] ,process.argv[4]);
 
