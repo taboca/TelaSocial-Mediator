@@ -66,8 +66,7 @@ function parseAndSave() {
     	parser.addListener('end', function(result) {
     		//console.log("======" + JSON.stringify(result));
     		for(var i=0;i<result.feed.item.length;i++) { 
-          var linkHTML = "http://app.telasocial.com.br"+result.feed.item[i].img[0].src;
-          console.log(linkHTML);
+          var linkHTML = result.feed['xml:base']+result.feed.item[i].img[0].src;
           that.listPages.push(linkHTML);
     		} 
     		that.renderFetch(); 
