@@ -40,7 +40,7 @@ function initApp(name, appPath) {
           */
 
         strOut= JSON.stringify(data);
-        var filePath = pathFS.join( appPath, 'channel', name+'.json');
+        var filePath = pathFS.join( __dirname, '..',  appPath, 'channel', name+'.json');
         fs.writeFile( filePath, strOut, 'utf8', function(err){
            if (err) { 
                out.senderr({'result':'error', 'payload': err});
