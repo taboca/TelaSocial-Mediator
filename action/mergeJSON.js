@@ -16,8 +16,7 @@ var URL = config.url_eventos_pti;
 function initApp(name, appPath) {
 
 	var buffer = "";
-
-  	var currDate = new Date();
+  var currDate = new Date();
 	var cD = currDate.getDate();
 	var cM = currDate.getMonth()+1;
 	var cY = currDate.getFullYear();
@@ -50,23 +49,22 @@ function initApp(name, appPath) {
    var request = httpAgent.create('http://eventos.pti.og.br', options);
 
    request.addListener('error', function (e, request) {
-        out.senderr({'result':'error','type':'offline','data':e} );
+     out.senderr({'result':'error','type':'offline','data':e} );
    });
 
    request.addListener('next', function (e, request) {
-	var strProbe = request.body;
-	var jsonProbe = null;
-	try { 
-		jsonProbe = JSON.parse(strProbe); 
-	} catch (i) { 
-		out.send({'result':'note', 'data':'error undefined json from pti'} );
-		jsonProbe = [];
-	}  
-	collections[cc]=jsonProbe;
-	cc++;
-
-	strOut += request.body;
-	request.next();
+	   var strProbe = request.body;
+	   var jsonProbe = null;
+	   try { 
+       jsonProbe = JSON.parse(strProbe); 
+     } catch (i) { 
+     out.send({'result':'note', 'data':'error undefined json from pti'} );
+     jsonProbe = [];
+     }  
+	   collections[cc]=jsonProbe;
+	   cc++;
+     strOut += request.body;
+     request.next();
    });
  
    request.addListener('stop', function (e, request) {
@@ -79,7 +77,7 @@ function initApp(name, appPath) {
       } 
 
       strOut= JSON.stringify(buffJSON);
-      var filePath = pathFS.join( appPath, 'channel', name+'.txt');
+      var filePath = pathFS.join( __dirname, appPath, 'channel', name+'.txt');
       fs.writeFile( filePath, strOut, 'utf8', function(err){
         if (err) { 
             out.senderr({'result':'error', 'payload': err});

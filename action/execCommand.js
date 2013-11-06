@@ -29,20 +29,20 @@ function execCommand(argument, appPath) {
 
   var outBuffer = '';
  
-child.stdout.on('data', function (data) {
-  console.log('stdout : ' + data);
-  outBuffer=data;
-});
+  child.stdout.on('data', function (data) {
+    console.log('stdout : ' + data);
+    outBuffer=data;
+  });
 
-child.stderr.on('data', function (data) {
-  console.log('stderr: ' + data);
-});
+  child.stderr.on('data', function (data) {
+    console.log('stderr: ' + data);
+  });
 
-child.on('exit', function (code) {
-  console.log('child process exited with code ' + code);
-  out.send({'result':'store','data':outBuffer});
-  out.send({'result':'ok'});
-});
+  child.on('exit', function (code) {
+    console.log('child process exited with code ' + code);
+    out.send({'result':'store','data':outBuffer});
+    out.send({'result':'ok'});
+  });
 
 }
 

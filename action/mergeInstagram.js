@@ -30,8 +30,8 @@ function initApp(name, appPath) {
   //var stream = T.stream('statuses/filter', { track: name })
   var bufferRepeat = new Array();
 
-  Instagram.tags.recent({
-      name: 'latinoware',
+  Instagram.tags.search({
+      q: 'latinoware',
       complete: function(data){
           /*
           for(var k in data) { 
@@ -55,6 +55,6 @@ function initApp(name, appPath) {
 }
 
 out.send({'result':'note', 'data':'JS running '+ process.argv[1] } );
-timer = setTimeout(function () { out.send({'result':'expired'}) },60000*30*24); 
+timer = setTimeout(function () { out.send({'result':'expired'}) },60000); 
 initApp(process.argv[2], process.argv[3], process.argv[4] );
 
