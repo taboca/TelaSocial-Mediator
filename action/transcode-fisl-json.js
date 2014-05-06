@@ -11,6 +11,7 @@ var timer = null;
 function start(name, appPath) {
 
     var href = 'http://fisl.org.br/14/papers_ng/public/fast_grid?event_id=3';
+    var href = 'http://papers.softwarelivre.org/papers_ng/public/fast_grid?event_id=4';
 
 	var buffer = "";
 	var host = url.parse(href).host;
@@ -57,7 +58,7 @@ function start(name, appPath) {
                     result.response.slots[0].slot[i].abstract='';
                     //result.response.slots[i].abstract='';
                 } 
-                var strOut = JSON.stringify(result.response.slots);
+                var strOut = JSON.stringify(result.response);
                 var filePath = pathFS.join( __dirname, '..', appPath, 'channel', name+'.json');
                 fs.writeFile(filePath, strOut, 'utf-8', function(err){
                   if (err) { 

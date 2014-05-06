@@ -30,8 +30,8 @@ function initApp(name, appPath) {
   //var stream = T.stream('statuses/filter', { track: name })
   var bufferRepeat = new Array();
 
-  Instagram.tags.search({
-      q: 'latinoware',
+  Instagram.tags.recent({
+      name: name,
       complete: function(data){
           /*
           for(var k in data) { 
@@ -40,7 +40,7 @@ function initApp(name, appPath) {
           */
 
         strOut= JSON.stringify(data);
-        var filePath = pathFS.join( __dirname, '..',  appPath, 'channel', name+'.json');
+        var filePath = pathFS.join( __dirname, '..',  appPath, 'channel', 'instagram-'+name+'.json');
         fs.writeFile( filePath, strOut, 'utf8', function(err){
            if (err) { 
                out.senderr({'result':'error', 'payload': err});
