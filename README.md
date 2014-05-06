@@ -8,14 +8,11 @@ The mediator application is a NodeJS-based app that acts as a middleware agent b
 
 # Installation
 
-* NodeJS ( https://github.com/joyent/node/ ) 
-* npm ( http://npmjs.org/) 
-* Forever ( http://www.telasocial.com/p/d/nodejs/forever.html ) 
-* npm install xml2js ( https://github.com/Leonidas-from-XIV/node-xml2js )
-* npm install ftp-server ( https://github.com/naholyr/node-ftp-server ) 
-* ImageMagick ( experiental, for 0.2 ) 
+* install Node, with nvm 
+* npm install
+* ImageMagick ( some scripts may try to take screenshots ) 
 
-# Launching version 0.1 
+# Launching  
 
 sudo node mediator 
 
@@ -25,46 +22,6 @@ Point your browser to:
    
     If you want to launch a ./static/index.html app you need to install yourself
 
-## The concept of channel 
-
-The application can serve, via http ( get post ) a representation of the remote feed. Version 0.1 simply returns the raw data for a given registered feed. The data is kept in the disk and can be retrieved using the "/channel/" parameter: 
-
-    http://localhost/channel/noticias.xml
-
-The rule that loads the remote feed is defined in the config file: 
-
-    {
-      "channel":"noticias",
-      "timer": "30000",
-      "function":"reloadRSS",
-      "url":"http://twitter.com/statuses/user_timeline/394023468.rss"
-    }
-
-    Config file https://github.com/taboca/TelaSocial-Mediator/blob/master/config.json
-
-## Scenario 1: Repurposing a feed ( Cached and Resized Images ) 
-
-This use case refers to a client ( web social kiosk ) that wants to display a number of pictures associated with a given feed — think a flickr feed with URLs to some images. However is wants to display smaller version for each of the images and it also does not want to reload the images from the network for every feed request initiated by the client. It only needs the resized images and new resized images when a new URL is found in the feed data. 
-
-The proposed architecture is a means to repurpose feeds in the mediator. In this case, a configuration rule script should define associated operation to the feed: 
-
-    {
-      "channel":"flickrresized",
-      "timer": "30000",
-      "function":"cacheandresize",
-      "url":"http://api.flickr.com/services/feeds/photos_public.gne?tags=flower&lang=pt-br&format="
-    }
-
-So when the feed is loaded, all images are to be fetched, resized, and stored in the disk. What is new is that we will need to serve a new feed file to the actual client because now the images are in the disk. 
-
-## Requirements
-
- * NodeJS
- * npm
- * Forever
- * xml2js ( https://github.com/Leonidas-from-XIV/node-xml2js ) 
- * ImageMagick ( for the media transcoding converter channel = 0.2 ) 
- 
 ## LICENSE
 
 All files that are part of this project are covered by the following
