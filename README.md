@@ -14,7 +14,13 @@ The mediator application is a NodeJS-based app that acts as a middleware agent b
 
 # Launching  
 
-sudo node mediator 
+Copy your app to a "./app" directory. It's expected this directory to have: 
+
+    ./app/static
+    ./app/scripts
+    ./app/channel
+
+sudo node mediator app scripts/httpserver.json (for example)
 
 Point your browser to: 
 
