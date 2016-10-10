@@ -2,10 +2,12 @@ var sys = require("sys"),
     pathFS = require("path"),
     fs = require("fs")
     url = require("url"),
-    http = require("http"),
+    http = require('follow-redirects').http,
+
     qs = require("querystring"),
     out = require('../3rdparty/stdout-2-json/stdout-2-json');
  
+    //http = require("http"),
 var timer = null; 
 
 function ruleLoadSaveRSS(name, href, appPath) {
