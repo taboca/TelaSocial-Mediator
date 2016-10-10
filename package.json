@@ -26,7 +26,8 @@
     "xml2js": "^0.2.0",
     "node-static": "^0.6.9",
     "instagram-node-lib": "^0.1.1",
-    "http-agent": "^0.1.2"
+    "http-agent": "^0.1.2",
+    "mocha": "~3.1.1"
   },
   "dependencies": {
     "follow-redirects": "~0.2.0"
