@@ -1,4 +1,4 @@
-## 
+##
 # Ref article http://labs.telasocial.com/nodejs-forever-daemon/
 
 ### BEGIN INIT INFO
@@ -13,12 +13,12 @@
 export PATH=$PATH:/usr/local/bin
 export NODE_PATH=$NODE_PATH:/usr/local/lib/node_modules
 
-# This is important for node 
-export HOME=/root 
+# This is important for node
+export HOME=/root
 
 case "$1" in
   start)
-    exec /usr/local/bin/forever -p /root/.forever --sourceDir=/home/telasocial/TelaSocial-Mediator start mediator.js ./scripts/destaques.json
+    exec /usr/local/bin/forever -p /root/.forever --sourceDir=/home/telasocial/latinoware/TelaSocial-mediator start mediator.js ./scripts/destaques.json
     ;;
   stop)
     exec /usr/local/bin/forever stopall
@@ -30,4 +30,3 @@ case "$1" in
 esac
 
 exit 0
-
