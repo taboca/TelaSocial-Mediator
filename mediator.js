@@ -244,7 +244,7 @@ function execFlow(uuid, streamStdout) {
       delete eventQueue[uuid];
       flog(uuid, 'result=ok; removing ' + uuid + ' from queue.. ' );
       if(toEvent != null) {
-	  createEvent(toEvent);
+        createEvent(toEvent);
       }
     }
 
