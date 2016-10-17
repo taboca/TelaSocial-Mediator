@@ -138,6 +138,17 @@ function executeProcessRule(uuid) {
     flog(uuid, ' initiated process...'+child1.data.pid);
   }
 
+  if(curr.script.function == "mergeTwitter") {
+    script = path.join(__dirname, 'action/mergeTwitter2.js');
+    var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.tag,  curr.script.data.target , gLocalAppDir ]  });
+    curr.processHandler = child1;
+    child1.start();
+    child1.on('exit', function () { flog(uuid, ' script exited...')} );
+    child1.on('stdout', function (data) { execFlow(uuid, data);	});
+    child1.on('stderr', function (data) { execFlow(uuid, data);	});
+    flog(uuid, ' initiated process...'+child1.data.pid);
+  }
+
   if(curr.script.function == "loadImage") {
     script = path.join(__dirname, 'action/loadImage.js');
     var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value , gLocalAppDir ]  });
