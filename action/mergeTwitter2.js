@@ -76,6 +76,8 @@ stream.on('tweet', function (tweet) {
        out.senderr({'result':'error', 'payload': err});
        throw err;
     }
+    out.send({'result':'ok'});
+    clearTimeout(timer);    
   });
 
   });
