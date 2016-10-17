@@ -62,14 +62,14 @@ function getAndSaveImage(name, href) {
           bufferedData+=dataBuffer;
        });
        res.on('end', function () {
-          var filedate= JSON.stringify({ date: new Date() });
-          var filename = JSON.parse(filedate).date;
-          fs.writeFile('channel/'+name+'/image-'+filename+'.jpg', bufferedData, 'binary', function(err){
+          var filePath = pathFS.join( __dirname, '..', appPath, 'channel', name+'.txt');
+
+          fs.writeFile(filePath, bufferedData, 'binary', function(err){
             if (err) {
               out.senderr({'result':'error','data':err} );
               throw err;
             }
-            out.send({'result':'note','data':'file saved: ./channel/'+name+'/image-'+filename+'.jpg'});
+            out.send({'result':'note','data':'file saved: ./channel/'+name});
             out.send({'result':'ok'});
             clearTimeout(timer);
           });
