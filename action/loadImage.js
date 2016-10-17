@@ -43,6 +43,26 @@ var sys = require("sys"),
 
 function getAndSaveImage(name, href, appPath) {
 
+	var host = url.parse(href).host;
+	var path = url.parse(href).pathname;
+	var port = url.parse(href).port;
+	var search ='';
+	var searchProbe = url.parse(href).search;
+	if(typeof searchProbe != 'undefined') {
+      if(searchProbe) {
+          search=searchProbe;
+      }
+	}
+
+   host=host.split(':')[0];
+   out.send({ 'path + search':host});
+    var options = {
+       host: host,
+       port: port,
+       path: path+search
+   };
+
+/*
     var host = url.parse(href).host;
     var path = url.parse(href).pathname;
     var options = {
@@ -50,6 +70,7 @@ function getAndSaveImage(name, href, appPath) {
         port: 8888,
         path: path
     };
+*/
     var request = http.get(options);
     request.on('error', function (e) {
         out.senderr({'result':'error','type':'offline','data':e} );
