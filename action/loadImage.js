@@ -62,7 +62,7 @@ function getAndSaveImage(name, href) {
           bufferedData+=dataBuffer;
        });
        res.on('end', function () {
-          var filePath = pathFS.join( __dirname, '..', appPath, 'channel', name+'.txt');
+          var filePath = pathFS.join( __dirname, '..', appPath, 'static', name);
 
           fs.writeFile(filePath, bufferedData, 'binary', function(err){
             if (err) {
