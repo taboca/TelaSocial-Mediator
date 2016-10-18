@@ -41,11 +41,11 @@ stream.on('tweet', function (tweet) {
   var addTo = true;
   if(typeof bufferRepeat[tweet.text] == 'undefined') {
       bufferRepeat[tweet.text] =1
-      console.log('' + tweet.text);
+      //console.log('' + tweet.text);
   } else {
       bufferRepeat[tweet.text] +=1;
       addTo = false;
-      console.log('=>' + tweet.text);
+      //console.log('Removed ' + tweet.text);
   }
 
   if(addTo) {
