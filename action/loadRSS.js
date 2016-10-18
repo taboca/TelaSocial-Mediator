@@ -5,8 +5,8 @@ var sys = require("sys"),
     http = require("http"),
     qs = require("querystring"),
     out = require('../3rdparty/stdout-2-json/stdout-2-json');
- 
-var timer = null; 
+
+var timer = null;
 
 function ruleLoadSaveRSS(name, href, appPath) {
 
@@ -16,19 +16,18 @@ function ruleLoadSaveRSS(name, href, appPath) {
 	var port = url.parse(href).port;
 	var search ='';
 	var searchProbe = url.parse(href).search;
-	if(typeof searchProbe != 'undefined') { 
-        if(searchProbe) { 
-		   search=searchProbe;	
-        } 
-	} 
-    var options = {
-       host: host,
-       port: port,
-       method: 'GET',
-       path: path+search
-   };
+	if(typeof searchProbe != 'undefined') {
+      if(searchProbe) {
+        search=searchProbe;
+      }
+	}
+  var options = {
+     host: host,
+     port: port,
+     method: 'GET',
+     path: path+search
+  };
 
- 
    var strOut = "";
    var accept = false;
    var request = http.request(options);
@@ -36,7 +35,7 @@ function ruleLoadSaveRSS(name, href, appPath) {
 
    // This is network error
    request.on('error', function (e) {
-             out.senderr({'result':'error','type':'offline','data':e} );
+      out.senderr({'result':'error','type':'offline','data':e} );
    });
    request.on('response', function (res) {
       var strOut = "";
@@ -47,13 +46,12 @@ function ruleLoadSaveRSS(name, href, appPath) {
               strOut += buffer;
       });
       res.on('end', function () {
-
           var filePath = pathFS.join( __dirname, '..', appPath, 'channel', name+'.xml');
           fs.writeFile(filePath, strOut, 'binary', function(err){
-           if (err) { 
+           if (err) {
              out.senderr({'result':'error', 'payload': err});
-             throw err; 
-           }   
+             throw err;
+           }
            // warning: we need to clear the timer...
            out.send({'result':'ok'});
            clearTimeout(timer);
@@ -63,6 +61,5 @@ function ruleLoadSaveRSS(name, href, appPath) {
 }
 
 out.send({'result':'note', 'data':'Will open + '+ process.argv[3] } );
-timer = setTimeout(function () { out.send({'result':'expired'}) },15000); 
+timer = setTimeout(function () { out.send({'result':'expired'}) },15000);
 ruleLoadSaveRSS(process.argv[2], process.argv[3], process.argv[4]);
-
