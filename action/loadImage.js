@@ -62,15 +62,6 @@ function getAndSaveImage(name, href, appPath) {
        path: path+search
    };
 
-/*
-    var host = url.parse(href).host;
-    var path = url.parse(href).pathname;
-    var options = {
-        host: host,
-        port: 8888,
-        path: path
-    };
-*/
     var request = http.get(options);
     request.on('error', function (e) {
         out.senderr({'result':'error','type':'offline','data':e} );
@@ -90,14 +81,14 @@ function getAndSaveImage(name, href, appPath) {
               out.senderr({'result':'error','data':err} );
               throw err;
             }
+            clearTimeout(timer);
             out.send({'result':'note','data':'file saved: ./channel/'+name});
             out.send({'result':'ok'});
-            clearTimeout(timer);
           });
        });
     });
 }
 
 /* Remember to clear the timeouts */
-timer = setTimeout(function () { out.send({'result':'expired'}) },15000);
+timer = setTimeout(function () { out.send({'result':'expired'}) },30000);
 getAndSaveImage(process.argv[2], process.argv[3], process.argv[4]);
