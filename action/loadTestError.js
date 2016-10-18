@@ -27,12 +27,8 @@ function getAndSaveImage(name, href, appPath) {
    };
 
    setTimeout(function () {
-      out.send({'result':'expired'});
-   },15000);
-
-   setTimeout(function () {
      out.senderr({'result':'error','type':'offline','data':'none test'} );
-   },15000);
+   },5000);
 
 }
 
