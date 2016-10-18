@@ -98,14 +98,14 @@ function executeProcessRule(uuid) {
 
 
     if(curr.script.function == "loadTestError") {
-      script = path.join(__dirname, 'action/loadTestError.js');
-      var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value , gLocalAppDir ]  });
-      curr.processHandler = child1;
-      child1.start();
-      child1.on('exit', function () { flog(uuid, ' script exited...')} );
-      child1.on('stdout', function (data) { execFlow(uuid, data);	});
-      child1.on('stderr', function (data) { execFlow(uuid, data);	});
-      flog(uuid, ' initiated process...'+child1.data.pid);
+        script = path.join(__dirname, 'action/loadTestError.js');
+        var child1 = new (forever.Monitor)(script,  { max: 1, options: [ curr.script.data.about,  curr.script.data.value , gLocalAppDir ]  });
+        curr.processHandler = child1;
+        child1.start();
+        child1.on('exit', function () { flog(uuid, ' script exited...')} );
+        child1.on('stdout', function (data) { execFlow(uuid, data);	});
+        child1.on('stderr', function (data) { execFlow(uuid, data);	});
+        flog(uuid, ' initiated process...'+child1.data.pid);
     }
 
     if(curr.script.function == "timer") {
