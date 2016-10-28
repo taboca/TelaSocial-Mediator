@@ -64,7 +64,7 @@ function getAndSaveImage(name, href, appPath) {
 
     var request = http.get(options);
     request.on('error', function (e) {
-        out.senderr({'result':'error','type':'offline','data':e} );
+        out.senderr({'result':'error','type':'offline','data': ''+e+''} );
     });
     out.send({'result':'note','data':'init fetch: '+host+path});
     request.on('response', function (res) {
